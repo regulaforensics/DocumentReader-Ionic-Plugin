@@ -1,0 +1,7 @@
+{
+  "name": "DocumentReader",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,79 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title style="align-items: center; text-align: center;">
+            <p #status>Ready</p>
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div style="text-align: center;background-color: #F5FCFF;height: 100%;">
+        <div style=" align-items:center; text-align: center;display: inline-block;">
+            <p style="margin-bottom: 5px">Portrait</p>
+            <img style="height: 133px; width: 100px" src="assets/img/portrait.png" resizeMode="contain" #portraitImage />
+        </div>
+        <div style="align-items: center; text-align: center; display: inline-block;">
+            <p style="margin-bottom: 5px">Document</p>
+            <img style="height: 133px;" src="assets/img/id.png" resizeMode="contain" #documentImage />
+        </div>
+    </div>
+
+    <div #scenariosRadioGroup
+        style="position: absolute; bottom: 100px; top: 180px; left: 75px; padding: 5px; text-align:left; overflow: auto">
+    </div>
+
+    <div style="position: absolute; bottom: 10px; width: 100%; text-align: center; align-items: center">
+        <div id="rfidDiv" style="flex-direction: row; padding: 5px">
+            <ion-checkbox #rfidCheckbox name="rfid" disabled=true></ion-checkbox><span #rfidCheckboxText
+                style="color: lightgrey"> Process rfid reading(unavailable)</span><br>
+        </div>
+        <div style="flex-direction: row; padding: 10px">
+            <button #showScannerButton style="margin-right: 20px">scan doc</button>
+            <button #showImagePicker style="margin-left: 20px">scan image</button>
+        </div>
+    </div>
+    <style type="text/css">
+        button {
+            width: 40%;
+            -moz-box-shadow: inset 0px -3px 7px 0px #29bbff;
+            -webkit-box-shadow: inset 0px -3px 7px 0px #29bbff;
+            box-shadow: inset 0px -3px 7px 0px #29bbff;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #2dabf9), color-stop(1, #0688fa));
+            background: -moz-linear-gradient(top, #2dabf9 5%, #0688fa 100%);
+            background: -webkit-linear-gradient(top, #2dabf9 5%, #0688fa 100%);
+            background: -o-linear-gradient(top, #2dabf9 5%, #0688fa 100%);
+            background: -ms-linear-gradient(top, #2dabf9 5%, #0688fa 100%);
+            background: linear-gradient(to bottom, #2dabf9 5%, #0688fa 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2dabf9', endColorstr='#0688fa', GradientType=0);
+            background-color: #2dabf9;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            border: 1px solid #0b0e07;
+            display: inline-block;
+            cursor: pointer;
+            color: #ffffff;
+            font-family: Arial;
+            font-size: 15px;
+            padding: 9px 23px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #263666;
+        }
+
+        button:hover {
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0688fa), color-stop(1, #2dabf9));
+            background: -moz-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
+            background: -webkit-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
+            background: -o-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
+            background: -ms-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
+            background: linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0688fa', endColorstr='#2dabf9', GradientType=0);
+            background-color: #0688fa;
+        }
+
+        button:active {
+            position: relative;
+            top: 1px;
+        }
+    </style>
+</ion-content>
