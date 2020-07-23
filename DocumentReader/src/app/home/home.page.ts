@@ -94,7 +94,7 @@ export class HomePage {
         },
       }, null, error1);
       DocumentReader.getConfig(r => console.log(r), error1);
-      DocumentReader.getAvailableScenarios(scenariosJSONString => {
+      DocumentReader.isRFIDAvailableForUse(scenariosJSONString => {
         var scenarios = JSON.parse(scenariosJSONString);
         DocumentReader.getCanRFID(canRfid => postInitialize(scenarios, canRfid), error1);
       }, error1);
