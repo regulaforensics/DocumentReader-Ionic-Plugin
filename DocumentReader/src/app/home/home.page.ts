@@ -94,9 +94,9 @@ export class HomePage {
         },
       }, null, error1);
       DocumentReader.getConfig(r => console.log(r), error1);
-      DocumentReader.isRFIDAvailableForUse(scenariosJSONString => {
+      DocumentReader.getAvailableScenarios(scenariosJSONString => {
         var scenarios = JSON.parse(scenariosJSONString);
-        DocumentReader.getCanRFID(canRfid => postInitialize(scenarios, canRfid), error1);
+        DocumentReader.isRFIDAvailableForUse(canRfid => postInitialize(scenarios, canRfid), error1);
       }, error1);
     }
 
@@ -124,11 +124,17 @@ export class HomePage {
         app.scenariosRadioGroup.nativeElement.appendChild(document.createElement("br"));
       }
       if (canRfid) {
-        app.rfidCheckbox.nativeElement.disabled = false;
+        var output = "";
+        for (var property in app.rfidCheckbox["el"]) {
+          output += property + ': ' + app.rfidCheckbox["el"][property]+'; ';
+        }
+        app.rfidCheckbox["el"].disabled = false;
         app.rfidCheckboxText.nativeElement.style.color = "black";
         app.rfidCheckboxText.nativeElement.innerHTML = "Process rfid reading";
-        app.rfidCheckboxText.nativeElement.onclick = () => app.rfidCheckbox.nativeElement.click();
-        app.rfidCheckbox.nativeElement.onchange = () => doRfid = app.rfidCheckbox.nativeElement.checked;
+        app.rfidCheckboxText.nativeElement.onclick = () => {
+          app.rfidCheckbox["el"].click();
+          doRfid = app.rfidCheckbox["el"].checked;
+        };
       }
     }
 
