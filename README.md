@@ -37,49 +37,8 @@ First of all, install **API** library, simply running the following command:
 $ ionic cordova plugin add cordova-plugin-document-reader-api --variable CAMERA_USAGE_DESCRIPTION="To take photo" --variable READ_EXTERNAL_STORAGE="To choose photo"
 ```
 
-And then add one of the [Core](https://docs.regulaforensics.com/cordova/core) libraries depend on the functionality that you wish and the license capabilities:
+And then add one of the [Core](https://docs.regulaforensics.com/cordova/core) libraries depend on the functionality that you wish and the license capabilities, e.g.:
 
-* Install **bounds** library edition:
-```bash
-$ ionic cordova plugin add cordova-plugin-document-reader-core-bounds
-```
-
-* Install **mrz** library edition:
-```bash
-$ ionic cordova plugin add cordova-plugin-document-reader-core-mrz
-```
-
-* Install **mrzrfid** library edition:
-```bash
-$ ionic cordova plugin add cordova-plugin-document-reader-core-mrzrfid
-```
-
-* Install **barcode** library edition:
-```bash
-$ ionic cordova plugin add cordova-plugin-document-reader-core-barcode
-```
-
-* Install **barcodemrz** library edition:
-```bash
-$ ionic cordova plugin add cordova-plugin-document-reader-core-barcodemrz
-```
-
-* Install **doctype** library edition:
-```bash
-$ ionic cordova plugin add cordova-plugin-document-reader-core-doctype
-```
-
-* Install **ocrandmrz** library edition:
-```bash
-$ ionic cordova plugin add cordova-plugin-document-reader-core-ocrandmrz
-```
-
-* Install **full** library edition:
-```bash
-$ ionic cordova plugin add cordova-plugin-document-reader-core-full
-```
-
-* Install **fullrfid** library edition:
 ```bash
 $ ionic cordova plugin add cordova-plugin-document-reader-core-fullrfid
 ```
