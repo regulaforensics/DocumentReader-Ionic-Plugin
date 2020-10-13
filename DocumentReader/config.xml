@@ -20,6 +20,12 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <platform name="android">
+        <edit-config file="AndroidManifest.xml" mode="merge" target="/manifest/application">
+            <application android:requestLegacyExternalStorage="true" />
+        </edit-config>
+        <config-file parent="/*" target="AndroidManifest.xml">
+            <uses-permission android:name="android.permission.NFC" />
+        </config-file>
         <preference name="android-minSdkVersion" value="22" />
         <preference name="android-compileSdkVersion" value="29" />
         <resource-file src="resources/android/xml/network_security_config.xml" target="app/src/main/res/xml/network_security_config.xml" />
@@ -46,6 +52,36 @@
     <platform name="ios">
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
+        <preference name="CAMERA_USAGE_DESCRIPTION" default=" " />
+        <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
+            <string>To use camera</string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NFCReaderUsageDescription">
+            <string>To use NFC</string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="com.apple.developer.nfc.readersession.iso7816.select-identifiers">
+            <array>
+		        <string>A0000002471001</string>
+		        <string>E80704007F00070302</string>
+		        <string>A000000167455349474E</string>
+		        <string>A0000002480100</string>
+		        <string>A0000002480200</string>
+		        <string>A0000002480300</string>
+		        <string>A00000045645444C2D3031</string>
+	        </array>
+        </config-file>
+        <config-file target="*-Debug.plist" parent="com.apple.developer.nfc.readersession.formats">
+            <array>
+                <string>NDEF</string>
+		        <string>TAG</string>
+            </array>
+        </config-file>
+        <config-file target="*-Release.plist" parent="com.apple.developer.nfc.readersession.formats">
+            <array>
+                <string>NDEF</string>
+		        <string>TAG</string>
+            </array>
+        </config-file>
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
         <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />
         <icon height="29" src="resources/ios/icon/icon-small.png" width="29" />

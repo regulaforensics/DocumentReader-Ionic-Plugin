@@ -202,9 +202,9 @@ export class HomePage {
     }
 
     function recognizeAndroid() {
-      this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE).then(
+      app.androidPermissions.checkPermission(app.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE).then(
         result => recognizeIOS(),
-        err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE).then(
+        err => app.androidPermissions.requestPermission(app.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE).then(
           result => recognizeIOS(),
           err => { console.log("storage permission denied") }
         )
