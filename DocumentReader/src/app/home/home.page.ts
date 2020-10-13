@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { File } from '@ionic-native/file';
 import { ImagePicker } from '@ionic-native/image-picker/ngx'
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Platform } from '@ionic/angular';
 
 var DocumentReader;
@@ -25,7 +26,9 @@ export class HomePage {
   @ViewChild('rfidCheckbox', { static: true }) rfidCheckbox: ElementRef;
   @ViewChild('rfidCheckboxText', { static: true }) rfidCheckboxText: ElementRef;
 
-  constructor(public platform: Platform, private imagePicker: ImagePicker) {
+  constructor(public platform: Platform, private imagePicker: ImagePicker
+    , private androidPermissions: AndroidPermissions
+    ) {
   }
 
   ionViewDidEnter() {
@@ -43,8 +46,9 @@ export class HomePage {
     app.status.nativeElement.style.background = "red";
     app.status.nativeElement.innerHTML = "loading......";
     app.status.nativeElement.style.backgroundColor = "grey";
-    app.platform.ready().then(() => {
-      DocumentReader = cordova.require("cordova-plugin-document-reader-api.DocumentReader");
+    app.platform.ready()
+    .then(() => {
+      DocumentReader = cordova.require("cordova-plugin-document-reader-api-beta.DocumentReader");
       DocumentReaderResults = DocumentReader.DocumentReaderResults;
       Scenario = DocumentReader.Scenario;
       Enum = DocumentReader.Enum;
@@ -198,7 +202,13 @@ export class HomePage {
     }
 
     function recognizeAndroid() {
-      DocumentReader.permissionRead(r => recognizeIOS(), e => e == "no permission" ? recognizeAndroid() : null);
+      this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE).then(
+        result => recognizeIOS(),
+        err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE).then(
+          result => recognizeIOS(),
+          err => { console.log("storage permission denied") }
+        )
+      )
     }
   }
 
