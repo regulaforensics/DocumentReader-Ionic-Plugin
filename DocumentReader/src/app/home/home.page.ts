@@ -192,7 +192,7 @@ export class HomePage {
           app.status.nativeElement.innerHTML = "copying image......";
           app.status.nativeElement.style.backgroundColor = "grey";
         }
-        File.readAsDataURL("file://" + results[0].substring(0, (results[0] as string).lastIndexOf("/")), results[0].substring((results[0] as string).lastIndexOf("/") + 1)).then((file => {
+        File.readAsDataURL(results[0].substring(0, (results[0] as string).lastIndexOf("/")), results[0].substring((results[0] as string).lastIndexOf("/") + 1)).then((file => {
           var base64 = (file as string).substring(23);
           app.status.nativeElement.innerHTML = "processing image......";
           app.status.nativeElement.style.backgroundColor = "grey";
