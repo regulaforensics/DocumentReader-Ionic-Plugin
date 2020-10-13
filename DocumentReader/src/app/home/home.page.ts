@@ -48,7 +48,7 @@ export class HomePage {
     app.status.nativeElement.style.backgroundColor = "grey";
     app.platform.ready()
     .then(() => {
-      DocumentReader = cordova.require("cordova-plugin-document-reader-api-beta.DocumentReader");
+      DocumentReader = cordova.require("cordova-plugin-document-reader-api.DocumentReader");
       DocumentReaderResults = DocumentReader.DocumentReaderResults;
       Scenario = DocumentReader.Scenario;
       Enum = DocumentReader.Enum;
