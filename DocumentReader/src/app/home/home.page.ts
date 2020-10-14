@@ -170,7 +170,7 @@ export class HomePage {
           app.status.nativeElement.innerHTML = "copying image......"
           app.status.nativeElement.style.backgroundColor = "grey"
         }
-        File.readAsDataURL(results[0].substring(0, (results[0] as string).lastIndexOf("/")), results[0].substring((results[0] as string).lastIndexOf("/") + 1)).then((file => {
+        File.readAsDataURL((app.platform.is("ios") ? "file://" : "")+results[0].substring(0, (results[0] as string).lastIndexOf("/")), results[0].substring((results[0] as string).lastIndexOf("/") + 1)).then((file => {
           app.status.nativeElement.innerHTML = "processing image......"
           app.status.nativeElement.style.backgroundColor = "grey"
           DocumentReader.recognizeImage((file as string).substring(23), r => handleResults(r), error1)
