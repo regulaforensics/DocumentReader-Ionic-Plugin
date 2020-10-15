@@ -11,6 +11,12 @@ var Enum
 var doRfid = false
 declare var cordova: any
 
+var isReadingRfid = false
+var rfidUIHeader = "Reading RFID"
+var rfidUIHeaderColor = "black"
+var rfidDescription = "Place your phone on top of the NFC tag"
+var rfidProgress = -1
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -23,10 +29,18 @@ export class HomePage {
   @ViewChild('showScannerButton', { static: true }) showScannerButton: ElementRef
   @ViewChild('showImagePicker', { static: true }) showImagePicker: ElementRef
   @ViewChild('scenariosRadioGroup', { static: true }) scenariosRadioGroup: ElementRef
-  @ViewChild('rfidCheckbox', { static: true }) rfidCheckbox: ElementRef
+  @ViewChild('rfidCheckbox', { static: false }) rfidCheckbox: ElementRef
   @ViewChild('rfidCheckboxText', { static: true }) rfidCheckboxText: ElementRef
 
-  constructor(public platform: Platform, private imagePicker: ImagePicker, private androidPermissions: AndroidPermissions) { }
+  @ViewChild('rfidUI', { static: false }) rfidUI: ElementRef
+  @ViewChild('mainUI', { static: false }) mainUI: ElementRef
+  @ViewChild('rfidUIHeader', { static: false }) rfidUIHeader: ElementRef
+  @ViewChild('rfidDescription', { static: false }) rfidDescription: ElementRef
+  @ViewChild('rfidProgress', { static: false }) rfidProgress: ElementRef
+  @ViewChild('cancelButton', { static: false }) cancelButton: ElementRef
+
+  constructor(public platform: Platform, private imagePicker: ImagePicker, private androidPermissions: AndroidPermissions) {
+   }
 
   ionViewDidEnter() {
     var app = this
@@ -40,7 +54,9 @@ export class HomePage {
       console.log(e)
       alert(e)
     }
-    app.status.nativeElement.style.background = "red"
+
+    app.cancelButton.nativeElement.addEventListener("click", stopRfid)
+    updateUI()
     app.status.nativeElement.innerHTML = "loading......"
     app.status.nativeElement.style.backgroundColor = "grey"
     app.platform.ready().then(() => {
@@ -52,8 +68,8 @@ export class HomePage {
           fileEntry.file(file => {
             var reader = new FileReader()
             reader.onloadend = (r) => DocumentReader.prepareDatabase("Full", r => {
-                if (r.substring(0, 11) == "Downloading")
-                  app.status.nativeElement.innerHTML = r
+              if (r != "database prepared")
+                  app.status.nativeElement.innerHTML = "Downloading database: " + r + "%"
                 else {
                   app.status.nativeElement.innerHTML = "Loading......"
                   DocumentReader.initializeReader(reader.result, m => onInitialized(), error1)
@@ -61,8 +77,84 @@ export class HomePage {
               }, error1)
             reader.readAsArrayBuffer(file)
           }, error2)
-        }).catch(error2) ).catch(error2)
-    });
+        }).catch(error2)).catch(error2)
+    })
+  
+    function updateUI(){
+      app.mainUI.nativeElement.style.display = isReadingRfid ? "none" : ""
+      app.rfidUI.nativeElement.style.display = isReadingRfid ? "" : "none"
+      app.rfidUIHeader.nativeElement.innerHTML = rfidUIHeader
+      app.rfidUIHeader.nativeElement.style.color = rfidUIHeaderColor
+      app.rfidDescription.nativeElement.innerHTML = rfidDescription
+      app.rfidProgress.nativeElement.value = rfidProgress
+    }
+
+    function stopRfid() {
+      hideRfidUI()
+      DocumentReader.stopRFIDReader(null, null)
+    }
+
+    function handleCompletion(completion) {
+      if (isReadingRfid && (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR))
+          hideRfidUI()
+      if (isReadingRfid && completion.action === Enum.DocReaderAction.NOTIFICATION)
+          updateRfidUI(completion.results.documentReaderNotification)
+      if (completion.action === Enum.DocReaderAction.COMPLETE)
+          if (isReadingRfid)
+              if (completion.results.rfidResult !== 1)
+                  restartRfidUI()
+              else {
+                  hideRfidUI()
+                  displayResults(completion.results)
+              }
+          else
+              handleResults(completion.results)
+  }
+
+  function showRfidUI() {
+      // show animation
+      isReadingRfid = true
+      updateUI()
+  }
+
+  function hideRfidUI() {
+      // show animation
+      restartRfidUI()
+      isReadingRfid = false
+      rfidUIHeader = "Reading RFID"
+      rfidUIHeaderColor = "black"
+      updateUI()
+  }
+
+  function restartRfidUI() {
+      rfidUIHeaderColor = "red"
+      rfidUIHeader = "Failed!"
+      rfidDescription = "Place your phone on top of the NFC tag"
+      rfidProgress = -1
+      updateUI()
+  }
+
+  function updateRfidUI(results) {
+      if (results.code === Enum.eRFID_NotificationAndErrorCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP)
+          rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(results.number)
+      rfidUIHeader = "Reading RFID"
+      rfidUIHeaderColor = "black"
+      rfidProgress = results.value
+      updateUI()
+      if (app.platform.is("ios"))
+          DocumentReader.setRfidSessionStatus(rfidDescription + "\n" + results.value + "%", null, null)
+  }
+
+  function customRFID() {
+      showRfidUI()
+      DocumentReader.readRFID(m=> handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))), null)
+    }
+
+  function usualRFID() {
+      doRfid = false
+      app.rfidCheckbox["el"].checked = false
+      DocumentReader.startRFIDReader(m=> handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))), null)
+  }
 
     function onInitialized() {
       app.status.nativeElement.innerHTML = "Ready"
@@ -85,8 +177,8 @@ export class HomePage {
           scenario: "Mrz",
           doRfid: false
         },
-      }, null, error1)
-      DocumentReader.getAvailableScenarios(sc => DocumentReader.isRFIDAvailableForUse(canRfid => postInitialize(JSON.parse(sc), canRfid), error1), error1)
+      }, null, null)
+      DocumentReader.getAvailableScenarios(sc => DocumentReader.isRFIDAvailableForUse(canRfid => postInitialize(JSON.parse(sc), canRfid), null), null)
     }
 
     function postInitialize(scenarios, canRfid) {
@@ -99,7 +191,7 @@ export class HomePage {
         input.value = Scenario.fromJson(typeof index === "string" ? JSON.parse(index) : index).name
         if (index == 0)
           input.checked = true
-        input.onclick = () => DocumentReader.setConfig({ processParams: { scenario: Scenario.fromJson(typeof index === "string" ? JSON.parse(index) : index).name } }, null, error1)
+        input.onclick = () => DocumentReader.setConfig({ processParams: { scenario: Scenario.fromJson(typeof index === "string" ? JSON.parse(index) : index).name } }, null, null)
         input.style.display = "inline-block"
       }
       for (let input of inputs) {
@@ -113,44 +205,43 @@ export class HomePage {
         app.scenariosRadioGroup.nativeElement.appendChild(document.createElement("br"))
       }
       if (canRfid) {
-        var output = ""
-        for (var property in app.rfidCheckbox["el"]) 
-          output += property + ': ' + app.rfidCheckbox["el"][property]+'; '
         app.rfidCheckbox["el"].disabled = false
         app.rfidCheckboxText.nativeElement.style.color = "black"
         app.rfidCheckboxText.nativeElement.innerHTML = "Process rfid reading"
-        app.rfidCheckboxText.nativeElement.onclick = () => {
-          app.rfidCheckbox["el"].click();
-          doRfid = app.rfidCheckbox["el"].checked;
+        app.rfidCheckbox["el"].onclick = () => {
+          doRfid = !doRfid
+          console.log("checkbock clicked!")
+          console.log("dirfod is now " + doRfid)
         }
+        app.rfidCheckboxText.nativeElement.onclick = () => app.rfidCheckbox["el"].click()
       }
     }
 
-    function handleResults(jstring) {
+    function handleResults(results) {
       clearResults()
-      var results = DocumentReaderResults.fromJson(JSON.parse(jstring))
       if (doRfid && results != null && results.chipPage != 0) {
         var accessKey = results.getTextFieldValueByType(51)
         if (accessKey != null && accessKey != "") {
           accessKey = accessKey.replace(/^/g, '').replace(/\n/g, '')
-          DocumentReader.setRfidScenario({ mMrz: accessKey, mPacePasswordType: 1, }, null, error1)
+          DocumentReader.setRfidScenario({ mMrz: accessKey, mPacePasswordType: 1, }, null, null)
         } else {
           accessKey = results.getTextFieldValueByType(159)
           if (accessKey != null && accessKey != "")
-            DocumentReader.setRfidScenario({ mMrz: accessKey, mPacePasswordType: 2, }, null, error1)
+            DocumentReader.setRfidScenario({ mMrz: accessKey, mPacePasswordType: 2, }, null, null)
         }
-        DocumentReader.startRFIDReader(r => displayResults(DocumentReaderResults.fromJson(JSON.parse(r))), error1)
+        // customRFID()
+        usualRFID()
       } else
         displayResults(results)
     }
 
     function displayResults(results) {
-      app.status.nativeElement.innerHTML = results.getTextFieldValueByType(25)
+      app.status.nativeElement.innerHTML = results.getTextFieldValueByType({ fieldType: Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES })
       app.status.nativeElement.style.backgroundColor = "green"
-      if (results.getGraphicFieldImageByType(207) != null) 
-        app.documentImage.nativeElement.src = "data:image/png;base64," + results.getGraphicFieldImageByType(207)
-      if (results.getGraphicFieldImageByType(201) != null) 
-        app.portraitImage.nativeElement.src = "data:image/png;base64," + results.getGraphicFieldImageByType(201)
+      if (results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE }) != null) 
+        app.documentImage.nativeElement.src = "data:image/png;base64," + results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE })
+      if (results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_PORTRAIT }) != null) 
+        app.portraitImage.nativeElement.src = "data:image/png;base64," + results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_PORTRAIT })
     }
 
     function clearResults() {
@@ -160,7 +251,7 @@ export class HomePage {
     }
 
     function scan(){
-      DocumentReader.showScanner(r => handleResults(r), error1)
+      DocumentReader.showScanner(m => handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))), null)
     }
 
     function recognize() {
@@ -173,7 +264,7 @@ export class HomePage {
         File.readAsDataURL((app.platform.is("ios") ? "file://" : "")+results[0].substring(0, (results[0] as string).lastIndexOf("/")), results[0].substring((results[0] as string).lastIndexOf("/") + 1)).then((file => {
           app.status.nativeElement.innerHTML = "processing image......"
           app.status.nativeElement.style.backgroundColor = "grey"
-          DocumentReader.recognizeImage((file as string).substring(23), r => handleResults(r), error1)
+          DocumentReader.recognizeImage((file as string).substring(23), m => handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))), null)
         })).catch(error2)
       }, error2)
     }
