@@ -30,8 +30,8 @@
     "cordova-ios": "^6.1.1",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-android-permissions": "^1.1.0",
-    "@regulaforensics/cordova-plugin-document-reader-api-beta": "^0.0.32",
-    "@regulaforensics/cordova-plugin-document-reader-core-fullrfid-beta": "^0.0.6",
+    "@regulaforensics/cordova-plugin-document-reader-api": "^5.2.0",
+    "@regulaforensics/cordova-plugin-document-reader-core-fullrfid": "^5.2.0",
     "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-telerik-imagepicker": "^2.3.5",
     "core-js": "^3.6.5",
@@ -74,8 +74,8 @@
   "description": "An Ionic project",
   "cordova": {
     "plugins": {
-      "@regulaforensics/cordova-plugin-document-reader-api-beta": {},
-      "@regulaforensics/cordova-plugin-document-reader-core-fullrfid-beta": {},
+      "@regulaforensics/cordova-plugin-document-reader-api": {},
+      "@regulaforensics/cordova-plugin-document-reader-core-fullrfid": {},
       "cordova-plugin-android-permissions": {},
       "cordova-plugin-telerik-imagepicker": {},
       "cordova-plugin-file": {},

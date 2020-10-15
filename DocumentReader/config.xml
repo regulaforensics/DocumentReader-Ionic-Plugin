@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-packageName="com.regula.documentreader" ios-CFBundleIdentifier="regula.DocumentReader" version="0.0.1" xmlns:android="http://schemas.android.com/apk/res/android" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-packageName="com.regula.documentreader" ios-CFBundleIdentifier="regula.DocumentReader" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>DocumentReader</name>
     <description>A sample Regula Document Reader application for reading and validation of identification documents.</description>
     <author email="cordova.support@regulaforensics.com" href="https://mobile.regulaforensics.com">Regula Forensics Inc.</author>
@@ -20,7 +20,7 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <platform name="android">
-        <framework src="com.android.support:appcompat-v7:+"/>
+        <framework src="com.android.support:appcompat-v7:+" />
         <edit-config file="AndroidManifest.xml" mode="merge" target="/manifest/application">
             <application android:requestLegacyExternalStorage="true" />
         </edit-config>
@@ -53,34 +53,34 @@
     <platform name="ios">
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
-        <preference name="CAMERA_USAGE_DESCRIPTION" default=" " />
-        <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
+        <preference default=" " name="CAMERA_USAGE_DESCRIPTION" />
+        <config-file parent="NSCameraUsageDescription" target="*-Info.plist">
             <string>To use camera</string>
         </config-file>
-        <config-file target="*-Info.plist" parent="NFCReaderUsageDescription">
+        <config-file parent="NFCReaderUsageDescription" target="*-Info.plist">
             <string>To use NFC</string>
         </config-file>
-        <config-file target="*-Info.plist" parent="com.apple.developer.nfc.readersession.iso7816.select-identifiers">
+        <config-file parent="com.apple.developer.nfc.readersession.iso7816.select-identifiers" target="*-Info.plist">
             <array>
-		        <string>A0000002471001</string>
-		        <string>E80704007F00070302</string>
-		        <string>A000000167455349474E</string>
-		        <string>A0000002480100</string>
-		        <string>A0000002480200</string>
-		        <string>A0000002480300</string>
-		        <string>A00000045645444C2D3031</string>
-	        </array>
-        </config-file>
-        <config-file target="*-Debug.plist" parent="com.apple.developer.nfc.readersession.formats">
-            <array>
-                <string>NDEF</string>
-		        <string>TAG</string>
+                <string>A0000002471001</string>
+                <string>E80704007F00070302</string>
+                <string>A000000167455349474E</string>
+                <string>A0000002480100</string>
+                <string>A0000002480200</string>
+                <string>A0000002480300</string>
+                <string>A00000045645444C2D3031</string>
             </array>
         </config-file>
-        <config-file target="*-Release.plist" parent="com.apple.developer.nfc.readersession.formats">
+        <config-file parent="com.apple.developer.nfc.readersession.formats" target="*-Debug.plist">
             <array>
                 <string>NDEF</string>
-		        <string>TAG</string>
+                <string>TAG</string>
+            </array>
+        </config-file>
+        <config-file parent="com.apple.developer.nfc.readersession.formats" target="*-Release.plist">
+            <array>
+                <string>NDEF</string>
+                <string>TAG</string>
             </array>
         </config-file>
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
