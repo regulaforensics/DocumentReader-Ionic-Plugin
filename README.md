@@ -1,61 +1,47 @@
-#  Regula Document Reader (Ionic version)
-Regula Document Reader SDK allows you to read various kinds of identification documents, passports, driving licenses, ID cards, etc. All processing is performed completely  _**offline**_  on your device. No any data leaving your device.
+#  Regula Document Reader (Ionic)
+Regula Document Reader SDK allows you to read various kinds of identification documents, passports, driving licenses, ID cards, etc. All processing is performed completely _**offline**_ on your device. No any data leaving your device.
 
 You can use native camera to scan the documents or image from gallery for extract all data from it.
 
-We have provided a simple application that demonstrates the  _**API**_  calls you can use to interact with the Document Reader Library.
+This repository contains the source code of the Document Reader API, and the sample application that demonstrates the _**API**_ calls you can use to interact with the Document Reader library.
 
-# Content
-* [How to build the demo application](#how-to-build-the-demo-application)
-* [How to add the SDK to the project](#how-to-add-the-sdk-to-the-project)
-* [Troubleshooting license issues](#troubleshooting-license-issues)
+# Contents
+* [How to build demo application](#how-to-build-demo-application)
+    * [Troubleshooting license issues](#troubleshooting-license-issues)
 * [Documentation](#documentation)
 * [Additional information](#additional-information)
 
-## How to build the demo application
-1. Get a trial license for demo application at  [licensing.regulaforensics.com](https://licensing.regulaforensics.com/)  (`regula.license`  file).
-2. Download or clone current repository using the command `git clone https://github.com/regulaforensics/DocumentReader-Ionic-Plugin.git`.
+## How to build demo application
+1. Get a trial license for the demo application at [licensing.regulaforensics.com](https://licensing.regulaforensics.com/) (`regula.license` file).
+2. Download or clone this repository using the command `git clone https://github.com/regulaforensics/DocumentReader-Ionic-Plugin.git`.
 3. Run the following commands in Terminal:
 ```bash
-$ cd DocumentReader
+$ cd example
 $ npm install
 $ ionic cordova prepare
 ```
 
 4. Android:
-  * Copy the `regula.license` file to the `DocumentReader/platforms/android/app/src/main/assets` folder.
-  * Run `ionic cordova build android`, then`ionic cordova run android` inside `DocumentReader` folder - this is just one way to run the app. You can also run it directly from within Android Studio.
+  * Copy the `regula.license` file to the `example/platforms/android/app/src/main/assets` folder.
+  * Run `ionic cordova build android`, then`ionic cordova run android` inside `example` folder - this is just one way to run the app. You can also run it directly from within Android Studio.
 
 5. iOS:
   * Add the `regula.license` to the target.
-  * Run `ionic cordova build ios`, then `ionic cordova run ios` inside `DocumentReader` folder - this is just one way to run the app. You can also run it directly from within Xcode.
+  * Run `ionic cordova build ios`, then `ionic cordova run ios` inside `example` folder - this is just one way to run the app. You can also run it directly from within Xcode.
 
-## How to add the SDK to the project
-Document Reader libraries are available on [npm](https://www.npmjs.com/~regula).
-First of all, install **API** library, simply running the following command:
-```bash
-$ ionic cordova plugin add cordova-plugin-document-reader-api --variable CAMERA_USAGE_DESCRIPTION="To take photo" --variable READ_EXTERNAL_STORAGE="To choose photo"
-```
-
-And then add one of the [Core](https://docs.regulaforensics.com/cordova/core) libraries depend on the functionality that you wish and the license capabilities, e.g.:
-
-```bash
-$ ionic cordova plugin add cordova-plugin-document-reader-core-fullrfid
-```
-
-## Troubleshooting license issues
+### Troubleshooting license issues
 If you have issues with license verification when running the application, please verify that next is true:
 1. The OS, which you use, is specified in the license (e.g., Android and/or iOS).
 2. The application (Bundle) ID, which you use, is specified in the license.
 3. The license is valid (not expired).
 4. The date and time on the device, where you run the application, are valid.
 5. You use the latest release version of the Document Reader SDK.
-6. You placed the license into the project.
+6. You placed the `license` into the correct folder as described [here](#how-to-build-demo-application).
 
 ## Documentation
-The documentation on the SDK can be found [here](https://docs.regulaforensics.com/cordova).
+You can find documentation on API [here](https://docs.regulaforensics.com/ionic).
 
 ## Additional information
-If you have any technical questions, feel free to [contact](mailto:cordova.support@regulaforensics.com) us or create issue [here](https://github.com/regulaforensics/DocumentReader-Ionic-Plugin/issues).
+If you have any technical questions, feel free to [contact](mailto:dev.support@regulaforensics.com) us or create issue [here](https://github.com/regulaforensics/DocumentReader-Ionic-Plugin/issues).
 
 To use our SDK in your own app you need to [purchase](https://pipedrivewebforms.com/form/394a3706041290a04fbd0d18e7d7810f1841159) a commercial license.

@@ -1,0 +1,19 @@
+{
+  "name": "@regulaforensics/ionic-native-document-reader",
+  "version": "0.0.1",
+  "description": "Ionic Native wrapper for cordova documentreader",
+  "main": "index.js",
+  "keywords": [
+    "ionic-native", "documentreader", "reader", "scanner", "regula"
+  ],
+  "author": "Regulaforensics",
+  "license": "commercial",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/regulaforensics/DocumentReader-Ionic-Plugin"
+  },
+  "homepage": "https://mobile.regulaforensics.com",
+  "publishConfig": {
+    "access": "public"
+  }
+}
