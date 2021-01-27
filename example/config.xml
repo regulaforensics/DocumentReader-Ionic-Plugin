@@ -21,11 +21,11 @@
     <preference name="SplashScreenDelay" value="3000" />
     <platform name="android">
         <framework src="com.android.support:appcompat-v7:+" />
-        <edit-config file="AndroidManifest.xml" mode="merge" target="/manifest/application">
-            <application android:requestLegacyExternalStorage="true" />
-        </edit-config>
         <config-file parent="/*" target="AndroidManifest.xml">
             <uses-permission android:name="android.permission.NFC" />
+        </config-file>
+        <config-file parent="/manifest/application" target="AndroidManifest.xml">
+            <activity android:label="@string/multi_app_name" android:name="com.synconset.MultiImageChooserActivity" android:theme="@style/Theme.AppCompat.Light" />
         </config-file>
         <preference name="android-minSdkVersion" value="22" />
         <preference name="android-compileSdkVersion" value="29" />
