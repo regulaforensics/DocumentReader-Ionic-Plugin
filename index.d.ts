@@ -725,9 +725,11 @@ export declare const DocReaderFrame: {
     DOCUMENT: string;
 };
 export declare const DocReaderOrientation: {
-    ROTATE: number;
+    ALL: number;
     PORTRAIT: number;
     LANDSCAPE: number;
+    LANDSCAPE_LEFT: number;
+    LANDSCAPE_RIGHT: number;
 };
 export declare const eCheckDiagnose: {
     UNKNOWN: number;
@@ -846,6 +848,9 @@ export declare const eImageQualityCheckType: {
     IQC_IMAGE_GLARES: number;
     IQC_IMAGE_FOCUS: number;
     IQC_IMAGE_RESOLUTION: number;
+    IQC_IMAGE_COLORNESS: number;
+    IQC_PERSPECTIVE: number;
+    IQC_BOUNDS: number;
 };
 export declare const eProcessGLCommands: {
     ePC_ProcMgr_SetLicense: number;
@@ -2392,9 +2397,11 @@ export declare const Enum: {
         DOCUMENT: string;
     };
     DocReaderOrientation: {
-        ROTATE: number;
+        ALL: number;
         PORTRAIT: number;
         LANDSCAPE: number;
+        LANDSCAPE_LEFT: number;
+        LANDSCAPE_RIGHT: number;
     };
     eCheckDiagnose: {
         UNKNOWN: number;
@@ -2513,6 +2520,9 @@ export declare const Enum: {
         IQC_IMAGE_GLARES: number;
         IQC_IMAGE_FOCUS: number;
         IQC_IMAGE_RESOLUTION: number;
+        IQC_IMAGE_COLORNESS: number;
+        IQC_PERSPECTIVE: number;
+        IQC_BOUNDS: number;
     };
     eProcessGLCommands: {
         ePC_ProcMgr_SetLicense: number;
