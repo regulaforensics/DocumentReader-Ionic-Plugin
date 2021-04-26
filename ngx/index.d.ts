@@ -1,12 +1,18 @@
 import { IonicNativePlugin } from '@ionic-native/core';
 import { Observable } from 'rxjs';
-export declare class Scenario {
-    frame?: number;
-    frameOrientation?: number;
+export declare class DocumentReaderScenario {
     uvTorch?: boolean;
-    barcodeExt?: boolean;
+    seriesProcessMode?: boolean;
+    name?: string;
+    caption?: string;
+    description?: string;
+    static fromJson(jsonObject?: any): DocumentReaderScenario;
+}
+export declare class DocumentReaderScenarioFull {
+    uvTorch?: boolean;
+    frameOrientation?: number;
     faceExt?: boolean;
-    multiPageOff?: boolean;
+    multiPageOff?: number;
     seriesProcessMode?: boolean;
     frameKWHLandscape?: number;
     frameKWHPortrait?: number;
@@ -15,7 +21,21 @@ export declare class Scenario {
     name?: string;
     caption?: string;
     description?: string;
-    static fromJson(jsonObject?: any): Scenario;
+    manualCrop?: boolean;
+    static fromJson(jsonObject?: any): DocumentReaderScenarioFull;
+}
+export declare class FaceMetaData {
+    ID?: number;
+    rollAngle?: number;
+    bounds?: Bounds;
+    static fromJson(jsonObject?: any): FaceMetaData;
+}
+export declare class Bounds {
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+    static fromJson(jsonObject?: any): Bounds;
 }
 export declare class Rect {
     bottom?: number;
@@ -23,6 +43,13 @@ export declare class Rect {
     left?: number;
     right?: number;
     static fromJson(jsonObject?: any): Rect;
+}
+export declare class DocReaderFieldRect {
+    bottom?: number;
+    top?: number;
+    left?: number;
+    right?: number;
+    static fromJson(jsonObject?: any): DocReaderFieldRect;
 }
 export declare class DocumentReaderGraphicField {
     sourceType?: number;
@@ -32,7 +59,7 @@ export declare class DocumentReaderGraphicField {
     fieldName?: string;
     lightName?: string;
     value?: string;
-    fieldRect?: Rect;
+    fieldRect?: DocReaderFieldRect;
     static fromJson(jsonObject?: any): DocumentReaderGraphicField;
 }
 export declare class DocumentReaderGraphicResult {
@@ -93,7 +120,6 @@ export declare class ImageQuality {
     featureType?: number;
     result?: number;
     type?: number;
-    boundRects?: Rect[];
     static fromJson(jsonObject?: any): ImageQuality;
 }
 export declare class ImageQualityGroup {
@@ -118,8 +144,8 @@ export declare class DocumentReaderDocumentType {
 }
 export declare class DocumentReaderNotification {
     code?: number;
-    value?: number;
     number?: number;
+    value?: number;
     static fromJson(jsonObject?: any): DocumentReaderNotification;
 }
 export declare class AccessControlProcedureType {
@@ -323,8 +349,6 @@ export declare class DocumentReaderCompletion {
     static fromJson(jsonObject?: any): DocumentReaderCompletion;
 }
 export declare class Throwable {
-    code?: number;
-    domain?: string;
     localizedMessage?: string;
     message?: string;
     string?: string;
@@ -351,10 +375,10 @@ export declare class DocumentReaderResults {
     highResolution?: boolean;
     graphicResult?: DocumentReaderGraphicResult;
     textResult?: DocumentReaderTextResult;
-    documentPosition?: ElementPosition;
-    barcodePosition?: ElementPosition;
-    mrzPosition?: ElementPosition;
-    imageQuality?: ImageQualityGroup;
+    documentPosition?: ElementPosition[];
+    barcodePosition?: ElementPosition[];
+    mrzPosition?: ElementPosition[];
+    imageQuality?: ImageQualityGroup[];
     rawResult?: string;
     documentReaderNotification?: DocumentReaderNotification;
     rfidSessionData?: RFIDSessionData;
@@ -701,23 +725,11 @@ export declare const DocReaderFrame: {
     DOCUMENT: string;
 };
 export declare const DocReaderOrientation: {
-    ROTATE: number;
+    ALL: number;
     PORTRAIT: number;
     LANDSCAPE: number;
-};
-export declare const DocumentReaderException: {
-    NATIVE_JAVA_EXCEPTION: number;
-    DOCUMENT_READER_STATE_EXCEPTION: number;
-    DOCUMENT_READER_WRONG_INPUT: number;
-    DOCUMENT_READER_BLE_EXCEPTION: number;
-    DB_DOWNLOAD_ERROR: number;
-    LICENSE_ABSENT_OR_CORRUPTED: number;
-    LICENSE_INVALID_DATE: number;
-    LICENSE_INVALID_VERSION: number;
-    LICENSE_INVALID_DEVICE_ID: number;
-    LICENSE_INVALID_SYSTEM_OR_APP_ID: number;
-    LICENSE_NO_CAPABILITIES: number;
-    LICENSE_NO_AUTHENTICITY: number;
+    LANDSCAPE_LEFT: number;
+    LANDSCAPE_RIGHT: number;
 };
 export declare const eCheckDiagnose: {
     UNKNOWN: number;
@@ -751,7 +763,6 @@ export declare const eCheckDiagnose: {
     VISIBLE_ELEMENT_ABSENT: number;
     ELEMENT_SHOULD_BE_COLORED: number;
     ELEMENT_SHOULD_BE_GRAYSCALE: number;
-    PHOTO_WHITE_IR_DONT_MATCH: number;
     UV_DULL_PAPER_MRZ: number;
     FALSE_LUMINISCENCE_IN_MRZ: number;
     UV_DULL_PAPER_PHOTO: number;
@@ -761,7 +772,6 @@ export declare const eCheckDiagnose: {
     BAD_AREA_IN_AXIAL: number;
     FALSE_IPI_PARAMETERS: number;
     FIELD_POS_CORRECTOR_HIGHLIGHT_IR: number;
-    FIELD_POS_CORRECTOR_GLARES_IN_PHOTO_AREA: number;
     OVI_IR_INVISIBLE: number;
     OVI_INSUFFICIENT_AREA: number;
     OVI_COLOR_INVARIABLE: number;
@@ -772,8 +782,6 @@ export declare const eCheckDiagnose: {
     HOLOGRAM_ELEMENT_ABSENT: number;
     HOLOGRAM_SIDE_TOP_IMAGES_ABSENT: number;
     HOLOGRAM_ELEMENT_PRESENT: number;
-    HOLOGRAM_FRAMES_IS_ABSENT: number;
-    HOLOGRAM_HOLO_FIELD_IS_ABSENT: number;
     PHOTO_PATTERN_INTERRUPTED: number;
     PHOTO_PATTERN_SHIFTED: number;
     PHOTO_PATTERN_DIFFERENT_COLORS: number;
@@ -798,20 +806,12 @@ export declare const eCheckDiagnose: {
     PORTRAIT_COMPARISON_PORTRAITS_DIFFER: number;
     PORTRAIT_COMPARISON_NO_SERVICE_REPLY: number;
     PORTRAIT_COMPARISON_SERVICE_ERROR: number;
-    PORTRAIT_COMPARISON_NOT_ENOUGH_IMAGES: number;
+    PPORTRAIT_COMPARISON_NOT_ENOUGH_IMAGES: number;
     PORTRAIT_COMPARISON_NO_LIVE_PHOTO: number;
     PORTRAIT_COMPARISON_NO_SERVICE_LICENSE: number;
     PORTRAIT_COMPARISON_NO_PORTRAIT_DETECTED: number;
     MOBILE_IMAGES_UNSUITABLE_LIGHT_CONDITIONS: number;
     MOBILE_IMAGES_WHITE_UV_NO_DIFFERENCE: number;
-    FINGERPRINTS_COMPARISON_MISMATCH: number;
-    HOLO_PHOTO_FACE_NOT_DETECTED: number;
-    HOLO_PHOTO_FACE_COMPARISON_FAILED: number;
-    HOLO_PHOTO_FACE_GLARE_IN_CENTER_ABSENT: number;
-    HOLO_ELEMENT_SHAPE_ERROR: number;
-    ALGORITHM_STEPS_ERROR: number;
-    HOLO_AREAS_NOT_LOADED: number;
-    FINISHED_BY_TIMEOUT: number;
     LAST_DIAGNOSE_VALUE: number;
 };
 export declare const eCheckResult: {
@@ -848,6 +848,7 @@ export declare const eImageQualityCheckType: {
     IQC_IMAGE_GLARES: number;
     IQC_IMAGE_FOCUS: number;
     IQC_IMAGE_RESOLUTION: number;
+    IQC_IMAGE_COLORNESS: number;
     IQC_PERSPECTIVE: number;
     IQC_BOUNDS: number;
 };
@@ -1827,6 +1828,9 @@ export declare const eVisualFieldType: {
     FT_DLCLASSCODE_CA_FROM: number;
     FT_DLCLASSCODE_CA_TO: number;
     FT_DLCLASSCODE_CA_NOTES: number;
+    FT_CITIZENSHIP_STATUS: number;
+    FT_MILITARY_SERVICE_FROM: number;
+    FT_MILITARY_SERVICE_TO: number;
     getTranslation(value: number): string;
 };
 export declare const FontStyle: {
@@ -2393,23 +2397,11 @@ export declare const Enum: {
         DOCUMENT: string;
     };
     DocReaderOrientation: {
-        ROTATE: number;
+        ALL: number;
         PORTRAIT: number;
         LANDSCAPE: number;
-    };
-    DocumentReaderException: {
-        NATIVE_JAVA_EXCEPTION: number;
-        DOCUMENT_READER_STATE_EXCEPTION: number;
-        DOCUMENT_READER_WRONG_INPUT: number;
-        DOCUMENT_READER_BLE_EXCEPTION: number;
-        DB_DOWNLOAD_ERROR: number;
-        LICENSE_ABSENT_OR_CORRUPTED: number;
-        LICENSE_INVALID_DATE: number;
-        LICENSE_INVALID_VERSION: number;
-        LICENSE_INVALID_DEVICE_ID: number;
-        LICENSE_INVALID_SYSTEM_OR_APP_ID: number;
-        LICENSE_NO_CAPABILITIES: number;
-        LICENSE_NO_AUTHENTICITY: number;
+        LANDSCAPE_LEFT: number;
+        LANDSCAPE_RIGHT: number;
     };
     eCheckDiagnose: {
         UNKNOWN: number;
@@ -2443,7 +2435,6 @@ export declare const Enum: {
         VISIBLE_ELEMENT_ABSENT: number;
         ELEMENT_SHOULD_BE_COLORED: number;
         ELEMENT_SHOULD_BE_GRAYSCALE: number;
-        PHOTO_WHITE_IR_DONT_MATCH: number;
         UV_DULL_PAPER_MRZ: number;
         FALSE_LUMINISCENCE_IN_MRZ: number;
         UV_DULL_PAPER_PHOTO: number;
@@ -2453,7 +2444,6 @@ export declare const Enum: {
         BAD_AREA_IN_AXIAL: number;
         FALSE_IPI_PARAMETERS: number;
         FIELD_POS_CORRECTOR_HIGHLIGHT_IR: number;
-        FIELD_POS_CORRECTOR_GLARES_IN_PHOTO_AREA: number;
         OVI_IR_INVISIBLE: number;
         OVI_INSUFFICIENT_AREA: number;
         OVI_COLOR_INVARIABLE: number;
@@ -2464,8 +2454,6 @@ export declare const Enum: {
         HOLOGRAM_ELEMENT_ABSENT: number;
         HOLOGRAM_SIDE_TOP_IMAGES_ABSENT: number;
         HOLOGRAM_ELEMENT_PRESENT: number;
-        HOLOGRAM_FRAMES_IS_ABSENT: number;
-        HOLOGRAM_HOLO_FIELD_IS_ABSENT: number;
         PHOTO_PATTERN_INTERRUPTED: number;
         PHOTO_PATTERN_SHIFTED: number;
         PHOTO_PATTERN_DIFFERENT_COLORS: number;
@@ -2490,20 +2478,12 @@ export declare const Enum: {
         PORTRAIT_COMPARISON_PORTRAITS_DIFFER: number;
         PORTRAIT_COMPARISON_NO_SERVICE_REPLY: number;
         PORTRAIT_COMPARISON_SERVICE_ERROR: number;
-        PORTRAIT_COMPARISON_NOT_ENOUGH_IMAGES: number;
+        PPORTRAIT_COMPARISON_NOT_ENOUGH_IMAGES: number;
         PORTRAIT_COMPARISON_NO_LIVE_PHOTO: number;
         PORTRAIT_COMPARISON_NO_SERVICE_LICENSE: number;
         PORTRAIT_COMPARISON_NO_PORTRAIT_DETECTED: number;
         MOBILE_IMAGES_UNSUITABLE_LIGHT_CONDITIONS: number;
         MOBILE_IMAGES_WHITE_UV_NO_DIFFERENCE: number;
-        FINGERPRINTS_COMPARISON_MISMATCH: number;
-        HOLO_PHOTO_FACE_NOT_DETECTED: number;
-        HOLO_PHOTO_FACE_COMPARISON_FAILED: number;
-        HOLO_PHOTO_FACE_GLARE_IN_CENTER_ABSENT: number;
-        HOLO_ELEMENT_SHAPE_ERROR: number;
-        ALGORITHM_STEPS_ERROR: number;
-        HOLO_AREAS_NOT_LOADED: number;
-        FINISHED_BY_TIMEOUT: number;
         LAST_DIAGNOSE_VALUE: number;
     };
     eCheckResult: {
@@ -2540,6 +2520,7 @@ export declare const Enum: {
         IQC_IMAGE_GLARES: number;
         IQC_IMAGE_FOCUS: number;
         IQC_IMAGE_RESOLUTION: number;
+        IQC_IMAGE_COLORNESS: number;
         IQC_PERSPECTIVE: number;
         IQC_BOUNDS: number;
     };
@@ -3519,6 +3500,9 @@ export declare const Enum: {
         FT_DLCLASSCODE_CA_FROM: number;
         FT_DLCLASSCODE_CA_TO: number;
         FT_DLCLASSCODE_CA_NOTES: number;
+        FT_CITIZENSHIP_STATUS: number;
+        FT_MILITARY_SERVICE_FROM: number;
+        FT_MILITARY_SERVICE_TO: number;
         getTranslation(value: number): string;
     };
     FontStyle: {
@@ -4006,7 +3990,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      * @param {boolean} logs
      * @return {Promise<any>} Returns a promise
      */
-    setEnableCoreLogs(logs: boolean): Promise<any>;
+    setEnableCoreLogs(logs: any): Promise<any>;
     /**
      *  Allows to add a list of PKD certificates during initialization process which will be passed to Core
      *
@@ -4023,14 +4007,14 @@ export declare class DocumentReader extends IonicNativePlugin {
      * @param {boolean} paused
      * @return {Promise<any>} Returns a promise
      */
-    setCameraSessionIsPaused(paused: boolean): Promise<any>;
+    setCameraSessionIsPaused(paused: any): Promise<any>;
     /**
      *  Use this method to get a scenario
      *
      * @param {string} scenario Scenario`s unique identifier
      * @return {Promise<any>} Returns a promise
      */
-    getScenario(scenario: string): Promise<any>;
+    getScenario(scenario: any): Promise<any>;
     /**
      *  Use this method to recognize images
      *
@@ -4044,14 +4028,14 @@ export declare class DocumentReader extends IonicNativePlugin {
      * @param {number} cameraID
      * @return {Promise<any>} Returns a promise
      */
-    showScannerWithCameraID(cameraID: number): Observable<any>;
+    showScannerWithCameraID(cameraID: any): Observable<any>;
     /**
      *  Use this method for getting always the latest version of the database
      *
      * @param {string} databaseType
      * @return {Promise<any>} Returns a promise
      */
-    runAutoUpdate(databaseType: string): Observable<any>;
+    runAutoUpdate(databaseType: any): Observable<any>;
     /**
      *  Use this method to set config
      *
@@ -4079,28 +4063,28 @@ export declare class DocumentReader extends IonicNativePlugin {
      * @param {string} license License`s base64 representation
      * @return {Promise<any>} Returns a promise
      */
-    initializeReader(license: string): Promise<any>;
+    initializeReader(license: any): Promise<any>;
     /**
      *  Use this method to download a database from the Regula's server
      *
      * @param {string} databaseType
      * @return {Promise<any>} Returns a promise
      */
-    prepareDatabase(databaseType: string): Observable<any>;
+    prepareDatabase(databaseType: any): Observable<any>;
     /**
      *  Use this method to recognize an image
      *
      * @param {string} image Image`s base64 representation
      * @return {Promise<any>} Returns a promise
      */
-    recognizeImage(image: string): Observable<any>;
+    recognizeImage(image: any): Observable<any>;
     /**
      *  Use this method to set an RFID session status
      *
      * @param {string} status
      * @return {Promise<any>} Returns a promise
      */
-    setRfidSessionStatus(status: string): Promise<any>;
+    setRfidSessionStatus(status: any): Promise<any>;
     /**
      *  Use this method to initialize Document Reader with the path to the database
      *
@@ -4108,7 +4092,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      * @param {string} path Path to the database
      * @return {Promise<any>} Returns a promise
      */
-    initializeReaderWithDatabasePath(license: string, path: string): Promise<any>;
+    initializeReaderWithDatabasePath(license: any, path: any): Promise<any>;
     /**
      *  Use this method to recognize an image frame
      *
@@ -4119,7 +4103,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      *  value3 - number
      * @return {Promise<any>} Returns a promise
      */
-    recognizeImageFrame(image: string, params: any): Observable<any>;
+    recognizeImageFrame(image: any, params: any): Observable<any>;
     /**
      *  Use this method to recognize an image with options
      *
@@ -4132,7 +4116,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      *  value - any
      * @return {Promise<any>} Returns a promise
      */
-    recognizeImageWithOpts(image: string, options: any): Observable<any>;
+    recognizeImageWithOpts(image: any, options: any): Observable<any>;
     /**
      *  Use this method to recognize a stream of frames
      *
@@ -4140,7 +4124,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      * @param {any} params JsonObject with structure {width: value, height: value, type: value}
      * @return {Promise<any>} Returns a promise
      */
-    recognizeVideoFrame(byteString: string, params: any): Observable<any>;
+    recognizeVideoFrame(byteString: any, params: any): Observable<any>;
     /**
      *  Use this method to open the camera preview with the desired camera ID and options which will pass frames for recognition and return results in the completion block when they are ready
      *
@@ -4153,7 +4137,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      *  value - any
      * @return {Promise<any>} Returns a promise
      */
-    showScannerWithCameraIDAndOpts(cameraID: number, options: any): Observable<any>;
+    showScannerWithCameraIDAndOpts(cameraID: any, options: any): Observable<any>;
     /**
      *  Use this method to recognize images with parameters
      *
@@ -4164,7 +4148,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      *  value3 - number
      * @return {Promise<any>} Returns a promise
      */
-    recognizeImageWithImageInputParams(image: string, params: any): Observable<any>;
+    recognizeImageWithImageInputParams(image: any, params: any): Observable<any>;
     /**
      *  Use this method to recognize a stream of frames
      *
@@ -4172,5 +4156,5 @@ export declare class DocumentReader extends IonicNativePlugin {
      * @param {boolean} mode
      * @return {Promise<any>} Returns a promise
      */
-    recognizeImageWithCameraMode(image: string, mode: boolean): Observable<any>;
+    recognizeImageWithCameraMode(image: any, mode: any): Observable<any>;
 }

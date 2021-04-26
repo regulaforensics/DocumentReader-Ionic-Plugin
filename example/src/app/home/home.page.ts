@@ -3,7 +3,7 @@ import { File } from '@ionic-native/file'
 import { ImagePicker } from '@ionic-native/image-picker/ngx'
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx'
 import { Platform } from '@ionic/angular'
-import { DocumentReader, Scenario, Enum, DocumentReaderCompletion, DocumentReaderResults, DocumentReaderNotification } from '@regulaforensics/ionic-native-document-reader/ngx';
+import { DocumentReader, DocumentReaderScenario, Enum, DocumentReaderCompletion, DocumentReaderResults, DocumentReaderNotification } from '@regulaforensics/ionic-native-document-reader/ngx';
 
 var doRfid: boolean = false
 var isReadingRfid: boolean = false
@@ -218,10 +218,10 @@ export class HomePage {
         inputs.push(input)
         input.type = "radio"
         input.name = "scenario"
-        input.value = Scenario.fromJson(typeof index === "string" ? JSON.parse(index) : index).name
+        input.value = DocumentReaderScenario.fromJson(typeof index === "string" ? JSON.parse(index) : index).name
         if (index == 0)
           input.checked = true
-        input.onclick = () => DocumentReader.setConfig({ processParams: { scenario: Scenario.fromJson(typeof index === "string" ? JSON.parse(index) : index).name } })
+        input.onclick = () => DocumentReader.setConfig({ processParams: { scenario: DocumentReaderScenario.fromJson(typeof index === "string" ? JSON.parse(index) : index).name } })
         input.style.display = "inline-block"
       }
       for (let input of inputs) {
