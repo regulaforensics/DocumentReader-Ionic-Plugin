@@ -1845,6 +1845,15 @@ export declare const eVisualFieldType: {
     FT_CITIZENSHIP_STATUS: number;
     FT_MILITARY_SERVICE_FROM: number;
     FT_MILITARY_SERVICE_TO: number;
+    FT_DLCLASSCODE_NT_FROM: number;
+    FT_DLCLASSCODE_NT_TO: number;
+    FT_DLCLASSCODE_NT_NOTES: number;
+    FT_DLCLASSCODE_TN_FROM: number;
+    FT_DLCLASSCODE_TN_TO: number;
+    FT_DLCLASSCODE_TN_NOTES: number;
+    FT_DLCLASSCODE_D3_FROM: number;
+    FT_DLCLASSCODE_D3_TO: number;
+    FT_DLCLASSCODE_D3_NOTES: number;
     getTranslation(value: number): string;
 };
 export declare const FontStyle: {
@@ -3517,6 +3526,15 @@ export declare const Enum: {
         FT_CITIZENSHIP_STATUS: number;
         FT_MILITARY_SERVICE_FROM: number;
         FT_MILITARY_SERVICE_TO: number;
+        FT_DLCLASSCODE_NT_FROM: number;
+        FT_DLCLASSCODE_NT_TO: number;
+        FT_DLCLASSCODE_NT_NOTES: number;
+        FT_DLCLASSCODE_TN_FROM: number;
+        FT_DLCLASSCODE_TN_TO: number;
+        FT_DLCLASSCODE_TN_NOTES: number;
+        FT_DLCLASSCODE_D3_FROM: number;
+        FT_DLCLASSCODE_D3_TO: number;
+        FT_DLCLASSCODE_D3_NOTES: number;
         getTranslation(value: number): string;
     };
     FontStyle: {
@@ -4004,7 +4022,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      * @param {boolean} logs
      * @return {Promise<any>} Returns a promise
      */
-    setEnableCoreLogs(logs: boolean): Promise<any>;
+    setEnableCoreLogs(logs: any): Promise<any>;
     /**
      *  Allows to add a list of PKD certificates during initialization process which will be passed to Core
      *
@@ -4014,42 +4032,42 @@ export declare class DocumentReader extends IonicNativePlugin {
      *  privateKey(optional) - base64 string
      * @return {Promise<any>} Returns a promise
      */
-    addPKDCertificates(certificates: PKDCertificate[]): Promise<any>;
+    addPKDCertificates(certificates: any): Promise<any>;
     /**
      *  If set, the camera session will be paused as soon as the result is received
      *
      * @param {boolean} paused
      * @return {Promise<any>} Returns a promise
      */
-    setCameraSessionIsPaused(paused: boolean): Promise<any>;
+    setCameraSessionIsPaused(paused: any): Promise<any>;
     /**
      *  Use this method to get a scenario
      *
      * @param {string} scenario Scenario`s unique identifier
      * @return {Promise<any>} Returns a promise
      */
-    getScenario(scenario: string): Promise<any>;
+    getScenario(scenario: any): Promise<any>;
     /**
      *  Use this method to recognize images
      *
      * @param {string[]} images Array of strings that are base64 representations of images
      * @return {Promise<any>} Returns a promise
      */
-    recognizeImages(images: string[]): Observable<any>;
+    recognizeImages(images: any): Observable<any>;
     /**
      *  Use this method to open the camera preview with the desired camera ID which will pass frames for recognition and return results in the completion block when they are ready
      *
      * @param {number} cameraID
      * @return {Promise<any>} Returns a promise
      */
-    showScannerWithCameraID(cameraID: number): Observable<any>;
+    showScannerWithCameraID(cameraID: any): Observable<any>;
     /**
      *  Use this method for getting always the latest version of the database
      *
      * @param {string} databaseType
      * @return {Promise<any>} Returns a promise
      */
-    runAutoUpdate(databaseType: string): Observable<any>;
+    runAutoUpdate(databaseType: any): Observable<any>;
     /**
      *  Use this method to set config
      *
@@ -4061,7 +4079,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      *  value - any
      * @return {Promise<any>} Returns a promise
      */
-    setConfig(config: object): Promise<any>;
+    setConfig(config: any): Promise<any>;
     /**
      *  Use this method to set an RFID scenario
      *
@@ -4070,35 +4088,35 @@ export declare class DocumentReader extends IonicNativePlugin {
      *  value - any
      * @return {Promise<any>} Returns a promise
      */
-    setRfidScenario(scenario: object): Promise<any>;
+    setRfidScenario(scenario: any): Promise<any>;
     /**
      *  Use this method to initialize Document Reader
      *
      * @param {string} license License`s base64 representation
      * @return {Promise<any>} Returns a promise
      */
-    initializeReader(license: string): Promise<any>;
+    initializeReader(license: any): Promise<any>;
     /**
      *  Use this method to download a database from the Regula's server
      *
      * @param {string} databaseType
      * @return {Promise<any>} Returns a promise
      */
-    prepareDatabase(databaseType: string): Observable<any>;
+    prepareDatabase(databaseType: any): Observable<any>;
     /**
      *  Use this method to recognize an image
      *
      * @param {string} image Image`s base64 representation
      * @return {Promise<any>} Returns a promise
      */
-    recognizeImage(image: string): Observable<any>;
+    recognizeImage(image: any): Observable<any>;
     /**
      *  Use this method to set an RFID session status
      *
      * @param {string} status
      * @return {Promise<any>} Returns a promise
      */
-    setRfidSessionStatus(status: string): Promise<any>;
+    setRfidSessionStatus(status: any): Promise<any>;
     /**
      *  Use this method to initialize Document Reader with the path to the database
      *
@@ -4106,7 +4124,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      * @param {string} path Path to the database
      * @return {Promise<any>} Returns a promise
      */
-    initializeReaderWithDatabasePath(license: string, path: string): Promise<any>;
+    initializeReaderWithDatabasePath(license: any, path: any): Promise<any>;
     /**
      *  Use this method to recognize an image frame
      *
@@ -4114,7 +4132,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      * @param {ImageInputParam} params Image input params
      * @return {Promise<any>} Returns a promise
      */
-    recognizeImageFrame(image: string, params: ImageInputParam): Observable<any>;
+    recognizeImageFrame(image: any, params: any): Observable<any>;
     /**
      *  Use this method to recognize an image with options
      *
@@ -4127,7 +4145,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      *  value - any
      * @return {Promise<any>} Returns a promise
      */
-    recognizeImageWithOpts(image: string, options: object): Observable<any>;
+    recognizeImageWithOpts(image: any, options: any): Observable<any>;
     /**
      *  Use this method to recognize a stream of frames
      *
@@ -4135,7 +4153,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      * @param {ImageInputParam} params Image input params
      * @return {Promise<any>} Returns a promise
      */
-    recognizeVideoFrame(byteString: string, params: ImageInputParam): Observable<any>;
+    recognizeVideoFrame(byteString: any, params: any): Observable<any>;
     /**
      *  Use this method to open the camera preview with the desired camera ID and options which will pass frames for recognition and return results in the completion block when they are ready
      *
@@ -4148,7 +4166,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      *  value - any
      * @return {Promise<any>} Returns a promise
      */
-    showScannerWithCameraIDAndOpts(cameraID: number, options: object): Observable<any>;
+    showScannerWithCameraIDAndOpts(cameraID: any, options: any): Observable<any>;
     /**
      *  Use this method to recognize images with parameters
      *
@@ -4156,7 +4174,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      * @param {ImageInputParam} params Image input params
      * @return {Promise<any>} Returns a promise
      */
-    recognizeImageWithImageInputParams(image: string, params: ImageInputParam): Observable<any>;
+    recognizeImageWithImageInputParams(image: any, params: any): Observable<any>;
     /**
      *  Use this method to recognize a stream of frames
      *
@@ -4164,5 +4182,5 @@ export declare class DocumentReader extends IonicNativePlugin {
      * @param {boolean} mode
      * @return {Promise<any>} Returns a promise
      */
-    recognizeImageWithCameraMode(image: string, mode: boolean): Observable<any>;
+    recognizeImageWithCameraMode(image: any, mode: any): Observable<any>;
 }
