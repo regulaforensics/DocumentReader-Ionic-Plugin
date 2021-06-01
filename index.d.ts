@@ -777,6 +777,7 @@ export declare const eCheckDiagnose: {
     VISIBLE_ELEMENT_ABSENT: number;
     ELEMENT_SHOULD_BE_COLORED: number;
     ELEMENT_SHOULD_BE_GRAYSCALE: number;
+    PHOTO_WHITE_IR_DONT_MATCH: number;
     UV_DULL_PAPER_MRZ: number;
     FALSE_LUMINISCENCE_IN_MRZ: number;
     UV_DULL_PAPER_PHOTO: number;
@@ -786,6 +787,7 @@ export declare const eCheckDiagnose: {
     BAD_AREA_IN_AXIAL: number;
     FALSE_IPI_PARAMETERS: number;
     FIELD_POS_CORRECTOR_HIGHLIGHT_IR: number;
+    FIELD_POS_CORRECTOR_GLARES_IN_PHOTO_AREA: number;
     OVI_IR_INVISIBLE: number;
     OVI_INSUFFICIENT_AREA: number;
     OVI_COLOR_INVARIABLE: number;
@@ -796,6 +798,8 @@ export declare const eCheckDiagnose: {
     HOLOGRAM_ELEMENT_ABSENT: number;
     HOLOGRAM_SIDE_TOP_IMAGES_ABSENT: number;
     HOLOGRAM_ELEMENT_PRESENT: number;
+    HOLOGRAM_FRAMES_IS_ABSENT: number;
+    HOLOGRAM_HOLO_FIELD_IS_ABSENT: number;
     PHOTO_PATTERN_INTERRUPTED: number;
     PHOTO_PATTERN_SHIFTED: number;
     PHOTO_PATTERN_DIFFERENT_COLORS: number;
@@ -820,12 +824,20 @@ export declare const eCheckDiagnose: {
     PORTRAIT_COMPARISON_PORTRAITS_DIFFER: number;
     PORTRAIT_COMPARISON_NO_SERVICE_REPLY: number;
     PORTRAIT_COMPARISON_SERVICE_ERROR: number;
-    PPORTRAIT_COMPARISON_NOT_ENOUGH_IMAGES: number;
+    PORTRAIT_COMPARISON_NOT_ENOUGH_IMAGES: number;
     PORTRAIT_COMPARISON_NO_LIVE_PHOTO: number;
     PORTRAIT_COMPARISON_NO_SERVICE_LICENSE: number;
     PORTRAIT_COMPARISON_NO_PORTRAIT_DETECTED: number;
     MOBILE_IMAGES_UNSUITABLE_LIGHT_CONDITIONS: number;
     MOBILE_IMAGES_WHITE_UV_NO_DIFFERENCE: number;
+    FINGERPRINTS_COMPARISON_MISMATCH: number;
+    HOLO_PHOTO_FACE_NOT_DETECTED: number;
+    HOLO_PHOTO_FACE_COMPARISON_FAILED: number;
+    HOLO_PHOTO_FACE_GLARE_IN_CENTER_ABSENT: number;
+    HOLO_ELEMENT_SHAPE_ERROR: number;
+    ALGORITHM_STEPS_ERROR: number;
+    HOLO_AREAS_NOT_LOADED: number;
+    FINISHED_BY_TIMEOUT: number;
     LAST_DIAGNOSE_VALUE: number;
 };
 export declare const eCheckResult: {
@@ -865,6 +877,8 @@ export declare const eImageQualityCheckType: {
     IQC_IMAGE_COLORNESS: number;
     IQC_PERSPECTIVE: number;
     IQC_BOUNDS: number;
+    IQC_SCREEN_CAPTURE: number;
+    IQC_PORTRAIT: number;
 };
 export declare const eProcessGLCommands: {
     ePC_ProcMgr_SetLicense: number;
@@ -2458,6 +2472,7 @@ export declare const Enum: {
         VISIBLE_ELEMENT_ABSENT: number;
         ELEMENT_SHOULD_BE_COLORED: number;
         ELEMENT_SHOULD_BE_GRAYSCALE: number;
+        PHOTO_WHITE_IR_DONT_MATCH: number;
         UV_DULL_PAPER_MRZ: number;
         FALSE_LUMINISCENCE_IN_MRZ: number;
         UV_DULL_PAPER_PHOTO: number;
@@ -2467,6 +2482,7 @@ export declare const Enum: {
         BAD_AREA_IN_AXIAL: number;
         FALSE_IPI_PARAMETERS: number;
         FIELD_POS_CORRECTOR_HIGHLIGHT_IR: number;
+        FIELD_POS_CORRECTOR_GLARES_IN_PHOTO_AREA: number;
         OVI_IR_INVISIBLE: number;
         OVI_INSUFFICIENT_AREA: number;
         OVI_COLOR_INVARIABLE: number;
@@ -2477,6 +2493,8 @@ export declare const Enum: {
         HOLOGRAM_ELEMENT_ABSENT: number;
         HOLOGRAM_SIDE_TOP_IMAGES_ABSENT: number;
         HOLOGRAM_ELEMENT_PRESENT: number;
+        HOLOGRAM_FRAMES_IS_ABSENT: number;
+        HOLOGRAM_HOLO_FIELD_IS_ABSENT: number;
         PHOTO_PATTERN_INTERRUPTED: number;
         PHOTO_PATTERN_SHIFTED: number;
         PHOTO_PATTERN_DIFFERENT_COLORS: number;
@@ -2501,12 +2519,20 @@ export declare const Enum: {
         PORTRAIT_COMPARISON_PORTRAITS_DIFFER: number;
         PORTRAIT_COMPARISON_NO_SERVICE_REPLY: number;
         PORTRAIT_COMPARISON_SERVICE_ERROR: number;
-        PPORTRAIT_COMPARISON_NOT_ENOUGH_IMAGES: number;
+        PORTRAIT_COMPARISON_NOT_ENOUGH_IMAGES: number;
         PORTRAIT_COMPARISON_NO_LIVE_PHOTO: number;
         PORTRAIT_COMPARISON_NO_SERVICE_LICENSE: number;
         PORTRAIT_COMPARISON_NO_PORTRAIT_DETECTED: number;
         MOBILE_IMAGES_UNSUITABLE_LIGHT_CONDITIONS: number;
         MOBILE_IMAGES_WHITE_UV_NO_DIFFERENCE: number;
+        FINGERPRINTS_COMPARISON_MISMATCH: number;
+        HOLO_PHOTO_FACE_NOT_DETECTED: number;
+        HOLO_PHOTO_FACE_COMPARISON_FAILED: number;
+        HOLO_PHOTO_FACE_GLARE_IN_CENTER_ABSENT: number;
+        HOLO_ELEMENT_SHAPE_ERROR: number;
+        ALGORITHM_STEPS_ERROR: number;
+        HOLO_AREAS_NOT_LOADED: number;
+        FINISHED_BY_TIMEOUT: number;
         LAST_DIAGNOSE_VALUE: number;
     };
     eCheckResult: {
@@ -2546,6 +2572,8 @@ export declare const Enum: {
         IQC_IMAGE_COLORNESS: number;
         IQC_PERSPECTIVE: number;
         IQC_BOUNDS: number;
+        IQC_SCREEN_CAPTURE: number;
+        IQC_PORTRAIT: number;
     };
     eProcessGLCommands: {
         ePC_ProcMgr_SetLicense: number;
