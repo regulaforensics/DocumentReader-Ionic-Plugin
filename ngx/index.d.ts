@@ -126,6 +126,7 @@ export declare class ImageQualityGroup {
     count?: number;
     result?: number;
     imageQualityList?: ImageQuality[];
+    pageIndex?: number;
     static fromJson(jsonObject?: any): ImageQualityGroup;
 }
 export declare class DocumentReaderDocumentType {
@@ -364,6 +365,18 @@ export declare class StackTraceElement {
     string?: string;
     static fromJson(jsonObject?: any): StackTraceElement;
 }
+export declare class PKDCertificate {
+    binaryData?: string;
+    resourceType?: number;
+    privateKey?: string;
+    static fromJson(jsonObject?: any): PKDCertificate;
+}
+export declare class ImageInputParam {
+    width?: number;
+    height?: number;
+    type?: number;
+    static fromJson(jsonObject?: any): ImageInputParam;
+}
 export declare class DocumentReaderResults {
     chipPage?: number;
     overallResult?: number;
@@ -398,9 +411,10 @@ export declare class DocumentReaderResults {
         light?: number;
         pageIndex?: number;
     }): string;
-    getQualityResult({ imageQualityCheckType, securityFeature }: {
+    getQualityResult({ imageQualityCheckType, securityFeature, pageIndex }: {
         imageQualityCheckType: number;
         securityFeature?: number;
+        pageIndex?: number;
     }): number;
     findByTypeAndLcid?(type: number, lcid: number): DocumentReaderTextField;
     findBySource(field: DocumentReaderTextField, sourceType: number): DocumentReaderValue;
@@ -763,6 +777,7 @@ export declare const eCheckDiagnose: {
     VISIBLE_ELEMENT_ABSENT: number;
     ELEMENT_SHOULD_BE_COLORED: number;
     ELEMENT_SHOULD_BE_GRAYSCALE: number;
+    PHOTO_WHITE_IR_DONT_MATCH: number;
     UV_DULL_PAPER_MRZ: number;
     FALSE_LUMINISCENCE_IN_MRZ: number;
     UV_DULL_PAPER_PHOTO: number;
@@ -772,6 +787,7 @@ export declare const eCheckDiagnose: {
     BAD_AREA_IN_AXIAL: number;
     FALSE_IPI_PARAMETERS: number;
     FIELD_POS_CORRECTOR_HIGHLIGHT_IR: number;
+    FIELD_POS_CORRECTOR_GLARES_IN_PHOTO_AREA: number;
     OVI_IR_INVISIBLE: number;
     OVI_INSUFFICIENT_AREA: number;
     OVI_COLOR_INVARIABLE: number;
@@ -782,6 +798,8 @@ export declare const eCheckDiagnose: {
     HOLOGRAM_ELEMENT_ABSENT: number;
     HOLOGRAM_SIDE_TOP_IMAGES_ABSENT: number;
     HOLOGRAM_ELEMENT_PRESENT: number;
+    HOLOGRAM_FRAMES_IS_ABSENT: number;
+    HOLOGRAM_HOLO_FIELD_IS_ABSENT: number;
     PHOTO_PATTERN_INTERRUPTED: number;
     PHOTO_PATTERN_SHIFTED: number;
     PHOTO_PATTERN_DIFFERENT_COLORS: number;
@@ -806,12 +824,20 @@ export declare const eCheckDiagnose: {
     PORTRAIT_COMPARISON_PORTRAITS_DIFFER: number;
     PORTRAIT_COMPARISON_NO_SERVICE_REPLY: number;
     PORTRAIT_COMPARISON_SERVICE_ERROR: number;
-    PPORTRAIT_COMPARISON_NOT_ENOUGH_IMAGES: number;
+    PORTRAIT_COMPARISON_NOT_ENOUGH_IMAGES: number;
     PORTRAIT_COMPARISON_NO_LIVE_PHOTO: number;
     PORTRAIT_COMPARISON_NO_SERVICE_LICENSE: number;
     PORTRAIT_COMPARISON_NO_PORTRAIT_DETECTED: number;
     MOBILE_IMAGES_UNSUITABLE_LIGHT_CONDITIONS: number;
     MOBILE_IMAGES_WHITE_UV_NO_DIFFERENCE: number;
+    FINGERPRINTS_COMPARISON_MISMATCH: number;
+    HOLO_PHOTO_FACE_NOT_DETECTED: number;
+    HOLO_PHOTO_FACE_COMPARISON_FAILED: number;
+    HOLO_PHOTO_FACE_GLARE_IN_CENTER_ABSENT: number;
+    HOLO_ELEMENT_SHAPE_ERROR: number;
+    ALGORITHM_STEPS_ERROR: number;
+    HOLO_AREAS_NOT_LOADED: number;
+    FINISHED_BY_TIMEOUT: number;
     LAST_DIAGNOSE_VALUE: number;
 };
 export declare const eCheckResult: {
@@ -851,6 +877,8 @@ export declare const eImageQualityCheckType: {
     IQC_IMAGE_COLORNESS: number;
     IQC_PERSPECTIVE: number;
     IQC_BOUNDS: number;
+    IQC_SCREEN_CAPTURE: number;
+    IQC_PORTRAIT: number;
 };
 export declare const eProcessGLCommands: {
     ePC_ProcMgr_SetLicense: number;
@@ -1831,6 +1859,15 @@ export declare const eVisualFieldType: {
     FT_CITIZENSHIP_STATUS: number;
     FT_MILITARY_SERVICE_FROM: number;
     FT_MILITARY_SERVICE_TO: number;
+    FT_DLCLASSCODE_NT_FROM: number;
+    FT_DLCLASSCODE_NT_TO: number;
+    FT_DLCLASSCODE_NT_NOTES: number;
+    FT_DLCLASSCODE_TN_FROM: number;
+    FT_DLCLASSCODE_TN_TO: number;
+    FT_DLCLASSCODE_TN_NOTES: number;
+    FT_DLCLASSCODE_D3_FROM: number;
+    FT_DLCLASSCODE_D3_TO: number;
+    FT_DLCLASSCODE_D3_NOTES: number;
     getTranslation(value: number): string;
 };
 export declare const FontStyle: {
@@ -2435,6 +2472,7 @@ export declare const Enum: {
         VISIBLE_ELEMENT_ABSENT: number;
         ELEMENT_SHOULD_BE_COLORED: number;
         ELEMENT_SHOULD_BE_GRAYSCALE: number;
+        PHOTO_WHITE_IR_DONT_MATCH: number;
         UV_DULL_PAPER_MRZ: number;
         FALSE_LUMINISCENCE_IN_MRZ: number;
         UV_DULL_PAPER_PHOTO: number;
@@ -2444,6 +2482,7 @@ export declare const Enum: {
         BAD_AREA_IN_AXIAL: number;
         FALSE_IPI_PARAMETERS: number;
         FIELD_POS_CORRECTOR_HIGHLIGHT_IR: number;
+        FIELD_POS_CORRECTOR_GLARES_IN_PHOTO_AREA: number;
         OVI_IR_INVISIBLE: number;
         OVI_INSUFFICIENT_AREA: number;
         OVI_COLOR_INVARIABLE: number;
@@ -2454,6 +2493,8 @@ export declare const Enum: {
         HOLOGRAM_ELEMENT_ABSENT: number;
         HOLOGRAM_SIDE_TOP_IMAGES_ABSENT: number;
         HOLOGRAM_ELEMENT_PRESENT: number;
+        HOLOGRAM_FRAMES_IS_ABSENT: number;
+        HOLOGRAM_HOLO_FIELD_IS_ABSENT: number;
         PHOTO_PATTERN_INTERRUPTED: number;
         PHOTO_PATTERN_SHIFTED: number;
         PHOTO_PATTERN_DIFFERENT_COLORS: number;
@@ -2478,12 +2519,20 @@ export declare const Enum: {
         PORTRAIT_COMPARISON_PORTRAITS_DIFFER: number;
         PORTRAIT_COMPARISON_NO_SERVICE_REPLY: number;
         PORTRAIT_COMPARISON_SERVICE_ERROR: number;
-        PPORTRAIT_COMPARISON_NOT_ENOUGH_IMAGES: number;
+        PORTRAIT_COMPARISON_NOT_ENOUGH_IMAGES: number;
         PORTRAIT_COMPARISON_NO_LIVE_PHOTO: number;
         PORTRAIT_COMPARISON_NO_SERVICE_LICENSE: number;
         PORTRAIT_COMPARISON_NO_PORTRAIT_DETECTED: number;
         MOBILE_IMAGES_UNSUITABLE_LIGHT_CONDITIONS: number;
         MOBILE_IMAGES_WHITE_UV_NO_DIFFERENCE: number;
+        FINGERPRINTS_COMPARISON_MISMATCH: number;
+        HOLO_PHOTO_FACE_NOT_DETECTED: number;
+        HOLO_PHOTO_FACE_COMPARISON_FAILED: number;
+        HOLO_PHOTO_FACE_GLARE_IN_CENTER_ABSENT: number;
+        HOLO_ELEMENT_SHAPE_ERROR: number;
+        ALGORITHM_STEPS_ERROR: number;
+        HOLO_AREAS_NOT_LOADED: number;
+        FINISHED_BY_TIMEOUT: number;
         LAST_DIAGNOSE_VALUE: number;
     };
     eCheckResult: {
@@ -2523,6 +2572,8 @@ export declare const Enum: {
         IQC_IMAGE_COLORNESS: number;
         IQC_PERSPECTIVE: number;
         IQC_BOUNDS: number;
+        IQC_SCREEN_CAPTURE: number;
+        IQC_PORTRAIT: number;
     };
     eProcessGLCommands: {
         ePC_ProcMgr_SetLicense: number;
@@ -3503,6 +3554,15 @@ export declare const Enum: {
         FT_CITIZENSHIP_STATUS: number;
         FT_MILITARY_SERVICE_FROM: number;
         FT_MILITARY_SERVICE_TO: number;
+        FT_DLCLASSCODE_NT_FROM: number;
+        FT_DLCLASSCODE_NT_TO: number;
+        FT_DLCLASSCODE_NT_NOTES: number;
+        FT_DLCLASSCODE_TN_FROM: number;
+        FT_DLCLASSCODE_TN_TO: number;
+        FT_DLCLASSCODE_TN_NOTES: number;
+        FT_DLCLASSCODE_D3_FROM: number;
+        FT_DLCLASSCODE_D3_TO: number;
+        FT_DLCLASSCODE_D3_NOTES: number;
         getTranslation(value: number): string;
     };
     FontStyle: {
@@ -3994,7 +4054,7 @@ export declare class DocumentReader extends IonicNativePlugin {
     /**
      *  Allows to add a list of PKD certificates during initialization process which will be passed to Core
      *
-     * @param {any} certificates Array of jsonObjects with structure {binaryData: binaryData, resourceType: resourceType, privateKey: privateKey}
+     * @param {PKDCertificate[]} certificates Array of jsonObjects with structure {binaryData: binaryData, resourceType: resourceType, privateKey: privateKey}
      *  binaryData - base64 string
      *  resourceType - number
      *  privateKey(optional) - base64 string
@@ -4018,7 +4078,7 @@ export declare class DocumentReader extends IonicNativePlugin {
     /**
      *  Use this method to recognize images
      *
-     * @param {any} images Array of strings that are base64 representations of images
+     * @param {string[]} images Array of strings that are base64 representations of images
      * @return {Promise<any>} Returns a promise
      */
     recognizeImages(images: any): Observable<any>;
@@ -4039,7 +4099,7 @@ export declare class DocumentReader extends IonicNativePlugin {
     /**
      *  Use this method to set config
      *
-     * @param {any} config JsonObject with structure
+     * @param {object} config JsonObject with structure
      *    {functionality?: {name?: value1, name?: value2, ...},
      *    customization?: {name?: value3, name?: value4, ...},
      *    processParams?: {name?: value5, name?: value6, ...}}
@@ -4051,7 +4111,7 @@ export declare class DocumentReader extends IonicNativePlugin {
     /**
      *  Use this method to set an RFID scenario
      *
-     * @param {any} scenario JsonObject with structure {name?: value1,name?: value2, ...}
+     * @param {object} scenario JsonObject with structure {name?: value1,name?: value2, ...}
      *  name - string
      *  value - any
      * @return {Promise<any>} Returns a promise
@@ -4097,10 +4157,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      *  Use this method to recognize an image frame
      *
      * @param {string} image Image`s base64 representation
-     * @param {any} params JsonObject with structure {width: value1, height: value2, type: value3}
-     *  value1 - number
-     *  value2 - number
-     *  value3 - number
+     * @param {ImageInputParam} params Image input params
      * @return {Promise<any>} Returns a promise
      */
     recognizeImageFrame(image: any, params: any): Observable<any>;
@@ -4108,7 +4165,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      *  Use this method to recognize an image with options
      *
      * @param {string} image Image`s base64 representation
-     * @param {any} options JsonObject with structure
+     * @param {object} options JsonObject with structure
      *    {functionality?: {name?: value1, name?: value2, ...},
      *    customization?: {name?: value3, name?: value4, ...},
      *    processParams?: {name?: value5, name?: value6, ...}}
@@ -4121,7 +4178,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      *  Use this method to recognize a stream of frames
      *
      * @param {string} byteString
-     * @param {any} params JsonObject with structure {width: value, height: value, type: value}
+     * @param {ImageInputParam} params Image input params
      * @return {Promise<any>} Returns a promise
      */
     recognizeVideoFrame(byteString: any, params: any): Observable<any>;
@@ -4129,7 +4186,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      *  Use this method to open the camera preview with the desired camera ID and options which will pass frames for recognition and return results in the completion block when they are ready
      *
      * @param {number} cameraID
-     * @param {any} options JsonObject with structure
+     * @param {object} options JsonObject with structure
      *    {functionality?: {name?: value1, name?: value2, ...},
      *    customization?: {name?: value3, name?: value4, ...},
      *    processParams?: {name?: value5, name?: value6, ...}}
@@ -4142,10 +4199,7 @@ export declare class DocumentReader extends IonicNativePlugin {
      *  Use this method to recognize images with parameters
      *
      * @param {string} image Image`s base64 representation
-     * @param {any} params JsonObject with structure {width: value1, height: value2, type: value3}
-     *  value1 - number
-     *  value2 - number
-     *  value3 - number
+     * @param {ImageInputParam} params Image input params
      * @return {Promise<any>} Returns a promise
      */
     recognizeImageWithImageInputParams(image: any, params: any): Observable<any>;
