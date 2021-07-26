@@ -226,8 +226,7 @@ export class HomePage {
       DocumentReader.getAvailableScenarios().then(sc =>
         DocumentReader.isRFIDAvailableForUse().then(canRfid =>
           postInitialize(JSON.parse(sc), canRfid)))
-      if (app.platform.is("ios"))
-        DocumentReader.setRfidDelegate(Enum.RFIDDelegate.NO_PA)
+      DocumentReader.setRfidDelegate(Enum.RFIDDelegate.NO_PA)
       // addCertificates()
     }
 
