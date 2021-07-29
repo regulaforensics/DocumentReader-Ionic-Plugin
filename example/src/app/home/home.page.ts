@@ -124,7 +124,7 @@ export class HomePage {
       if (isReadingRfid && completion.action === Enum.DocReaderAction.NOTIFICATION)
         updateRfidUI(completion.results.documentReaderNotification)
       if (completion.action === Enum.DocReaderAction.COMPLETE)
-        if (isReadingRfid){
+        if (isReadingRfid) {
           if (completion.results.rfidResult !== 1)
             restartRfidUI()
           else {
@@ -179,8 +179,26 @@ export class HomePage {
     function usualRFID() {
       doRfid = false
       app.rfidCheckbox["el"].checked = false
-      DocumentReader.startRFIDReader().subscribe(m =>
-        handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m))))
+      var notification = "rfidNotificationCompletionEvent"
+      var paCert = "paCertificateCompletionEvent"
+      var taCert = "taCertificateCompletionEvent"
+      var taSig = "taSignatureCompletionEvent"
+      DocumentReader.startRFIDReader().subscribe(m => {
+        if (m.substring(0, notification.length) === notification) {
+          m = m.substring(notification.length, m.length)
+          console.log(notification + ": " + m)
+        } else if (m.substring(0, paCert.length) === paCert) {
+          m = m.substring(paCert.length, m.length)
+          console.log(paCert + ": " + m)
+        } else if (m.substring(0, taCert.length) === taCert) {
+          m = m.substring(taCert.length, m.length)
+          console.log(taCert + ": " + m)
+        } else if (m.substring(0, taSig.length) === taSig) {
+          m = m.substring(taSig.length, m.length)
+          console.log(taSig + ": " + m)
+        } else
+          handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m)))
+      })
     }
 
     function onInitialized() {
@@ -208,6 +226,7 @@ export class HomePage {
       DocumentReader.getAvailableScenarios().then(sc =>
         DocumentReader.isRFIDAvailableForUse().then(canRfid =>
           postInitialize(JSON.parse(sc), canRfid)))
+      DocumentReader.setRfidDelegate(Enum.RFIDDelegate.NO_PA)
       // addCertificates()
     }
 

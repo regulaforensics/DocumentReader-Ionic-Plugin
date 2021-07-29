@@ -346,8 +346,16 @@ export declare class DocumentReaderAuthenticityElement {
 export declare class DocumentReaderCompletion {
     action?: number;
     results?: DocumentReaderResults;
-    error?: Throwable;
+    error?: DocumentReaderException;
     static fromJson(jsonObject?: any): DocumentReaderCompletion;
+}
+export declare class DocumentReaderException {
+    errorCode?: number;
+    localizedMessage?: string;
+    message?: string;
+    string?: string;
+    stackTrace?: StackTraceElement[];
+    static fromJson(jsonObject?: any): DocumentReaderException;
 }
 export declare class Throwable {
     localizedMessage?: string;
@@ -376,6 +384,25 @@ export declare class ImageInputParam {
     height?: number;
     type?: number;
     static fromJson(jsonObject?: any): ImageInputParam;
+}
+export declare class PAResourcesIssuer {
+    data?: any[];
+    friendlyName?: string;
+    attributes?: PAAttribute[];
+    static fromJson(jsonObject?: any): PAResourcesIssuer;
+}
+export declare class PAAttribute {
+    type?: string;
+    value?: string;
+    static fromJson(jsonObject?: any): PAAttribute;
+}
+export declare class TAChallenge {
+    data?: any[];
+    auxPCD?: string;
+    challengePICC?: string;
+    hashPK?: string;
+    idPICC?: string;
+    static fromJson(jsonObject?: any): TAChallenge;
 }
 export declare class DocumentReaderResults {
     chipPage?: number;
@@ -744,6 +771,24 @@ export declare const DocReaderOrientation: {
     LANDSCAPE: number;
     LANDSCAPE_LEFT: number;
     LANDSCAPE_RIGHT: number;
+};
+export declare const DocumentReaderExceptionEnum: {
+    NATIVE_JAVA_EXCEPTION: number;
+    DOCUMENT_READER_STATE_EXCEPTION: number;
+    DOCUMENT_READER_WRONG_INPUT: number;
+    INITIALIZATION_FAILED: number;
+    DOCUMENT_READER_BLE_EXCEPTION: number;
+    DB_DOWNLOAD_ERROR: number;
+    LICENSE_ABSENT_OR_CORRUPTED: number;
+    LICENSE_INVALID_DATE: number;
+    LICENSE_INVALID_VERSION: number;
+    LICENSE_INVALID_DEVICE_ID: number;
+    LICENSE_INVALID_SYSTEM_OR_APP_ID: number;
+    LICENSE_NO_CAPABILITIES: number;
+    LICENSE_NO_AUTHENTICITY: number;
+    LICENSE_NO_DATABASE: number;
+    LICENSE_DATABASE_INCORRECT: number;
+    FEATURE_BLUETOOTH_LE_NOT_SUPPORTED: number;
 };
 export declare const eCheckDiagnose: {
     UNKNOWN: number;
@@ -1868,6 +1913,7 @@ export declare const eVisualFieldType: {
     FT_DLCLASSCODE_D3_FROM: number;
     FT_DLCLASSCODE_D3_TO: number;
     FT_DLCLASSCODE_D3_NOTES: number;
+    FT_ALT_DATE_OF_EXPIRY: number;
     getTranslation(value: number): string;
 };
 export declare const FontStyle: {
@@ -1879,6 +1925,11 @@ export declare const FontStyle: {
 export declare const FrameShapeType: {
     LINE: number;
     CORNER: number;
+};
+export declare const IRfidNotificationCompletion: {
+    RFID_EVENT_CHIP_DETECTED: number;
+    RFID_EVENT_READING_ERROR: number;
+    RFID_EXTRA_ERROR_CODE: string;
 };
 export declare const LCID: {
     LATIN: number;
@@ -2039,6 +2090,11 @@ export declare const ProcessingFinishedStatus: {
     NOT_READY: number;
     READY: number;
     TIMEOUT: number;
+};
+export declare const RFIDDelegate: {
+    NULL: number;
+    NO_PA: number;
+    FULL: number;
 };
 export declare const RGLMeasureSystem: {
     METRIC: number;
@@ -2439,6 +2495,24 @@ export declare const Enum: {
         LANDSCAPE: number;
         LANDSCAPE_LEFT: number;
         LANDSCAPE_RIGHT: number;
+    };
+    DocumentReaderExceptionEnum: {
+        NATIVE_JAVA_EXCEPTION: number;
+        DOCUMENT_READER_STATE_EXCEPTION: number;
+        DOCUMENT_READER_WRONG_INPUT: number;
+        INITIALIZATION_FAILED: number;
+        DOCUMENT_READER_BLE_EXCEPTION: number;
+        DB_DOWNLOAD_ERROR: number;
+        LICENSE_ABSENT_OR_CORRUPTED: number;
+        LICENSE_INVALID_DATE: number;
+        LICENSE_INVALID_VERSION: number;
+        LICENSE_INVALID_DEVICE_ID: number;
+        LICENSE_INVALID_SYSTEM_OR_APP_ID: number;
+        LICENSE_NO_CAPABILITIES: number;
+        LICENSE_NO_AUTHENTICITY: number;
+        LICENSE_NO_DATABASE: number;
+        LICENSE_DATABASE_INCORRECT: number;
+        FEATURE_BLUETOOTH_LE_NOT_SUPPORTED: number;
     };
     eCheckDiagnose: {
         UNKNOWN: number;
@@ -3563,6 +3637,7 @@ export declare const Enum: {
         FT_DLCLASSCODE_D3_FROM: number;
         FT_DLCLASSCODE_D3_TO: number;
         FT_DLCLASSCODE_D3_NOTES: number;
+        FT_ALT_DATE_OF_EXPIRY: number;
         getTranslation(value: number): string;
     };
     FontStyle: {
@@ -3574,6 +3649,11 @@ export declare const Enum: {
     FrameShapeType: {
         LINE: number;
         CORNER: number;
+    };
+    IRfidNotificationCompletion: {
+        RFID_EVENT_CHIP_DETECTED: number;
+        RFID_EVENT_READING_ERROR: number;
+        RFID_EXTRA_ERROR_CODE: string;
     };
     LCID: {
         LATIN: number;
@@ -3734,6 +3814,11 @@ export declare const Enum: {
         NOT_READY: number;
         READY: number;
         TIMEOUT: number;
+    };
+    RFIDDelegate: {
+        NULL: number;
+        NO_PA: number;
+        FULL: number;
     };
     RGLMeasureSystem: {
         METRIC: number;
@@ -4045,6 +4130,17 @@ export declare class DocumentReader extends IonicNativePlugin {
      */
     getRfidSessionStatus(): Promise<any>;
     /**
+     *  Use this method to set RFID delegate on iOS to either null,
+     *  delegate with onRequestPACertificates callback or without
+     *
+     * @param {int} delegate use enum RFIDDelegate
+     *  NULL = 0
+     *  NO_PA = 1
+     *  FULL = 2
+     * @return {Promise<any>} Returns a promise
+     */
+    setRfidDelegate(delegate: any): Promise<any>;
+    /**
      *  Use this method to enable Core logs
      *
      * @param {boolean} logs
@@ -4146,6 +4242,36 @@ export declare class DocumentReader extends IonicNativePlugin {
      */
     setRfidSessionStatus(status: any): Promise<any>;
     /**
+     *  Use this method to send PACertificates to the chip after you`ve got a request for them
+     *
+     * @param {PKDCertificate[]} certificates Array of jsonObjects with structure {binaryData: binaryData, resourceType: resourceType, privateKey: privateKey}
+     *  binaryData - base64 string
+     *  resourceType - number
+     *  privateKey(optional) - base64 string
+     * @return {Promise<any>} Returns a promise
+     */
+    providePACertificates(certificates: any): Promise<any>;
+    /**
+     *  Use this method to send TACertificates to the chip after you`ve got a request for them
+     *
+     * @param {PKDCertificate[]} certificates Array of jsonObjects with structure {binaryData: binaryData, resourceType: resourceType, privateKey: privateKey}
+     *  binaryData - base64 string
+     *  resourceType - number
+     *  privateKey(optional) - base64 string
+     * @return {Promise<any>} Returns a promise
+     */
+    provideTACertificates(certificates: any): Promise<any>;
+    /**
+     *  Use this method to send TASignature to the chip after you`ve got a request for them
+     *
+     * @param {byte[]} certificates Array of jsonObjects with structure {binaryData: binaryData, resourceType: resourceType, privateKey: privateKey}
+     *  binaryData - base64 string
+     *  resourceType - number
+     *  privateKey(optional) - base64 string
+     * @return {Promise<any>} Returns a promise
+     */
+    provideTASignature(certificates: any): Promise<any>;
+    /**
      *  Use this method to initialize Document Reader with the path to the database
      *
      * @param {string} license License`s base64 representation
@@ -4153,6 +4279,14 @@ export declare class DocumentReader extends IonicNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     initializeReaderWithDatabasePath(license: any, path: any): Promise<any>;
+    /**
+     *  Use this method to initialize Document Reader with database binary
+     *
+     * @param {string} license License`s base64 representation
+     * @param {string} db Database`s base64 representation
+     * @return {Promise<any>} Returns a promise
+     */
+    initializeReaderWithDatabase(license: any, db: any): Promise<any>;
     /**
      *  Use this method to recognize an image frame
      *
