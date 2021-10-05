@@ -3920,6 +3920,15 @@ export declare const Enum: {
  */
 export declare class DocumentReaderOriginal extends IonicNativePlugin {
     /**
+     *  Allows you to initialize document reader without reading license yourself.
+     *  License will be automatically read from
+     *  Android: "android/app/src/main/assets/regula.license"
+     *  iOS: "ios/App/App/regula.license"
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    initializeReaderAutomatically(): Promise<any>;
+    /**
      *  Allows you to get the API version
      *
      * @return {Promise<any>} Returns a promise
@@ -4271,6 +4280,13 @@ export declare class DocumentReaderOriginal extends IonicNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     provideTASignature(certificates: any): Promise<any>;
+    /**
+     *  Use this method to parse results returned by the server when using an encrypted license
+     *
+     * @param {string} json results to parse
+     * @return {Promise<any>} Returns a promise
+     */
+    parseCoreResults(json: any): Promise<any>;
     /**
      *  Use this method to initialize Document Reader with the path to the database
      *
