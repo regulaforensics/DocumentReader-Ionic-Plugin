@@ -1914,6 +1914,9 @@ export declare const eVisualFieldType: {
     FT_DLCLASSCODE_D3_TO: number;
     FT_DLCLASSCODE_D3_NOTES: number;
     FT_ALT_DATE_OF_EXPIRY: number;
+    FT_DLCLASSCODE_CD_FROM: number;
+    FT_DLCLASSCODE_CD_TO: number;
+    FT_DLCLASSCODE_CD_NOTES: number;
     getTranslation(value: number): string;
 };
 export declare const FontStyle: {
@@ -3638,6 +3641,9 @@ export declare const Enum: {
         FT_DLCLASSCODE_D3_TO: number;
         FT_DLCLASSCODE_D3_NOTES: number;
         FT_ALT_DATE_OF_EXPIRY: number;
+        FT_DLCLASSCODE_CD_FROM: number;
+        FT_DLCLASSCODE_CD_TO: number;
+        FT_DLCLASSCODE_CD_NOTES: number;
         getTranslation(value: number): string;
     };
     FontStyle: {
@@ -3920,6 +3926,7 @@ export declare const Enum: {
  */
 export declare class DocumentReaderOriginal extends IonicNativePlugin {
     /**
+     *  Initially made for capacitor as it has no convenient way to read assets
      *  Allows you to initialize document reader without reading license yourself.
      *  License will be automatically read from
      *  Android: "android/app/src/main/assets/regula.license"
