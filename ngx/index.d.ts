@@ -1914,6 +1914,9 @@ export declare const eVisualFieldType: {
     FT_DLCLASSCODE_D3_TO: number;
     FT_DLCLASSCODE_D3_NOTES: number;
     FT_ALT_DATE_OF_EXPIRY: number;
+    FT_DLCLASSCODE_CD_FROM: number;
+    FT_DLCLASSCODE_CD_TO: number;
+    FT_DLCLASSCODE_CD_NOTES: number;
     getTranslation(value: number): string;
 };
 export declare const FontStyle: {
@@ -3638,6 +3641,9 @@ export declare const Enum: {
         FT_DLCLASSCODE_D3_TO: number;
         FT_DLCLASSCODE_D3_NOTES: number;
         FT_ALT_DATE_OF_EXPIRY: number;
+        FT_DLCLASSCODE_CD_FROM: number;
+        FT_DLCLASSCODE_CD_TO: number;
+        FT_DLCLASSCODE_CD_NOTES: number;
         getTranslation(value: number): string;
     };
     FontStyle: {
@@ -3919,6 +3925,16 @@ export declare const Enum: {
  * ```
  */
 export declare class DocumentReader extends IonicNativePlugin {
+    /**
+     *  Initially made for capacitor as it has no convenient way to read assets
+     *  Allows you to initialize document reader without reading license yourself.
+     *  License will be automatically read from
+     *  Android: "android/app/src/main/assets/regula.license"
+     *  iOS: "ios/App/App/regula.license"
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    initializeReaderAutomatically(): Promise<any>;
     /**
      *  Allows you to get the API version
      *
@@ -4271,6 +4287,13 @@ export declare class DocumentReader extends IonicNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     provideTASignature(certificates: any): Promise<any>;
+    /**
+     *  Use this method to parse results returned by the server when using an encrypted license
+     *
+     * @param {string} json results to parse
+     * @return {Promise<any>} Returns a promise
+     */
+    parseCoreResults(json: any): Promise<any>;
     /**
      *  Use this method to initialize Document Reader with the path to the database
      *
