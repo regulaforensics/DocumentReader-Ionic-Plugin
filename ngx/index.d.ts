@@ -1,14 +1,12 @@
 import { IonicNativePlugin } from '@ionic-native/core';
 import { Observable } from 'rxjs';
 export declare class DocumentReaderScenario {
-    uvTorch?: boolean;
-    seriesProcessMode?: boolean;
     name?: string;
     caption?: string;
     description?: string;
     static fromJson(jsonObject?: any): DocumentReaderScenario;
 }
-export declare class DocumentReaderScenarioFull {
+export declare class CoreDetailedScenario {
     uvTorch?: boolean;
     frameOrientation?: number;
     faceExt?: boolean;
@@ -22,7 +20,7 @@ export declare class DocumentReaderScenarioFull {
     caption?: string;
     description?: string;
     manualCrop?: boolean;
-    static fromJson(jsonObject?: any): DocumentReaderScenarioFull;
+    static fromJson(jsonObject?: any): CoreDetailedScenario;
 }
 export declare class FaceMetaData {
     ID?: number;
@@ -349,6 +347,11 @@ export declare class DocumentReaderCompletion {
     error?: DocumentReaderException;
     static fromJson(jsonObject?: any): DocumentReaderCompletion;
 }
+export declare class RfidNotificationCompletion {
+    notification?: number;
+    value?: number;
+    static fromJson(jsonObject?: any): RfidNotificationCompletion;
+}
 export declare class DocumentReaderException {
     errorCode?: number;
     localizedMessage?: string;
@@ -404,6 +407,57 @@ export declare class TAChallenge {
     idPICC?: string;
     static fromJson(jsonObject?: any): TAChallenge;
 }
+export declare class DocumentReaderResultsStatus {
+    overallStatus?: number;
+    optical?: number;
+    detailsOptical?: DetailsOptical;
+    rfid?: number;
+    detailsRFID?: DetailsRFID;
+    portrait?: number;
+    stopList?: number;
+    static fromJson(jsonObject?: any): DocumentReaderResultsStatus;
+}
+export declare class DetailsOptical {
+    overallStatus?: number;
+    mrz?: number;
+    text?: number;
+    docType?: number;
+    security?: number;
+    imageQA?: number;
+    expiry?: number;
+    vds?: number;
+    pagesCount?: number;
+    static fromJson(jsonObject?: any): DetailsOptical;
+}
+export declare class DetailsRFID {
+    pa?: number;
+    ca?: number;
+    aa?: number;
+    ta?: number;
+    bac?: number;
+    pace?: number;
+    overallStatus?: number;
+    static fromJson(jsonObject?: any): DetailsRFID;
+}
+export declare class VDSNCData {
+    type?: string;
+    version?: number;
+    issuingCountry?: string;
+    message?: any;
+    signatureAlgorithm?: string;
+    signature?: BytesData;
+    certificate?: BytesData;
+    certificateChain?: CertificateChain[];
+    notifications?: number[];
+    static fromJson(jsonObject?: any): VDSNCData;
+}
+export declare class BytesData {
+    data?: string;
+    length?: number;
+    status?: number;
+    type?: number;
+    static fromJson(jsonObject?: any): BytesData;
+}
 export declare class DocumentReaderResults {
     chipPage?: number;
     overallResult?: number;
@@ -425,6 +479,8 @@ export declare class DocumentReaderResults {
     authenticityResult?: DocumentReaderAuthenticityResult;
     barcodeResult?: DocumentReaderBarcodeResult;
     documentType?: DocumentReaderDocumentType[];
+    status?: DocumentReaderResultsStatus;
+    vdsncData?: VDSNCData;
     getTextFieldValueByType?({ fieldType, lcid, source, original }: {
         fieldType: number;
         lcid?: number;
@@ -975,6 +1031,10 @@ export declare const eRFID_CertificateType: {
     CT_MLS: number;
     CT_DEV_LS: number;
     CT_DEF_LS: number;
+    CT_BLS: number;
+    CT_LDS2: number;
+    CT_BCS: number;
+    CT_BCSNC: number;
 };
 export declare const eRFID_DataFile_Type: {
     DFT_UNSPECIFIED: number;
@@ -1057,6 +1117,10 @@ export declare const eRFID_DataFile_Type: {
     DFT_SESSION: number;
     DFT_LOGDATA: number;
     DFT_CHIP_PROPERTIES: number;
+    DFT_SAM_DATA: number;
+    DFT_SAM_DATA_MAX: number;
+    DFT_VDS: number;
+    DFT_VDSNC: number;
     DFT_USERDEFINED: number;
     getTranslation(value: number): string;
 };
@@ -1117,6 +1181,7 @@ export declare const eRFID_NotificationAndErrorCodes: {
     RFID_ERROR_INVALID_PARAMETER: number;
     RFID_ERROR_NOT_INITIALIZED: number;
     RFID_Error_NotEnoughMemory: number;
+    RFID_ERROR_NOT_ENOUGH_DATA: number;
     RFID_ERROR_INVALID_DIRECTORY: number;
     RFID_ERROR_UNKNOWN_COMMAND: number;
     RFID_ERROR_FILE_IO_ERROR: number;
@@ -1195,6 +1260,22 @@ export declare const eRFID_NotificationAndErrorCodes: {
     RFID_LAYER6_EXT_AUTH_FAILURE: number;
     RFID_LAYER6_GENERAL_AUTH_FAILURE: number;
     RFID_ERROR_FAILED: number;
+    RFID_ERROR_CODES_LAYER_34_NO_ERROR: number;
+    RFID_ERROR_CODES_LAYER_34_TIMEOUT: number;
+    RFID_ERROR_CODES_LAYER_34_COLLISION: number;
+    RFID_ERROR_CODES_LAYER_34_CRC: number;
+    RFID_ERROR_CODES_LAYER_34_DATA_INTEGRITY: number;
+    RFID_ERROR_CODES_LAYER_34_DATA_LENGTH: number;
+    RFID_ERROR_CODES_LAYER_34_RFU: number;
+    RFID_ERROR_CODES_LAYER_34_COLLISION_TOO_MANY: number;
+    RFID_ERROR_CODES_LAYER_34_PROTOCOL_B: number;
+    RFID_ERROR_CODES_LAYER_34_DATA_CONTENTS: number;
+    RFID_ERROR_CODES_LAYER_34_PROTOCOL: number;
+    RFID_ERROR_CODES_LAYER_34_GLOBAL_TIMEOUT: number;
+    RFID_ERROR_CODES_LAYER_34_MIFARE_AUTH: number;
+    RFID_ERROR_CODES_LAYER_34_SAM_ERROR: number;
+    RFID_ERROR_CODES_LAYER_34_SAM_COLLISION: number;
+    RFID_ERROR_CODES_LAYER_34_SAM_ACKNOWLEDGE: number;
     getTranslation(value: number): string;
 };
 export declare const eRFID_Password_Type: {
@@ -1274,6 +1355,8 @@ export declare const eRPRM_ResultType: {
     RPRM_RESULT_TYPE_DATABASE_CHECK: number;
     RPRM_RESULT_TYPE_FINGERPRINT_TEMPLATE_ISO: number;
     RPRM_RESULT_TYPE_INPUT_IMAGE_QUALITY: number;
+    RPRM_RESULT_TYPE_IMAGES: number;
+    RPRM_RESULT_TYPE_HOLO_PARAMS: number;
     RPRM_RESULT_TYPE_DOCUMENT_POSITION: number;
     RPRM_RESULT_TYPE_CUSTOM: number;
     RFID_RESULT_TYPE_RFID_RAW_DATA: number;
@@ -1283,6 +1366,7 @@ export declare const eRPRM_ResultType: {
     RFID_RESULT_TYPE_RFID_ORIGINAL_GRAPHICS: number;
     RPRM_RESULT_TYPE_BARCODE_POSITION: number;
     RPRM_RESULT_TYPE_MRZ_POSITION: number;
+    RPRM_RESULT_TYPE_STATUS: number;
 };
 export declare const eRPRM_SecurityFeatureType: {
     NONE: number;
@@ -1917,6 +2001,11 @@ export declare const eVisualFieldType: {
     FT_DLCLASSCODE_CD_FROM: number;
     FT_DLCLASSCODE_CD_TO: number;
     FT_DLCLASSCODE_CD_NOTES: number;
+    FT_PAYMENT_PERIOD_TO: number;
+    FT_PAYMENT_PERIOD_FROM: number;
+    FT_ISSUER_IDENTIFICATION_NUMBER: number;
+    FT_VACCINATION_CERTIFICATE_IDENTIFIER: number;
+    FT_FIRST_NAME: number;
     getTranslation(value: number): string;
 };
 export declare const FontStyle: {
@@ -2702,6 +2791,10 @@ export declare const Enum: {
         CT_MLS: number;
         CT_DEV_LS: number;
         CT_DEF_LS: number;
+        CT_BLS: number;
+        CT_LDS2: number;
+        CT_BCS: number;
+        CT_BCSNC: number;
     };
     eRFID_DataFile_Type: {
         DFT_UNSPECIFIED: number;
@@ -2784,6 +2877,10 @@ export declare const Enum: {
         DFT_SESSION: number;
         DFT_LOGDATA: number;
         DFT_CHIP_PROPERTIES: number;
+        DFT_SAM_DATA: number;
+        DFT_SAM_DATA_MAX: number;
+        DFT_VDS: number;
+        DFT_VDSNC: number;
         DFT_USERDEFINED: number;
         getTranslation(value: number): string;
     };
@@ -2844,6 +2941,7 @@ export declare const Enum: {
         RFID_ERROR_INVALID_PARAMETER: number;
         RFID_ERROR_NOT_INITIALIZED: number;
         RFID_Error_NotEnoughMemory: number;
+        RFID_ERROR_NOT_ENOUGH_DATA: number;
         RFID_ERROR_INVALID_DIRECTORY: number;
         RFID_ERROR_UNKNOWN_COMMAND: number;
         RFID_ERROR_FILE_IO_ERROR: number;
@@ -2922,6 +3020,22 @@ export declare const Enum: {
         RFID_LAYER6_EXT_AUTH_FAILURE: number;
         RFID_LAYER6_GENERAL_AUTH_FAILURE: number;
         RFID_ERROR_FAILED: number;
+        RFID_ERROR_CODES_LAYER_34_NO_ERROR: number;
+        RFID_ERROR_CODES_LAYER_34_TIMEOUT: number;
+        RFID_ERROR_CODES_LAYER_34_COLLISION: number;
+        RFID_ERROR_CODES_LAYER_34_CRC: number;
+        RFID_ERROR_CODES_LAYER_34_DATA_INTEGRITY: number;
+        RFID_ERROR_CODES_LAYER_34_DATA_LENGTH: number;
+        RFID_ERROR_CODES_LAYER_34_RFU: number;
+        RFID_ERROR_CODES_LAYER_34_COLLISION_TOO_MANY: number;
+        RFID_ERROR_CODES_LAYER_34_PROTOCOL_B: number;
+        RFID_ERROR_CODES_LAYER_34_DATA_CONTENTS: number;
+        RFID_ERROR_CODES_LAYER_34_PROTOCOL: number;
+        RFID_ERROR_CODES_LAYER_34_GLOBAL_TIMEOUT: number;
+        RFID_ERROR_CODES_LAYER_34_MIFARE_AUTH: number;
+        RFID_ERROR_CODES_LAYER_34_SAM_ERROR: number;
+        RFID_ERROR_CODES_LAYER_34_SAM_COLLISION: number;
+        RFID_ERROR_CODES_LAYER_34_SAM_ACKNOWLEDGE: number;
         getTranslation(value: number): string;
     };
     eRFID_Password_Type: {
@@ -3001,6 +3115,8 @@ export declare const Enum: {
         RPRM_RESULT_TYPE_DATABASE_CHECK: number;
         RPRM_RESULT_TYPE_FINGERPRINT_TEMPLATE_ISO: number;
         RPRM_RESULT_TYPE_INPUT_IMAGE_QUALITY: number;
+        RPRM_RESULT_TYPE_IMAGES: number;
+        RPRM_RESULT_TYPE_HOLO_PARAMS: number;
         RPRM_RESULT_TYPE_DOCUMENT_POSITION: number;
         RPRM_RESULT_TYPE_CUSTOM: number;
         RFID_RESULT_TYPE_RFID_RAW_DATA: number;
@@ -3010,6 +3126,7 @@ export declare const Enum: {
         RFID_RESULT_TYPE_RFID_ORIGINAL_GRAPHICS: number;
         RPRM_RESULT_TYPE_BARCODE_POSITION: number;
         RPRM_RESULT_TYPE_MRZ_POSITION: number;
+        RPRM_RESULT_TYPE_STATUS: number;
     };
     eRPRM_SecurityFeatureType: {
         NONE: number;
@@ -3644,6 +3761,11 @@ export declare const Enum: {
         FT_DLCLASSCODE_CD_FROM: number;
         FT_DLCLASSCODE_CD_TO: number;
         FT_DLCLASSCODE_CD_NOTES: number;
+        FT_PAYMENT_PERIOD_TO: number;
+        FT_PAYMENT_PERIOD_FROM: number;
+        FT_ISSUER_IDENTIFICATION_NUMBER: number;
+        FT_VACCINATION_CERTIFICATE_IDENTIFIER: number;
+        FT_FIRST_NAME: number;
         getTranslation(value: number): string;
     };
     FontStyle: {
