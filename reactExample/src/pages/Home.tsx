@@ -1,5 +1,5 @@
 import { IonPage, isPlatform } from '@ionic/react';
-import { DocumentReader, DocumentReaderScenario, Enum, DocumentReaderCompletion, DocumentReaderResults, DocumentReaderNotification } from '@regulaforensics/ionic-native-document-reader-beta';
+import { DocumentReader, DocumentReaderScenario, Enum, DocumentReaderCompletion, DocumentReaderResults, DocumentReaderNotification } from '@regulaforensics/ionic-native-document-reader';
 import React from "react";
 import { File } from '@ionic-native/file'
 import { AndroidPermissions } from "@ionic-native/android-permissions"
