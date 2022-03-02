@@ -56,7 +56,7 @@ export class HomePage {
     app.status.nativeElement.innerHTML = "loading......"
     app.status.nativeElement.style.backgroundColor = "grey"
     app.platform.ready().then(() => {
-      readFile("", "regula.license", (license) => {
+      readFile("www/assets", "regula.license", (license) => {
         DocumentReader.prepareDatabase("Full").subscribe(r => {
           if (r != "database prepared")
             app.status.nativeElement.innerHTML = "Downloading database: " + r + "%"

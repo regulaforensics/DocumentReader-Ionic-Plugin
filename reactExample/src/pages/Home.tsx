@@ -45,7 +45,7 @@ status.style.backgroundColor = "grey"
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady(){
-  readFile("", "regula.license", (license: any) => {
+  readFile("public/assets", "regula.license", (license: any) => {
     DocumentReader.prepareDatabase("Full").subscribe(r => {
       if (r != "database prepared")
         status.innerHTML = "Downloading database: " + r + "%"
