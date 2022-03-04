@@ -45,7 +45,7 @@ status.style.backgroundColor = "grey"
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady(){
-  readFile("", "regula.license", (license: any) => {
+  readFile("public/assets", "regula.license", (license: any) => {
     DocumentReader.prepareDatabase("Full").subscribe(r => {
       if (r != "database prepared")
         status.innerHTML = "Downloading database: " + r + "%"
@@ -149,8 +149,8 @@ function restartRfidUI() {
 }
 
 function updateRfidUI(notification: DocumentReaderNotification) {
-  if (notification.code === Enum.eRFID_NotificationAndErrorCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP)
-    rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(notification.number!!)
+  if (notification.code === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP)
+    rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(notification.attachment!!)
   rfidUIHeader = "Reading RFID"
   rfidUIHeaderColor = "black"
   rfidProgress = notification.value!!

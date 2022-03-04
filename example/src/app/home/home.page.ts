@@ -56,7 +56,7 @@ export class HomePage {
     app.status.nativeElement.innerHTML = "loading......"
     app.status.nativeElement.style.backgroundColor = "grey"
     app.platform.ready().then(() => {
-      readFile("", "regula.license", (license) => {
+      readFile("www/assets", "regula.license", (license) => {
         DocumentReader.prepareDatabase("Full").subscribe(r => {
           if (r != "database prepared")
             app.status.nativeElement.innerHTML = "Downloading database: " + r + "%"
@@ -160,8 +160,8 @@ export class HomePage {
     }
 
     function updateRfidUI(notification: DocumentReaderNotification) {
-      if (notification.code === Enum.eRFID_NotificationAndErrorCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP)
-        rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(notification.number)
+      if (notification.code === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP)
+        rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(notification.attachment)
       rfidUIHeader = "Reading RFID"
       rfidUIHeaderColor = "black"
       rfidProgress = notification.value
