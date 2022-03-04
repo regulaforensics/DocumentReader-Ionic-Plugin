@@ -10,7 +10,7 @@ $ npm install
 
 5. Android:
   * Change the application ID to the one you have specified during the registration at [licensing.regulaforensics.com](https://licensing.regulaforensics.com).
-  * Run `npx jetify`, then`ionic cap run android` - this is just one way to run the app. You can also run it directly from within Android Studio.
+  * Run `npx jetify`, then `ionic cap run android` - this is just one way to run the app. You can also run it directly from within Android Studio.
 
 6. iOS:
   * Change the Bundle Identifier to the one you have specified during the registration at [licensing.regulaforensics.com](https://licensing.regulaforensics.com).
