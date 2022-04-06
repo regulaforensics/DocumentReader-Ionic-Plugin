@@ -29,6 +29,7 @@
         </config-file>
         <preference name="android-minSdkVersion" value="22" />
         <preference name="android-compileSdkVersion" value="29" />
+        <preference name="AndroidXEnabled" value="true" />
         <resource-file src="resources/android/xml/network_security_config.xml" target="app/src/main/res/xml/network_security_config.xml" />
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />

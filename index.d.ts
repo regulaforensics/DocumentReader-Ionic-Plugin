@@ -5144,18 +5144,11 @@ export declare class DocumentReaderOriginal extends IonicNativePlugin {
      *      "serviceUrlTA": "some string"
      *      "serviceUrlPA": "some string"
      *      "pfxCertUrl": "some string"
+     *      "pfxCert": "base64 encoded binary"
      *      "pfxPassPhrase": "some string"
      * @return {Promise<any>} Returns a promise
      */
     setTCCParams(params: any): Promise<any>;
-    /**
-     *  Use this method to initialize Document Reader with the path to the database
-     *
-     * @param {string} license License`s base64 representation
-     * @param {string} path Path to the database
-     * @return {Promise<any>} Returns a promise
-     */
-    initializeReaderWithDatabasePath(license: any, path: any): Promise<any>;
     /**
      *  Use this method to initialize Document Reader with database binary
      *

@@ -30,15 +30,16 @@
     "cordova-ios": "^6.1.1",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-android-permissions": "^1.1.0",
-    "@regulaforensics/cordova-plugin-document-reader-api-beta": "^0.0.111",
-    "@regulaforensics/cordova-plugin-document-reader-core-fullrfid-beta": "^0.0.26",
-    "@regulaforensics/ionic-native-document-reader-beta": "^0.0.50",
+    "@regulaforensics/cordova-plugin-document-reader-api-beta": "^0.0.113",
+    "@regulaforensics/cordova-plugin-document-reader-core-fullrfid-beta": "^0.0.27",
+    "@regulaforensics/ionic-native-document-reader-beta": "^0.0.51",
     "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-telerik-imagepicker": "^2.3.5",
     "core-js": "^3.6.5",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.1",
-    "zone.js": "~0.11.1"
+    "zone.js": "~0.11.1",
+    "jetifier": "^2.0.0"
   },
   "devDependencies": {
     "@angular-devkit/architect": "~0.1001.4",

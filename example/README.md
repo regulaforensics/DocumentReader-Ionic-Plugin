@@ -5,6 +5,7 @@
 ```bash
 $ cd example
 $ npm install
+$ npx jetify
 $ ionic cordova prepare
 ```
 4. Copy the `regula.license` file to the `example/src/assets` folder.
