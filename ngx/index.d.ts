@@ -995,6 +995,7 @@ export declare const eImageQualityCheckType: {
     IQC_BOUNDS: number;
     IQC_SCREEN_CAPTURE: number;
     IQC_PORTRAIT: number;
+    IQC_HANDWRITTEN: number;
 };
 export declare const eLDS_ParsingErrorCodes: {
     ERR_LDS_OK: number;
@@ -3107,6 +3108,7 @@ export declare const Enum: {
         IQC_BOUNDS: number;
         IQC_SCREEN_CAPTURE: number;
         IQC_PORTRAIT: number;
+        IQC_HANDWRITTEN: number;
     };
     eLDS_ParsingErrorCodes: {
         ERR_LDS_OK: number;
@@ -5136,13 +5138,17 @@ export declare class DocumentReader extends IonicNativePlugin {
      */
     parseCoreResults(json: any): Promise<any>;
     /**
-     *  Use this method to initialize Document Reader with the path to the database
+     *  The method call sets the given TCCParams to the RFID session. The parameters are required to be set before starting RFID session.
      *
-     * @param {string} license License`s base64 representation
-     * @param {string} path Path to the database
+     * @param {object} params Object with structure
+     *      "serviceUrlTA": "some string"
+     *      "serviceUrlPA": "some string"
+     *      "pfxCertUrl": "some string"
+     *      "pfxCert": "base64 encoded binary"
+     *      "pfxPassPhrase": "some string"
      * @return {Promise<any>} Returns a promise
      */
-    initializeReaderWithDatabasePath(license: any, path: any): Promise<any>;
+    setTCCParams(params: any): Promise<any>;
     /**
      *  Use this method to initialize Document Reader with database binary
      *

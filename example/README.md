@@ -1,10 +1,11 @@
 # How to build demo application
-1. Visit [client.regulaforensics.com](https://client.regulaforensics.com) to get a trial license (`regula.license` file). The license creation wizard will guide you through the necessary steps.
+1. Visit [licensing.regulaforensics.com](https://licensing.regulaforensics.com) to get a trial license (`regula.license` file). The license creation wizard will guide you through the necessary steps.
 2. Download or clone this repository using the command `git clone https://github.com/regulaforensics/DocumentReader-Ionic-Plugin.git`.
 3. Run the following commands in Terminal:
 ```bash
 $ cd example
 $ npm install
+$ npx jetify
 $ ionic cordova prepare
 ```
 4. Copy the `regula.license` file to the `example/src/assets` folder.
