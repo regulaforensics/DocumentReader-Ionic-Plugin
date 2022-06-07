@@ -473,6 +473,16 @@ export declare class DocumentReaderUvFiberElement {
     elementDiagnoseName?: string;
     static fromJson(jsonObject?: any): DocumentReaderUvFiberElement;
 }
+export declare class ImageInputData {
+    pageIndex?: number;
+    light?: number;
+    type?: number;
+    width?: number;
+    height?: number;
+    bitmap?: string;
+    imgBytes?: any[];
+    static fromJson(jsonObject?: any): ImageInputData;
+}
 export declare class DocumentReaderResults {
     chipPage?: number;
     overallResult?: number;
@@ -591,9 +601,9 @@ export declare const diDocType: {
     dtIdentityCard: number;
     dtDiplomaticPassport: number;
     dtServicePassport: number;
-    dtSeamansIdentityDocument: number;
-    dtIdentityCardforResidence: number;
-    dtTraveldocument: number;
+    dtSeamanIdentityDocument: number;
+    dtIdentityCardForResidence: number;
+    dtTravelDocument: number;
     dtOther: number;
     dtVisaID2: number;
     dtVisaID3: number;
@@ -614,10 +624,10 @@ export declare const diDocType: {
     dtChauffeurLicenseUnder18: number;
     dtChauffeurLicenseUnder21: number;
     dtCommercialDrivingLicense: number;
-    dtCommercialDrivingLicenseIndtuctionalPermit: number;
+    dtCommercialDrivingLicenseInstructionalPermit: number;
     dtCommercialDrivingLicenseUnder18: number;
     dtCommercialDrivingLicenseUnder21: number;
-    dtCommercialIndtuctionPermit: number;
+    dtCommercialInstructionPermit: number;
     dtCommercialNewPermit: number;
     dtConcealedCarryLicense: number;
     dtConcealedFirearmPermit: number;
@@ -625,9 +635,9 @@ export declare const diDocType: {
     dtDepartmentOfVeteransAffairsIdentityCard: number;
     dtDiplomaticDrivingLicense: number;
     dtDrivingLicense: number;
-    dtDrivingLicenseIndtuctionalPermit: number;
-    dtDrivingLicenseIndtuctionalPermitUnder18: number;
-    dtDrivingLicenseIndtuctionalPermitUnder21: number;
+    dtDrivingLicenseInstructionalPermit: number;
+    dtDrivingLicenseInstructionalPermitUnder18: number;
+    dtDrivingLicenseInstructionalPermitUnder21: number;
     dtDrivingLicenseLearnersPermit: number;
     dtDrivingLicenseLearnersPermitUnder18: number;
     dtDrivingLicenseLearnersPermitUnder21: number;
@@ -635,8 +645,8 @@ export declare const diDocType: {
     dtDrivingLicenseNoviceUnder18: number;
     dtDrivingLicenseNoviceUnder21: number;
     dtDrivingLicenseRegisteredOffender: number;
-    dtDrivingLicenseRedtictedUnder18: number;
-    dtDrivingLicenseRedtictedUnder21: number;
+    dtDrivingLicenseRestrictedUnder18: number;
+    dtDrivingLicenseRestrictedUnder21: number;
     dtDrivingLicenseTemporaryVisitor: number;
     dtDrivingLicenseTemporaryVisitorUnder18: number;
     dtDrivingLicenseTemporaryVisitorUnder21: number;
@@ -661,8 +671,8 @@ export declare const diDocType: {
     dtGenevaConventionsIdentityCard: number;
     dtGraduatedDrivingLicenseUnder18: number;
     dtGraduatedDrivingLicenseUnder21: number;
-    dtGraduatedIndtuctionPermitUnder18: number;
-    dtGraduatedIndtuctionPermitUnder21: number;
+    dtGraduatedInstructionPermitUnder18: number;
+    dtGraduatedInstructionPermitUnder21: number;
     dtGraduatedLicenseUnder18: number;
     dtGraduatedLicenseUnder21: number;
     dtHandgunCarryPermit: number;
@@ -676,16 +686,16 @@ export declare const diDocType: {
     dtIdentityCardUnder21: number;
     dtIgnitionInterlockPermit: number;
     dtImmigrantVisa: number;
-    dtIndtuctionPermit: number;
-    dtIndtuctionPermitUnder18: number;
-    dtIndtuctionPermitUnder21: number;
+    dtInstructionPermit: number;
+    dtInstructionPermitUnder18: number;
+    dtInstructionPermitUnder21: number;
     dtInterimDrivingLicense: number;
     dtInterimIdentityCard: number;
     dtIntermediateDrivingLicense: number;
     dtIntermediateDrivingLicenseUnder18: number;
     dtIntermediateDrivingLicenseUnder21: number;
     dtJuniorDrivingLicense: number;
-    dtLearnerIndtuctionalPermit: number;
+    dtLearnerInstructionalPermit: number;
     dtLearnerLicense: number;
     dtLearnerLicenseUnder18: number;
     dtLearnerLicenseUnder21: number;
@@ -722,9 +732,9 @@ export declare const diDocType: {
     dtRacingAndGamingComissionCard: number;
     dtRefugeeTravelDocument: number;
     dtRenewalPermit: number;
-    dtRedtictedCommercialDrivingLicense: number;
-    dtRedtictedDrivingLicense: number;
-    dtRedtictedPermit: number;
+    dtRestrictedCommercialDrivingLicense: number;
+    dtRestrictedDrivingLicense: number;
+    dtRestrictedPermit: number;
     dtSeasonalPermit: number;
     dtSeasonalResidentIdentityCard: number;
     dtSeniorCitizenIdentityCard: number;
@@ -734,9 +744,9 @@ export declare const diDocType: {
     dtTemporaryDrivingLicenseUnder18: number;
     dtTemporaryDrivingLicenseUnder21: number;
     dtTemporaryIdentityCard: number;
-    dtTemporaryIndtuctionPermitIdentityCard: number;
-    dtTemporaryIndtuctionPermitIdentityCardUnder18: number;
-    dtTemporaryIndtuctionPermitIdentityCardUnder21: number;
+    dtTemporaryInstructionPermitIdentityCard: number;
+    dtTemporaryInstructionPermitIdentityCardUnder18: number;
+    dtTemporaryInstructionPermitIdentityCardUnder21: number;
     dtTemporaryVisitorDrivingLicense: number;
     dtTemporaryVisitorDrivingLicenseUnder18: number;
     dtTemporaryVisitorDrivingLicenseUnder21: number;
@@ -759,15 +769,15 @@ export declare const diDocType: {
     dtCertificateOfCitizenship: number;
     dtAddressCard: number;
     dtAirportImmigrationCard: number;
-    dtAlienRegidtationCard: number;
+    dtAlienRegistrationCard: number;
     dtAPEHCard: number;
-    dtCoupontoDrivingLicense: number;
+    dtCouponToDrivingLicense: number;
     dtCrewMemberCertificate: number;
     dtDocumentForReturn: number;
     dtECard: number;
     dtEmploymentCard: number;
     dtHKSARImmigrationForm: number;
-    dtImmigrantcard: number;
+    dtImmigrantCard: number;
     dtLabourCard: number;
     dtLaissezPasser: number;
     dtLawyerIdentityCertificate: number;
@@ -779,7 +789,7 @@ export declare const diDocType: {
     dtPassportOfficial: number;
     dtPassportProvisional: number;
     dtPassportSpecial: number;
-    dtPermissiontotheLocalBorderTraffic: number;
+    dtPermissionToTheLocalBorderTraffic: number;
     dtSEDESOLCard: number;
     dtSocialCard: number;
     dtTBCard: number;
@@ -812,6 +822,10 @@ export declare const diDocType: {
     dtInterimInstructionalPermit: number;
     dtCertificateOfCompetency: number;
     dtCertificateOfProficiency: number;
+    dtTradeLicense: number;
+    dtPassportPage: number;
+    dtInvoice: number;
+    dtPassengerLocatorForm: number;
 };
 export declare const DocFormat: {
     ID1: number;
@@ -828,7 +842,10 @@ export declare const DocReaderAction: {
     ERROR: number;
     NOTIFICATION: number;
     PROCESS_WHITE_UV_IMAGES: number;
+    PROCESS_WHITE_FLASHLIGHT: number;
     MORE_PAGES_AVAILABLE: number;
+    PROCESS_IR_FRAME: number;
+    TIMEOUT: number;
 };
 export declare const DocReaderFrame: {
     MAX: string;
@@ -1694,6 +1711,11 @@ export declare const eRPRM_Lights: {
     NONE: number;
     RPRM_LIGHT_UV: number;
     RPRM_LIGHT_WHITE_FULL: number;
+    RPRM_LIGHT_IR: number;
+    RPRM_Light_IR_TOP: number;
+    RPRM_Light_IR_SIDE: number;
+    RPRM_Light_IR_Full: number;
+    RPRM_LIGHT_OVD: number;
     getTranslation(value: number): string;
 };
 export declare const eRPRM_ResultType: {
@@ -2374,6 +2396,10 @@ export declare const eVisualFieldType: {
     FT_VACCINATION_CERTIFICATE_IDENTIFIER: number;
     FT_FIRST_NAME: number;
     FT_DATE_OF_ARRIVAL: number;
+    FT_SECOND_NAME: number;
+    FT_THIRD_NAME: number;
+    FT_FOURTH_NAME: number;
+    FT_LAST_NAME: number;
     getTranslation(value: number): string;
 };
 export declare const FontStyle: {
@@ -2704,9 +2730,9 @@ export declare const Enum: {
         dtIdentityCard: number;
         dtDiplomaticPassport: number;
         dtServicePassport: number;
-        dtSeamansIdentityDocument: number;
-        dtIdentityCardforResidence: number;
-        dtTraveldocument: number;
+        dtSeamanIdentityDocument: number;
+        dtIdentityCardForResidence: number;
+        dtTravelDocument: number;
         dtOther: number;
         dtVisaID2: number;
         dtVisaID3: number;
@@ -2727,10 +2753,10 @@ export declare const Enum: {
         dtChauffeurLicenseUnder18: number;
         dtChauffeurLicenseUnder21: number;
         dtCommercialDrivingLicense: number;
-        dtCommercialDrivingLicenseIndtuctionalPermit: number;
+        dtCommercialDrivingLicenseInstructionalPermit: number;
         dtCommercialDrivingLicenseUnder18: number;
         dtCommercialDrivingLicenseUnder21: number;
-        dtCommercialIndtuctionPermit: number;
+        dtCommercialInstructionPermit: number;
         dtCommercialNewPermit: number;
         dtConcealedCarryLicense: number;
         dtConcealedFirearmPermit: number;
@@ -2738,9 +2764,9 @@ export declare const Enum: {
         dtDepartmentOfVeteransAffairsIdentityCard: number;
         dtDiplomaticDrivingLicense: number;
         dtDrivingLicense: number;
-        dtDrivingLicenseIndtuctionalPermit: number;
-        dtDrivingLicenseIndtuctionalPermitUnder18: number;
-        dtDrivingLicenseIndtuctionalPermitUnder21: number;
+        dtDrivingLicenseInstructionalPermit: number;
+        dtDrivingLicenseInstructionalPermitUnder18: number;
+        dtDrivingLicenseInstructionalPermitUnder21: number;
         dtDrivingLicenseLearnersPermit: number;
         dtDrivingLicenseLearnersPermitUnder18: number;
         dtDrivingLicenseLearnersPermitUnder21: number;
@@ -2748,8 +2774,8 @@ export declare const Enum: {
         dtDrivingLicenseNoviceUnder18: number;
         dtDrivingLicenseNoviceUnder21: number;
         dtDrivingLicenseRegisteredOffender: number;
-        dtDrivingLicenseRedtictedUnder18: number;
-        dtDrivingLicenseRedtictedUnder21: number;
+        dtDrivingLicenseRestrictedUnder18: number;
+        dtDrivingLicenseRestrictedUnder21: number;
         dtDrivingLicenseTemporaryVisitor: number;
         dtDrivingLicenseTemporaryVisitorUnder18: number;
         dtDrivingLicenseTemporaryVisitorUnder21: number;
@@ -2774,8 +2800,8 @@ export declare const Enum: {
         dtGenevaConventionsIdentityCard: number;
         dtGraduatedDrivingLicenseUnder18: number;
         dtGraduatedDrivingLicenseUnder21: number;
-        dtGraduatedIndtuctionPermitUnder18: number;
-        dtGraduatedIndtuctionPermitUnder21: number;
+        dtGraduatedInstructionPermitUnder18: number;
+        dtGraduatedInstructionPermitUnder21: number;
         dtGraduatedLicenseUnder18: number;
         dtGraduatedLicenseUnder21: number;
         dtHandgunCarryPermit: number;
@@ -2789,16 +2815,16 @@ export declare const Enum: {
         dtIdentityCardUnder21: number;
         dtIgnitionInterlockPermit: number;
         dtImmigrantVisa: number;
-        dtIndtuctionPermit: number;
-        dtIndtuctionPermitUnder18: number;
-        dtIndtuctionPermitUnder21: number;
+        dtInstructionPermit: number;
+        dtInstructionPermitUnder18: number;
+        dtInstructionPermitUnder21: number;
         dtInterimDrivingLicense: number;
         dtInterimIdentityCard: number;
         dtIntermediateDrivingLicense: number;
         dtIntermediateDrivingLicenseUnder18: number;
         dtIntermediateDrivingLicenseUnder21: number;
         dtJuniorDrivingLicense: number;
-        dtLearnerIndtuctionalPermit: number;
+        dtLearnerInstructionalPermit: number;
         dtLearnerLicense: number;
         dtLearnerLicenseUnder18: number;
         dtLearnerLicenseUnder21: number;
@@ -2835,9 +2861,9 @@ export declare const Enum: {
         dtRacingAndGamingComissionCard: number;
         dtRefugeeTravelDocument: number;
         dtRenewalPermit: number;
-        dtRedtictedCommercialDrivingLicense: number;
-        dtRedtictedDrivingLicense: number;
-        dtRedtictedPermit: number;
+        dtRestrictedCommercialDrivingLicense: number;
+        dtRestrictedDrivingLicense: number;
+        dtRestrictedPermit: number;
         dtSeasonalPermit: number;
         dtSeasonalResidentIdentityCard: number;
         dtSeniorCitizenIdentityCard: number;
@@ -2847,9 +2873,9 @@ export declare const Enum: {
         dtTemporaryDrivingLicenseUnder18: number;
         dtTemporaryDrivingLicenseUnder21: number;
         dtTemporaryIdentityCard: number;
-        dtTemporaryIndtuctionPermitIdentityCard: number;
-        dtTemporaryIndtuctionPermitIdentityCardUnder18: number;
-        dtTemporaryIndtuctionPermitIdentityCardUnder21: number;
+        dtTemporaryInstructionPermitIdentityCard: number;
+        dtTemporaryInstructionPermitIdentityCardUnder18: number;
+        dtTemporaryInstructionPermitIdentityCardUnder21: number;
         dtTemporaryVisitorDrivingLicense: number;
         dtTemporaryVisitorDrivingLicenseUnder18: number;
         dtTemporaryVisitorDrivingLicenseUnder21: number;
@@ -2872,15 +2898,15 @@ export declare const Enum: {
         dtCertificateOfCitizenship: number;
         dtAddressCard: number;
         dtAirportImmigrationCard: number;
-        dtAlienRegidtationCard: number;
+        dtAlienRegistrationCard: number;
         dtAPEHCard: number;
-        dtCoupontoDrivingLicense: number;
+        dtCouponToDrivingLicense: number;
         dtCrewMemberCertificate: number;
         dtDocumentForReturn: number;
         dtECard: number;
         dtEmploymentCard: number;
         dtHKSARImmigrationForm: number;
-        dtImmigrantcard: number;
+        dtImmigrantCard: number;
         dtLabourCard: number;
         dtLaissezPasser: number;
         dtLawyerIdentityCertificate: number;
@@ -2892,7 +2918,7 @@ export declare const Enum: {
         dtPassportOfficial: number;
         dtPassportProvisional: number;
         dtPassportSpecial: number;
-        dtPermissiontotheLocalBorderTraffic: number;
+        dtPermissionToTheLocalBorderTraffic: number;
         dtSEDESOLCard: number;
         dtSocialCard: number;
         dtTBCard: number;
@@ -2925,6 +2951,10 @@ export declare const Enum: {
         dtInterimInstructionalPermit: number;
         dtCertificateOfCompetency: number;
         dtCertificateOfProficiency: number;
+        dtTradeLicense: number;
+        dtPassportPage: number;
+        dtInvoice: number;
+        dtPassengerLocatorForm: number;
     };
     DocFormat: {
         ID1: number;
@@ -2941,7 +2971,10 @@ export declare const Enum: {
         ERROR: number;
         NOTIFICATION: number;
         PROCESS_WHITE_UV_IMAGES: number;
+        PROCESS_WHITE_FLASHLIGHT: number;
         MORE_PAGES_AVAILABLE: number;
+        PROCESS_IR_FRAME: number;
+        TIMEOUT: number;
     };
     DocReaderFrame: {
         MAX: string;
@@ -3807,6 +3840,11 @@ export declare const Enum: {
         NONE: number;
         RPRM_LIGHT_UV: number;
         RPRM_LIGHT_WHITE_FULL: number;
+        RPRM_LIGHT_IR: number;
+        RPRM_Light_IR_TOP: number;
+        RPRM_Light_IR_SIDE: number;
+        RPRM_Light_IR_Full: number;
+        RPRM_LIGHT_OVD: number;
         getTranslation(value: number): string;
     };
     eRPRM_ResultType: {
@@ -4487,6 +4525,10 @@ export declare const Enum: {
         FT_VACCINATION_CERTIFICATE_IDENTIFIER: number;
         FT_FIRST_NAME: number;
         FT_DATE_OF_ARRIVAL: number;
+        FT_SECOND_NAME: number;
+        FT_THIRD_NAME: number;
+        FT_FOURTH_NAME: number;
+        FT_LAST_NAME: number;
         getTranslation(value: number): string;
     };
     FontStyle: {
@@ -4899,6 +4941,13 @@ export declare class DocumentReader extends IonicNativePlugin {
      */
     stopRFIDReader(): Promise<any>;
     /**
+     *  Use the method to display an error message after stop reading RFID on iOS
+     *
+     * @param {string} message error message
+     * @return {Promise<any>} Returns a promise
+     */
+    stopRFIDReaderWithErrorMessage(message: any): Promise<any>;
+    /**
      *  Use this method to close camera preview and stop processing
      *
      * @return {Promise<any>} Returns a promise
@@ -5158,14 +5207,6 @@ export declare class DocumentReader extends IonicNativePlugin {
      */
     initializeReaderWithDatabase(license: any, db: any): Promise<any>;
     /**
-     *  Use this method to recognize an image frame
-     *
-     * @param {string} image Image`s base64 representation
-     * @param {ImageInputParam} params Image input params
-     * @return {Promise<any>} Returns a promise
-     */
-    recognizeImageFrame(image: any, params: any): Observable<any>;
-    /**
      *  Use this method to recognize an image with options
      *
      * @param {string} image Image`s base64 representation
@@ -5200,14 +5241,6 @@ export declare class DocumentReader extends IonicNativePlugin {
      */
     showScannerWithCameraIDAndOpts(cameraID: any, options: any): Observable<any>;
     /**
-     *  Use this method to recognize images with parameters
-     *
-     * @param {string} image Image`s base64 representation
-     * @param {ImageInputParam} params Image input params
-     * @return {Promise<any>} Returns a promise
-     */
-    recognizeImageWithImageInputParams(image: any, params: any): Observable<any>;
-    /**
      *  Use this method to recognize a stream of frames
      *
      * @param {string} image Image`s base64 representation
@@ -5215,4 +5248,11 @@ export declare class DocumentReader extends IonicNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     recognizeImageWithCameraMode(image: any, mode: any): Observable<any>;
+    /**
+     *  Use this method to recognize images using ImageInputData
+     *
+     * @param {ImageInputData[]} images array of ImageInputData objects
+     * @return {Promise<any>} Returns a promise
+     */
+    recognizeImagesWithImageInputs(images: any): Promise<any>;
 }
