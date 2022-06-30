@@ -134,6 +134,8 @@ export class HomePage {
         }
         else
           handleResults(completion.results)
+      if (completion.action === Enum.DocReaderAction.TIMEOUT)
+        handleResults(completion.results)
     }
 
     function showRfidUI() {
@@ -265,15 +267,6 @@ export class HomePage {
     function handleResults(results: DocumentReaderResults) {
       clearResults()
       if (doRfid && results != null && results.chipPage != 0) {
-        var accessKey = results.getTextFieldValueByType({ fieldType: 51 })
-        if (accessKey != null && accessKey != "") {
-          accessKey = accessKey.replace(/^/g, '').replace(/\n/g, '')
-          DocumentReader.setRfidScenario({ mMrz: accessKey, mPacePasswordType: 1, })
-        } else {
-          accessKey = results.getTextFieldValueByType({ fieldType: 159 })
-          if (accessKey != null && accessKey != "")
-            DocumentReader.setRfidScenario({ mMrz: accessKey, mPacePasswordType: 2, })
-        }
         // customRFID()
         usualRFID()
       } else
