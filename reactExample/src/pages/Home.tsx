@@ -1,9 +1,9 @@
 import { IonPage, isPlatform } from '@ionic/react';
 import { DocumentReader, DocumentReaderScenario, Enum, DocumentReaderCompletion, DocumentReaderResults, DocumentReaderNotification } from '@regulaforensics/ionic-native-document-reader-beta';
 import React from "react";
-import { File } from '@ionic-native/file'
-import { AndroidPermissions } from "@ionic-native/android-permissions"
-import { ImagePicker } from "@ionic-native/image-picker"
+import { File } from '@awesome-cordova-plugins/file'
+import { AndroidPermissions } from "@awesome-cordova-plugins/android-permissions"
+import { ImagePicker } from "@awesome-cordova-plugins/image-picker"
 
 var doRfid: boolean = false
 var isReadingRfid: boolean = false
@@ -51,7 +51,10 @@ function onDeviceReady(){
         status.innerHTML = "Downloading database: " + r + "%"
       else {
         status.innerHTML = "Loading......"
-        DocumentReader.initializeReader(license).then(m => onInitialized()).catch(error1)
+        DocumentReader.initializeReader({
+          license: license,
+          delayedNNLoad: true
+      }).then(m => onInitialized()).catch(error1)
       }
     })
   })
@@ -168,8 +171,6 @@ function customRFID() {
 }
 
 function usualRFID() {
-  doRfid = false
-  rfidCheckbox.checked = false
   var notification = "rfidNotificationCompletionEvent"
   var paCert = "paCertificateCompletionEvent"
   var taCert = "taCertificateCompletionEvent"
