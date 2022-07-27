@@ -110,24 +110,25 @@ function stopRfid() {
   DocumentReader.stopRFIDReader()
 }
 
-function handleCompletion(completion: DocumentReaderCompletion) {
+function handleCompletion(completion?: DocumentReaderCompletion) {
+  if (completion == undefined) return;
   if (isReadingRfid && (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR))
     hideRfidUI()
   if (isReadingRfid && completion.action === Enum.DocReaderAction.NOTIFICATION)
-    updateRfidUI(completion.results!!.documentReaderNotification!!)
+    updateRfidUI(completion.results!.documentReaderNotification!)
   if (completion.action === Enum.DocReaderAction.COMPLETE)
     if (isReadingRfid) {
-      if (completion.results!!.rfidResult !== 1)
+      if (completion.results!.rfidResult !== 1)
         restartRfidUI()
       else {
         hideRfidUI()
-        displayResults(completion.results!!)
+        displayResults(completion.results!)
       }
     }
     else
-      handleResults(completion.results!!)
+      handleResults(completion.results!)
   if (completion.action === Enum.DocReaderAction.TIMEOUT)
-    handleResults(completion.results!!)
+    handleResults(completion.results!)
 }
 
 function showRfidUI() {
@@ -155,10 +156,10 @@ function restartRfidUI() {
 
 function updateRfidUI(notification: DocumentReaderNotification) {
   if (notification.code === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP)
-    rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(notification.attachment!!)
+    rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(notification.attachment!)
   rfidUIHeader = "Reading RFID"
   rfidUIHeaderColor = "black"
-  rfidProgress = notification.value!!
+  rfidProgress = notification.value!
   updateUI()
   if (isPlatform("ios"))
     DocumentReader.setRfidSessionStatus(rfidDescription + "\n" + notification.value + "%")
@@ -229,10 +230,10 @@ function postInitialize(scenarios: Array<any>, canRfid: boolean) {
     inputs.push(input)
     input.type = "radio"
     input.name = "scenario"
-    input.value = (DocumentReaderScenario.fromJson(typeof index === "string" ? JSON.parse(index) : index).name)!!
+    input.value = (DocumentReaderScenario.fromJson(typeof index === "string" ? JSON.parse(index) : index)!.name)!
     if (index == 0)
       input.checked = true
-    input.onclick = () => DocumentReader.setConfig({ processParams: { scenario: DocumentReaderScenario.fromJson(typeof index === "string" ? JSON.parse(index) : index).name } })
+    input.onclick = () => DocumentReader.setConfig({ processParams: { scenario: DocumentReaderScenario.fromJson(typeof index === "string" ? JSON.parse(index) : index)!.name } })
     input.style.display = "inline-block"
   }
   for (let input of inputs) {
@@ -263,12 +264,12 @@ function handleResults(results: DocumentReaderResults) {
 }
 
 function displayResults(results: DocumentReaderResults) {
-  status.innerHTML = results.getTextFieldValueByType!!({ fieldType: Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES })
+  status.innerHTML = results.getTextFieldValueByType({ fieldType: Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES })!
   status.style.backgroundColor = "green"
-  if (results.getGraphicFieldImageByType!!({ fieldType: Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE }) != null)
-    documentImage.src = "data:image/png;base64," + results.getGraphicFieldImageByType!!({ fieldType: Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE })
-  if (results.getGraphicFieldImageByType!!({ fieldType: Enum.eGraphicFieldType.GF_PORTRAIT }) != null)
-    portraitImage.src = "data:image/png;base64," + results.getGraphicFieldImageByType!!({ fieldType: Enum.eGraphicFieldType.GF_PORTRAIT })
+  if (results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE }) != null)
+    documentImage.src = "data:image/png;base64," + results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE })
+  if (results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_PORTRAIT }) != null)
+    portraitImage.src = "data:image/png;base64," + results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_PORTRAIT })
 }
 
 function clearResults() {
