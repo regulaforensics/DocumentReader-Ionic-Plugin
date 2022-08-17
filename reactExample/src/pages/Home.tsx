@@ -6,6 +6,7 @@ import { AndroidPermissions } from "@awesome-cordova-plugins/android-permissions
 import { ImagePicker } from "@awesome-cordova-plugins/image-picker"
 
 var doRfid: boolean = false
+var isReadingRfidCustomUi: boolean = false
 var isReadingRfid: boolean = false
 var rfidUIHeader: string = "Reading RFID"
 var rfidUIHeaderColor: string = "black"
@@ -44,7 +45,7 @@ status.innerHTML = "loading......"
 status.style.backgroundColor = "grey"
 document.addEventListener("deviceready", onDeviceReady, false);
 
-function onDeviceReady(){
+function onDeviceReady() {
   readFile("public/assets", "regula.license", (license: any) => {
     DocumentReader.prepareDatabase("Full").subscribe(r => {
       if (r != "database prepared")
@@ -54,7 +55,7 @@ function onDeviceReady(){
         DocumentReader.initializeReader({
           license: license,
           delayedNNLoad: true
-      }).then(m => onInitialized()).catch(error1)
+        }).then(m => onInitialized()).catch(error1)
       }
     })
   })
@@ -97,8 +98,8 @@ function readFile(dirPath: string, fileName: string, callback: any, ...items: an
 }
 
 function updateUI() {
-  mainUI.style.display = isReadingRfid ? "none" : ""
-  rfidUI.style.display = isReadingRfid ? "" : "none"
+  mainUI.style.display = isReadingRfidCustomUi ? "none" : ""
+  rfidUI.style.display = isReadingRfidCustomUi ? "" : "none"
   rfidUIHeaderRef.innerHTML = rfidUIHeader
   rfidUIHeaderRef.style.color = rfidUIHeaderColor
   rfidDescriptionRef.innerHTML = rfidDescription
@@ -112,12 +113,12 @@ function stopRfid() {
 
 function handleCompletion(completion?: DocumentReaderCompletion) {
   if (completion == undefined) return;
-  if (isReadingRfid && (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR))
+  if (isReadingRfidCustomUi && (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR))
     hideRfidUI()
-  if (isReadingRfid && completion.action === Enum.DocReaderAction.NOTIFICATION)
+  if (isReadingRfidCustomUi && completion.action === Enum.DocReaderAction.NOTIFICATION)
     updateRfidUI(completion.results!.documentReaderNotification!)
   if (completion.action === Enum.DocReaderAction.COMPLETE)
-    if (isReadingRfid) {
+    if (isReadingRfidCustomUi) {
       if (completion.results!.rfidResult !== 1)
         restartRfidUI()
       else {
@@ -129,18 +130,20 @@ function handleCompletion(completion?: DocumentReaderCompletion) {
       handleResults(completion.results!)
   if (completion.action === Enum.DocReaderAction.TIMEOUT)
     handleResults(completion.results!)
+  if (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR)
+    isReadingRfid = false
 }
 
 function showRfidUI() {
   // show animation
-  isReadingRfid = true
+  isReadingRfidCustomUi = true
   updateUI()
 }
 
 function hideRfidUI() {
   // show animation
   restartRfidUI()
-  isReadingRfid = false
+  isReadingRfidCustomUi = false
   rfidUIHeader = "Reading RFID"
   rfidUIHeaderColor = "black"
   updateUI()
@@ -172,6 +175,7 @@ function customRFID() {
 }
 
 function usualRFID() {
+  isReadingRfid = true
   var notification = "rfidNotificationCompletionEvent"
   var paCert = "paCertificateCompletionEvent"
   var taCert = "taCertificateCompletionEvent"
@@ -256,11 +260,13 @@ function postInitialize(scenarios: Array<any>, canRfid: boolean) {
 
 function handleResults(results: DocumentReaderResults) {
   clearResults()
-  if (doRfid && results != null && results.chipPage != 0) {
+  if (doRfid && !isReadingRfid && results != null && results.chipPage != 0) {
     // customRFID()
     usualRFID()
-  } else
+  } else {
+    isReadingRfid = false
     displayResults(results)
+  }
 }
 
 function displayResults(results: DocumentReaderResults) {

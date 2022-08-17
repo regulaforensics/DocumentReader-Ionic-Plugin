@@ -6,6 +6,7 @@ import { Platform } from '@ionic/angular'
 import { DocumentReader, DocumentReaderScenario, Enum, DocumentReaderCompletion, DocumentReaderResults, DocumentReaderNotification } from '@regulaforensics/ionic-native-document-reader-beta/ngx';
 
 var doRfid: boolean = false
+var isReadingRfidCustomUi: boolean = false
 var isReadingRfid: boolean = false
 var rfidUIHeader: string = "Reading RFID"
 var rfidUIHeaderColor: string = "black"
@@ -63,9 +64,9 @@ export class HomePage {
           else {
             app.status.nativeElement.innerHTML = "Loading......"
             DocumentReader.initializeReader({
-                    license: license,
-                    delayedNNLoad: true
-                }).then(m => onInitialized()).catch(error1)
+              license: license,
+              delayedNNLoad: true
+            }).then(m => onInitialized()).catch(error1)
           }
         })
       })
@@ -108,8 +109,8 @@ export class HomePage {
     }
 
     function updateUI() {
-      app.mainUI.nativeElement.style.display = isReadingRfid ? "none" : ""
-      app.rfidUI.nativeElement.style.display = isReadingRfid ? "" : "none"
+      app.mainUI.nativeElement.style.display = isReadingRfidCustomUi ? "none" : ""
+      app.rfidUI.nativeElement.style.display = isReadingRfidCustomUi ? "" : "none"
       app.rfidUIHeader.nativeElement.innerHTML = rfidUIHeader
       app.rfidUIHeader.nativeElement.style.color = rfidUIHeaderColor
       app.rfidDescription.nativeElement.innerHTML = rfidDescription
@@ -122,12 +123,12 @@ export class HomePage {
     }
 
     function handleCompletion(completion: DocumentReaderCompletion) {
-      if (isReadingRfid && (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR))
+      if (isReadingRfidCustomUi && (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR))
         hideRfidUI()
-      if (isReadingRfid && completion.action === Enum.DocReaderAction.NOTIFICATION)
+      if (isReadingRfidCustomUi && completion.action === Enum.DocReaderAction.NOTIFICATION)
         updateRfidUI(completion.results.documentReaderNotification)
       if (completion.action === Enum.DocReaderAction.COMPLETE)
-        if (isReadingRfid) {
+        if (isReadingRfidCustomUi) {
           if (completion.results.rfidResult !== 1)
             restartRfidUI()
           else {
@@ -139,18 +140,20 @@ export class HomePage {
           handleResults(completion.results)
       if (completion.action === Enum.DocReaderAction.TIMEOUT)
         handleResults(completion.results)
+      if (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR)
+        isReadingRfid = false
     }
 
     function showRfidUI() {
       // show animation
-      isReadingRfid = true
+      isReadingRfidCustomUi = true
       updateUI()
     }
 
     function hideRfidUI() {
       // show animation
       restartRfidUI()
-      isReadingRfid = false
+      isReadingRfidCustomUi = false
       rfidUIHeader = "Reading RFID"
       rfidUIHeaderColor = "black"
       updateUI()
@@ -182,6 +185,7 @@ export class HomePage {
     }
 
     function usualRFID() {
+      isReadingRfid = true
       var notification = "rfidNotificationCompletionEvent"
       var paCert = "paCertificateCompletionEvent"
       var taCert = "taCertificateCompletionEvent"
@@ -267,11 +271,13 @@ export class HomePage {
 
     function handleResults(results: DocumentReaderResults) {
       clearResults()
-      if (doRfid && results != null && results.chipPage != 0) {
+      if (doRfid && !isReadingRfid && results != null && results.chipPage != 0) {
         // customRFID()
         usualRFID()
-      } else
+      } else {
+        isReadingRfid = false
         displayResults(results)
+      }
     }
 
     function displayResults(results: DocumentReaderResults) {
