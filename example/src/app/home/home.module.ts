@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ImagePicker } from "@ionic-native/image-picker/ngx";
-import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { ImagePicker } from "@awesome-cordova-plugins/image-picker/ngx";
+import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 import { DocumentReader } from '@regulaforensics/ionic-native-document-reader/ngx';
 
 import { HomePage } from './home.page';

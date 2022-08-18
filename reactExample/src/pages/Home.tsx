@@ -1,11 +1,12 @@
 import { IonPage, isPlatform } from '@ionic/react';
 import { DocumentReader, DocumentReaderScenario, Enum, DocumentReaderCompletion, DocumentReaderResults, DocumentReaderNotification } from '@regulaforensics/ionic-native-document-reader';
 import React from "react";
-import { File } from '@ionic-native/file'
-import { AndroidPermissions } from "@ionic-native/android-permissions"
-import { ImagePicker } from "@ionic-native/image-picker"
+import { File } from '@awesome-cordova-plugins/file'
+import { AndroidPermissions } from "@awesome-cordova-plugins/android-permissions"
+import { ImagePicker } from "@awesome-cordova-plugins/image-picker"
 
 var doRfid: boolean = false
+var isReadingRfidCustomUi: boolean = false
 var isReadingRfid: boolean = false
 var rfidUIHeader: string = "Reading RFID"
 var rfidUIHeaderColor: string = "black"
@@ -44,14 +45,17 @@ status.innerHTML = "loading......"
 status.style.backgroundColor = "grey"
 document.addEventListener("deviceready", onDeviceReady, false);
 
-function onDeviceReady(){
+function onDeviceReady() {
   readFile("public/assets", "regula.license", (license: any) => {
     DocumentReader.prepareDatabase("Full").subscribe(r => {
       if (r != "database prepared")
         status.innerHTML = "Downloading database: " + r + "%"
       else {
         status.innerHTML = "Loading......"
-        DocumentReader.initializeReader(license).then(m => onInitialized()).catch(error1)
+        DocumentReader.initializeReader({
+          license: license,
+          delayedNNLoad: true
+        }).then(m => onInitialized()).catch(error1)
       }
     })
   })
@@ -94,8 +98,8 @@ function readFile(dirPath: string, fileName: string, callback: any, ...items: an
 }
 
 function updateUI() {
-  mainUI.style.display = isReadingRfid ? "none" : ""
-  rfidUI.style.display = isReadingRfid ? "" : "none"
+  mainUI.style.display = isReadingRfidCustomUi ? "none" : ""
+  rfidUI.style.display = isReadingRfidCustomUi ? "" : "none"
   rfidUIHeaderRef.innerHTML = rfidUIHeader
   rfidUIHeaderRef.style.color = rfidUIHeaderColor
   rfidDescriptionRef.innerHTML = rfidDescription
@@ -107,34 +111,39 @@ function stopRfid() {
   DocumentReader.stopRFIDReader()
 }
 
-function handleCompletion(completion: DocumentReaderCompletion) {
-  if (isReadingRfid && (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR))
+function handleCompletion(completion?: DocumentReaderCompletion) {
+  if (completion == undefined) return;
+  if (isReadingRfidCustomUi && (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR))
     hideRfidUI()
-  if (isReadingRfid && completion.action === Enum.DocReaderAction.NOTIFICATION)
-    updateRfidUI(completion.results!!.documentReaderNotification!!)
+  if (isReadingRfidCustomUi && completion.action === Enum.DocReaderAction.NOTIFICATION)
+    updateRfidUI(completion.results!.documentReaderNotification!)
   if (completion.action === Enum.DocReaderAction.COMPLETE)
-    if (isReadingRfid) {
-      if (completion.results!!.rfidResult !== 1)
+    if (isReadingRfidCustomUi) {
+      if (completion.results!.rfidResult !== 1)
         restartRfidUI()
       else {
         hideRfidUI()
-        displayResults(completion.results!!)
+        displayResults(completion.results!)
       }
     }
     else
-      handleResults(completion.results!!)
+      handleResults(completion.results!)
+  if (completion.action === Enum.DocReaderAction.TIMEOUT)
+    handleResults(completion.results!)
+  if (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR)
+    isReadingRfid = false
 }
 
 function showRfidUI() {
   // show animation
-  isReadingRfid = true
+  isReadingRfidCustomUi = true
   updateUI()
 }
 
 function hideRfidUI() {
   // show animation
   restartRfidUI()
-  isReadingRfid = false
+  isReadingRfidCustomUi = false
   rfidUIHeader = "Reading RFID"
   rfidUIHeaderColor = "black"
   updateUI()
@@ -150,10 +159,10 @@ function restartRfidUI() {
 
 function updateRfidUI(notification: DocumentReaderNotification) {
   if (notification.code === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP)
-    rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(notification.attachment!!)
+    rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(notification.attachment!)
   rfidUIHeader = "Reading RFID"
   rfidUIHeaderColor = "black"
-  rfidProgress = notification.value!!
+  rfidProgress = notification.value!
   updateUI()
   if (isPlatform("ios"))
     DocumentReader.setRfidSessionStatus(rfidDescription + "\n" + notification.value + "%")
@@ -166,8 +175,7 @@ function customRFID() {
 }
 
 function usualRFID() {
-  doRfid = false
-  rfidCheckbox.checked = false
+  isReadingRfid = true
   var notification = "rfidNotificationCompletionEvent"
   var paCert = "paCertificateCompletionEvent"
   var taCert = "taCertificateCompletionEvent"
@@ -226,10 +234,10 @@ function postInitialize(scenarios: Array<any>, canRfid: boolean) {
     inputs.push(input)
     input.type = "radio"
     input.name = "scenario"
-    input.value = (DocumentReaderScenario.fromJson(typeof index === "string" ? JSON.parse(index) : index).name)!!
+    input.value = (DocumentReaderScenario.fromJson(typeof index === "string" ? JSON.parse(index) : index)!.name)!
     if (index == 0)
       input.checked = true
-    input.onclick = () => DocumentReader.setConfig({ processParams: { scenario: DocumentReaderScenario.fromJson(typeof index === "string" ? JSON.parse(index) : index).name } })
+    input.onclick = () => DocumentReader.setConfig({ processParams: { scenario: DocumentReaderScenario.fromJson(typeof index === "string" ? JSON.parse(index) : index)!.name } })
     input.style.display = "inline-block"
   }
   for (let input of inputs) {
@@ -252,29 +260,22 @@ function postInitialize(scenarios: Array<any>, canRfid: boolean) {
 
 function handleResults(results: DocumentReaderResults) {
   clearResults()
-  if (doRfid && results != null && results.chipPage != 0) {
-    var accessKey = results.getTextFieldValueByType!!({ fieldType: 51 })
-    if (accessKey != null && accessKey != "") {
-      accessKey = accessKey.replace(/^/g, '').replace(/\n/g, '')
-      DocumentReader.setRfidScenario({ mMrz: accessKey, mPacePasswordType: 1, })
-    } else {
-      accessKey = results.getTextFieldValueByType!!({ fieldType: 159 })
-      if (accessKey != null && accessKey != "")
-        DocumentReader.setRfidScenario({ mMrz: accessKey, mPacePasswordType: 2, })
-    }
+  if (doRfid && !isReadingRfid && results != null && results.chipPage != 0) {
     // customRFID()
     usualRFID()
-  } else
+  } else {
+    isReadingRfid = false
     displayResults(results)
+  }
 }
 
 function displayResults(results: DocumentReaderResults) {
-  status.innerHTML = results.getTextFieldValueByType!!({ fieldType: Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES })
+  status.innerHTML = results.getTextFieldValueByType({ fieldType: Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES })!
   status.style.backgroundColor = "green"
-  if (results.getGraphicFieldImageByType!!({ fieldType: Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE }) != null)
-    documentImage.src = "data:image/png;base64," + results.getGraphicFieldImageByType!!({ fieldType: Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE })
-  if (results.getGraphicFieldImageByType!!({ fieldType: Enum.eGraphicFieldType.GF_PORTRAIT }) != null)
-    portraitImage.src = "data:image/png;base64," + results.getGraphicFieldImageByType!!({ fieldType: Enum.eGraphicFieldType.GF_PORTRAIT })
+  if (results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE }) != null)
+    documentImage.src = "data:image/png;base64," + results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE })
+  if (results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_PORTRAIT }) != null)
+    portraitImage.src = "data:image/png;base64," + results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_PORTRAIT })
 }
 
 function clearResults() {
