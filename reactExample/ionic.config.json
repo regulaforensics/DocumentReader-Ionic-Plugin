@@ -1,7 +1,0 @@
-{
-    "name": "DocumentReader",
-    "integrations": {
-        "capacitor": {}
-    },
-    "type": "react"
-}

@@ -4879,6 +4879,24 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      */
     initializeReaderAutomatically(): Promise<any>;
     /**
+     *  Checks if all required bluetooth permissions are granted and requests them if needed(Android only, ignored on iOS)
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    isBlePermissionsGranted(): Promise<any>;
+    /**
+     *  Searches for ble devices(Android only, ignored on iOS)
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    startBluetoothService(): Promise<any>;
+    /**
+     *  Initializes document reader with license from connected Device7310(Android only, ignored on iOS)
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    initializeReaderDevice7310Config(): Promise<any>;
+    /**
      *  Allows you to get the API version
      *
      * @return {Promise<any>} Returns a promise
@@ -5184,11 +5202,11 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      *
      * @param {object} config Object with structure
      *      "license": "license base64 string(necessary)"
-     *      "customDb": "custom database base64 string(android only, ignored on iOS)"
+     *      "customDb": "custom database base64 string(Android only, ignored on iOS)"
      *      "databasePath": "database path(iOS only, ignored on android)"
      *      "licenseUpdate": true
      *      "delayedNNLoad": false
-     *      "blackList": {} // android only, ignored on iOS
+     *      "blackList": {} // Android only, ignored on iOS
      * @return {Promise<any>} Returns a promise
      */
     initializeReader(config: any): Promise<any>;
