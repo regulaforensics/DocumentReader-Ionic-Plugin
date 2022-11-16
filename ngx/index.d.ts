@@ -73,6 +73,8 @@ export declare class DocumentReaderValue {
     originalValue?: string;
     boundRect?: Rect;
     comparison?: Record<number, number>;
+    originalSymbols?: DocumentReaderSymbol[];
+    rfidOrigin?: DocumentReaderRfidOrigin;
     static fromJson(jsonObject?: any): DocumentReaderValue | undefined;
 }
 export declare class DocumentReaderTextField {
@@ -81,12 +83,18 @@ export declare class DocumentReaderTextField {
     status?: number;
     lcidName?: string;
     fieldName?: string;
-    value?: DocumentReaderValue;
+    value?: string;
+    getValue?: DocumentReaderValue;
     values?: DocumentReaderValue[];
+    comparisonList?: DocumentReaderComparison[];
+    validityList?: DocumentReaderValidity[];
     static fromJson(jsonObject?: any): DocumentReaderTextField | undefined;
 }
 export declare class DocumentReaderTextResult {
     status?: number;
+    comparisonStatus?: number;
+    validityStatus?: number;
+    availableSourceList?: DocumentReaderTextSource[];
     fields?: DocumentReaderTextField[];
     static fromJson(jsonObject?: any): DocumentReaderTextResult | undefined;
 }
@@ -343,27 +351,8 @@ export declare class RfidNotificationCompletion {
 }
 export declare class DocumentReaderException {
     errorCode?: number;
-    localizedMessage?: string;
     message?: string;
-    string?: string;
-    stackTrace?: StackTraceElement[];
     static fromJson(jsonObject?: any): DocumentReaderException | undefined;
-}
-export declare class Throwable {
-    localizedMessage?: string;
-    message?: string;
-    string?: string;
-    stackTrace?: StackTraceElement[];
-    static fromJson(jsonObject?: any): Throwable | undefined;
-}
-export declare class StackTraceElement {
-    lineNumber?: number;
-    isNativeMethod?: boolean;
-    className?: string;
-    fileName?: string;
-    methodName?: string;
-    string?: string;
-    static fromJson(jsonObject?: any): StackTraceElement | undefined;
 }
 export declare class PKDCertificate {
     binaryData?: string;
@@ -447,21 +436,6 @@ export declare class BytesData {
     type?: number;
     static fromJson(jsonObject?: any): BytesData | undefined;
 }
-export declare class DocumentReaderUvFiberElement {
-    rectArray?: DocReaderFieldRect[];
-    rectCount?: number;
-    expectedCount?: number;
-    width?: number[];
-    length?: number[];
-    area?: number[];
-    colorValues?: number[];
-    status?: number;
-    elementType?: number;
-    elementDiagnose?: number;
-    elementTypeName?: string;
-    elementDiagnoseName?: string;
-    static fromJson(jsonObject?: any): DocumentReaderUvFiberElement | undefined;
-}
 export declare class ImageInputData {
     pageIndex?: number;
     light?: number;
@@ -471,6 +445,45 @@ export declare class ImageInputData {
     bitmap?: string;
     imgBytes?: any[];
     static fromJson(jsonObject?: any): ImageInputData | undefined;
+}
+export declare class DocReaderDocumentsDatabase {
+    databaseID?: string;
+    version?: string;
+    date?: string;
+    databaseDescription?: string;
+    countriesNumber?: number;
+    documentsNumber?: number;
+    static fromJson(jsonObject?: any): DocReaderDocumentsDatabase | undefined;
+}
+export declare class DocumentReaderComparison {
+    sourceTypeLeft?: number;
+    sourceTypeRight?: number;
+    status?: number;
+    static fromJson(jsonObject?: any): DocumentReaderComparison | undefined;
+}
+export declare class DocumentReaderRfidOrigin {
+    dg?: number;
+    dgTag?: number;
+    entryView?: number;
+    tagEntry?: number;
+    static fromJson(jsonObject?: any): DocumentReaderRfidOrigin | undefined;
+}
+export declare class DocumentReaderTextSource {
+    sourceType?: number;
+    source?: string;
+    validityStatus?: number;
+    static fromJson(jsonObject?: any): DocumentReaderTextSource | undefined;
+}
+export declare class DocumentReaderSymbol {
+    code?: number;
+    rect?: Rect;
+    probability?: number;
+    static fromJson(jsonObject?: any): DocumentReaderSymbol | undefined;
+}
+export declare class DocumentReaderValidity {
+    sourceType?: number;
+    status?: number;
+    static fromJson(jsonObject?: any): DocumentReaderValidity | undefined;
 }
 export declare class DocumentReaderResults {
     chipPage?: number;
@@ -541,6 +554,7 @@ export declare const eRPRM_Authenticity: {
     BARCODE_FORMAT_CHECK: number;
     KINEGRAM: number;
     HOLOGRAMS_DETECTION: number;
+    MRZ: number;
 };
 export declare const eRFID_ErrorCodes: {
     RFID_ERROR_NO_ERROR: number;
@@ -1074,6 +1088,7 @@ export declare const eCheckDiagnose: {
     FALSE_IPI_PARAMETERS: number;
     FIELD_POS_CORRECTOR_HIGHLIGHT_IR: number;
     FIELD_POS_CORRECTOR_GLARES_IN_PHOTO_AREA: number;
+    FIELD_POS_CORRECTOR_PHOTO_REPLACED: number;
     OVI_IR_INVISIBLE: number;
     OVI_INSUFFICIENT_AREA: number;
     OVI_COLOR_INVARIABLE: number;
@@ -1126,6 +1141,8 @@ export declare const eCheckDiagnose: {
     FINISHED_BY_TIMEOUT: number;
     HOLO_PHOTO_DOCUMENT_OUTSIDE_FRAME: number;
     LIVENESS_DEPTH_CHECK_FAILED: number;
+    MRZ_QUALITY_WRONG_MRZ_DPI: number;
+    MRZ_QUALITY_WRONG_BACKGROUND: number;
     LAST_DIAGNOSE_VALUE: number;
 };
 export declare const RFIDDelegate: {
@@ -2704,6 +2721,7 @@ export declare const Enum: {
         BARCODE_FORMAT_CHECK: number;
         KINEGRAM: number;
         HOLOGRAMS_DETECTION: number;
+        MRZ: number;
     };
     eRFID_ErrorCodes: {
         RFID_ERROR_NO_ERROR: number;
@@ -3237,6 +3255,7 @@ export declare const Enum: {
         FALSE_IPI_PARAMETERS: number;
         FIELD_POS_CORRECTOR_HIGHLIGHT_IR: number;
         FIELD_POS_CORRECTOR_GLARES_IN_PHOTO_AREA: number;
+        FIELD_POS_CORRECTOR_PHOTO_REPLACED: number;
         OVI_IR_INVISIBLE: number;
         OVI_INSUFFICIENT_AREA: number;
         OVI_COLOR_INVARIABLE: number;
@@ -3289,6 +3308,8 @@ export declare const Enum: {
         FINISHED_BY_TIMEOUT: number;
         HOLO_PHOTO_DOCUMENT_OUTSIDE_FRAME: number;
         LIVENESS_DEPTH_CHECK_FAILED: number;
+        MRZ_QUALITY_WRONG_MRZ_DPI: number;
+        MRZ_QUALITY_WRONG_BACKGROUND: number;
         LAST_DIAGNOSE_VALUE: number;
     };
     RFIDDelegate: {
@@ -4879,6 +4900,30 @@ export declare class DocumentReader extends AwesomeCordovaNativePlugin {
      */
     initializeReaderAutomatically(): Promise<any>;
     /**
+     *  Checks if all required bluetooth permissions are granted and requests them if needed(Android only, ignored on iOS)
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    isBlePermissionsGranted(): Promise<any>;
+    /**
+     *  Searches for ble devices(Android only, ignored on iOS)
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    startBluetoothService(): Promise<any>;
+    /**
+     *  Initializes document reader with license from connected Device7310(Android only, ignored on iOS)
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    initializeReaderBleDeviceConfig(): Promise<any>;
+    /**
+     *  returns tag property of DocumentReader class
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    getTag(): Promise<any>;
+    /**
      *  Allows you to get the API version
      *
      * @return {Promise<any>} Returns a promise
@@ -5131,6 +5176,20 @@ export declare class DocumentReader extends AwesomeCordovaNativePlugin {
      */
     setCameraSessionIsPaused(paused: any): Promise<any>;
     /**
+     *  sets DocumentReader.tag
+     *
+     * @param {string} tag tag
+     * @return {Promise<any>} Returns a promise
+     */
+    setTag(tag: any): Promise<any>;
+    /**
+     *  checks for database update
+     *
+     * @param {string} databaseId id of the database
+     * @return {Promise<any>} Returns a promise
+     */
+    checkDatabaseUpdate(databaseId: any): Promise<any>;
+    /**
      *  Use this method to get a scenario
      *
      * @param {string} scenario Scenario`s unique identifier
@@ -5184,11 +5243,11 @@ export declare class DocumentReader extends AwesomeCordovaNativePlugin {
      *
      * @param {object} config Object with structure
      *      "license": "license base64 string(necessary)"
-     *      "customDb": "custom database base64 string(android only, ignored on iOS)"
+     *      "customDb": "custom database base64 string(Android only, ignored on iOS)"
      *      "databasePath": "database path(iOS only, ignored on android)"
      *      "licenseUpdate": true
      *      "delayedNNLoad": false
-     *      "blackList": {} // android only, ignored on iOS
+     *      "blackList": {} // Android only, ignored on iOS
      * @return {Promise<any>} Returns a promise
      */
     initializeReader(config: any): Promise<any>;
