@@ -281,12 +281,22 @@ export class HomePage {
     }
 
     function displayResults(results: DocumentReaderResults) {
-      app.status.nativeElement.innerHTML = results.getTextFieldValueByType({ fieldType: Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES })
-      app.status.nativeElement.style.backgroundColor = "green"
-      if (results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE }) != null)
-        app.documentImage.nativeElement.src = "data:image/png;base64," + results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE })
-      if (results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_PORTRAIT }) != null)
-        app.portraitImage.nativeElement.src = "data:image/png;base64," + results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_PORTRAIT })
+      if (results == undefined) return
+
+      DocumentReader.getTextFieldValueByType(results, Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES).then(value => {
+        app.status.nativeElement.style.backgroundColor = "green"
+        app.status.nativeElement.innerHTML = value
+      })
+
+      DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE).then(value => {
+        if (value != undefined)
+          app.documentImage.nativeElement.src = "data:image/png;base64," + value
+      })
+
+      DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_PORTRAIT).then(value => {
+        if (value != undefined)
+          app.portraitImage.nativeElement.src = "data:image/png;base64," + value
+      })
     }
 
     function clearResults() {
