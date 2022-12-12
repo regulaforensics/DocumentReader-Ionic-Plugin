@@ -320,7 +320,8 @@ export class HomePage {
         File.readAsDataURL((app.platform.is("ios") ? "file://" : "") + results[0].substring(0, (results[0] as string).lastIndexOf("/")), results[0].substring((results[0] as string).lastIndexOf("/") + 1)).then((file => {
           app.status.nativeElement.innerHTML = "processing image......"
           app.status.nativeElement.style.backgroundColor = "grey"
-          DocumentReader.recognizeImage((file as string).substring(23)).subscribe(m =>
+          let fileString = (file as string)
+          DocumentReader.recognizeImage(fileString.substring(fileString.indexOf(",") + 1)).subscribe(m =>
             handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m))))
         })).catch(error2)
       }, error2)

@@ -507,6 +507,52 @@ export declare class DocumentReaderResults {
     documentType?: DocumentReaderDocumentType[];
     status?: DocumentReaderResultsStatus;
     vdsncData?: VDSNCData;
+    /**
+     * @deprecated Use DocumentReader.getTextFieldValueBy...()
+     */
+    getTextFieldValueByType({ fieldType, lcid, source, original }: {
+        fieldType: number;
+        lcid?: number;
+        source?: number;
+        original?: boolean;
+    }): string | undefined;
+    /**
+     * @deprecated
+     */
+    getTextFieldStatusByType(fieldType: number, lcid?: number): number;
+    /**
+     * @deprecated Use DocumentReader.getGraphicFieldImageBy...()
+     */
+    getGraphicFieldImageByType({ fieldType, source, light, pageIndex }: {
+        fieldType: number;
+        source?: number;
+        light?: number;
+        pageIndex?: number;
+    }): string | undefined;
+    /**
+     * @deprecated
+     */
+    getQualityResult({ imageQualityCheckType, securityFeature, pageIndex }: {
+        imageQualityCheckType: number;
+        securityFeature?: number;
+        pageIndex?: number;
+    }): number;
+    /**
+     * @deprecated
+     */
+    findByTypeAndLcid(type: number, lcid?: number): DocumentReaderTextField | undefined;
+    /**
+     * @deprecated
+     */
+    findBySource(field: DocumentReaderTextField, sourceType: number): DocumentReaderValue | undefined;
+    /**
+     * @deprecated Use DocumentReader.getContainers()
+     */
+    getContainers(resultTypes: number[]): string | undefined;
+    /**
+     * @deprecated Use DocumentReader.getEncryptedContainers()
+     */
+    getEncryptedContainers(): string | undefined;
     static fromJson(jsonObject?: any): DocumentReaderResults | undefined;
 }
 export declare const FontStyle: {

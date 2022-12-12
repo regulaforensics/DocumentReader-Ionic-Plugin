@@ -270,22 +270,22 @@ function handleResults(results: DocumentReaderResults) {
 }
 
 function displayResults(results: DocumentReaderResults) {
-  if(results == null) return
+  if (results == null) return
 
   DocumentReader.getTextFieldValueByType(results, Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES).then((value: string | undefined) => {
-    if(value != null){
+    if (value != null) {
       status.innerHTML = value
       status.style.backgroundColor = "green"
     }
   })
 
   DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE).then((value: string | undefined) => {
-    if(value != null)
+    if (value != null)
       documentImage.src = "data:image/png;base64," + value
   })
 
   DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_PORTRAIT).then((value: string | undefined) => {
-    if(value != null)
+    if (value != null)
       portraitImage.src = "data:image/png;base64," + value
   })
 }
@@ -311,7 +311,8 @@ function recognize() {
     File.readAsDataURL((isPlatform("ios") ? "file://" : "") + results[0].substring(0, (results[0] as string).lastIndexOf("/")), results[0].substring((results[0] as string).lastIndexOf("/") + 1)).then((file => {
       status.innerHTML = "processing image......"
       status.style.backgroundColor = "grey"
-      DocumentReader.recognizeImage((file as string).substring(23)).subscribe((m: string) =>
+      let fileString = (file as string)
+      DocumentReader.recognizeImage(fileString.substring(fileString.indexOf(",") + 1)).subscribe((m: string) =>
         handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m))))
     })).catch(error2)
   }, error2)
