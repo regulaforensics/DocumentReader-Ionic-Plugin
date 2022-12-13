@@ -507,8 +507,9 @@ export declare class DocumentReaderResults {
     documentType?: DocumentReaderDocumentType[];
     status?: DocumentReaderResultsStatus;
     vdsncData?: VDSNCData;
+    static fromJson(jsonObject?: any): DocumentReaderResults | undefined;
     /**
-     * @deprecated Use DocumentReader.getTextFieldValueBy...()
+     * @deprecated Use DocumentReader.textFieldValueBy...()
      */
     getTextFieldValueByType({ fieldType, lcid, source, original }: {
         fieldType: number;
@@ -521,7 +522,7 @@ export declare class DocumentReaderResults {
      */
     getTextFieldStatusByType(fieldType: number, lcid?: number): number;
     /**
-     * @deprecated Use DocumentReader.getGraphicFieldImageBy...()
+     * @deprecated Use DocumentReader.graphicFieldImageBy...()
      */
     getGraphicFieldImageByType({ fieldType, source, light, pageIndex }: {
         fieldType: number;
@@ -546,14 +547,13 @@ export declare class DocumentReaderResults {
      */
     findBySource(field: DocumentReaderTextField, sourceType: number): DocumentReaderValue | undefined;
     /**
-     * @deprecated Use DocumentReader.getContainers()
+     * @deprecated Use DocumentReader.containers()
      */
     getContainers(resultTypes: number[]): string | undefined;
     /**
-     * @deprecated Use DocumentReader.getEncryptedContainers()
+     * @deprecated Use DocumentReader.encryptedContainers()
      */
     getEncryptedContainers(): string | undefined;
-    static fromJson(jsonObject?: any): DocumentReaderResults | undefined;
 }
 export declare const FontStyle: {
     NORMAL: number;
@@ -5398,21 +5398,21 @@ export declare class DocumentReader extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     recognizeImagesWithImageInputs(images: any): Promise<any>;
-    getTextFieldValueByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
-    getTextFieldValueByTypeLcid(results: DocumentReaderResults, fieldType: number, lcid: number): Promise<string | undefined>;
-    getTextFieldValueByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
-    getTextFieldValueByTypeLcidSource(results: DocumentReaderResults, fieldType: number, lcid: number, source: number): Promise<string | undefined>;
-    getTextFieldValueByTypeSourceOriginal(results: DocumentReaderResults, fieldType: number, source: number, original: boolean): Promise<string | undefined>;
-    getTextFieldValueByTypeLcidSourceOriginal(results: DocumentReaderResults, fieldType: number, lcid: number, source: number, original: boolean): Promise<string | undefined>;
-    getTextFieldByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
-    getTextFieldByTypeLcid(results: DocumentReaderResults, fieldType: number, lcid: number): Promise<string | undefined>;
-    getGraphicFieldByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
-    getGraphicFieldByTypeSourcePageIndex(results: DocumentReaderResults, fieldType: number, source: number, pageIndex: number): Promise<string | undefined>;
-    getGraphicFieldByTypeSourcePageIndexLight(results: DocumentReaderResults, fieldType: number, source: number, pageIndex: number, light: number): Promise<string | undefined>;
-    getGraphicFieldImageByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
-    getGraphicFieldImageByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
-    getGraphicFieldImageByTypeSourcePageIndex(results: DocumentReaderResults, fieldType: number, source: number, pageIndex: number): Promise<string | undefined>;
-    getGraphicFieldImageByTypeSourcePageIndexLight(results: DocumentReaderResults, fieldType: number, source: number, pageIndex: number, light: number): Promise<string | undefined>;
-    getContainers(results: DocumentReaderResults, resultType: number[]): Promise<string | undefined>;
-    getEncryptedContainers(results: DocumentReaderResults): Promise<string | undefined>;
+    textFieldValueByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
+    textFieldValueByTypeLcid(results: DocumentReaderResults, fieldType: number, lcid: number): Promise<string | undefined>;
+    textFieldValueByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
+    textFieldValueByTypeLcidSource(results: DocumentReaderResults, fieldType: number, lcid: number, source: number): Promise<string | undefined>;
+    textFieldValueByTypeSourceOriginal(results: DocumentReaderResults, fieldType: number, source: number, original: boolean): Promise<string | undefined>;
+    textFieldValueByTypeLcidSourceOriginal(results: DocumentReaderResults, fieldType: number, lcid: number, source: number, original: boolean): Promise<string | undefined>;
+    textFieldByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
+    textFieldByTypeLcid(results: DocumentReaderResults, fieldType: number, lcid: number): Promise<string | undefined>;
+    graphicFieldByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
+    graphicFieldByTypeSourcePageIndex(results: DocumentReaderResults, fieldType: number, source: number, pageIndex: number): Promise<string | undefined>;
+    graphicFieldByTypeSourcePageIndexLight(results: DocumentReaderResults, fieldType: number, source: number, pageIndex: number, light: number): Promise<string | undefined>;
+    graphicFieldImageByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
+    graphicFieldImageByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
+    graphicFieldImageByTypeSourcePageIndex(results: DocumentReaderResults, fieldType: number, source: number, pageIndex: number): Promise<string | undefined>;
+    graphicFieldImageByTypeSourcePageIndexLight(results: DocumentReaderResults, fieldType: number, source: number, pageIndex: number, light: number): Promise<string | undefined>;
+    containers(results: DocumentReaderResults, resultType: number[]): Promise<string | undefined>;
+    encryptedContainers(results: DocumentReaderResults): Promise<string | undefined>;
 }

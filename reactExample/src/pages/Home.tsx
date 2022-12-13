@@ -272,19 +272,19 @@ function handleResults(results: DocumentReaderResults) {
 function displayResults(results: DocumentReaderResults) {
   if (results == null) return
 
-  DocumentReader.getTextFieldValueByType(results, Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES).then((value: string | undefined) => {
+  DocumentReader.textFieldValueByType(results, Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES).then((value: string | undefined) => {
     if (value != null) {
       status.innerHTML = value
       status.style.backgroundColor = "green"
     }
   })
 
-  DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE).then((value: string | undefined) => {
+  DocumentReader.graphicFieldImageByType(results, Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE).then((value: string | undefined) => {
     if (value != null)
       documentImage.src = "data:image/png;base64," + value
   })
 
-  DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_PORTRAIT).then((value: string | undefined) => {
+  DocumentReader.graphicFieldImageByType(results, Enum.eGraphicFieldType.GF_PORTRAIT).then((value: string | undefined) => {
     if (value != null)
       portraitImage.src = "data:image/png;base64," + value
   })

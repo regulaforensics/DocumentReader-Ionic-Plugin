@@ -283,17 +283,17 @@ export class HomePage {
     function displayResults(results: DocumentReaderResults) {
       if (results == undefined) return
 
-      DocumentReader.getTextFieldValueByType(results, Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES).then(value => {
+      DocumentReader.textFieldValueByType(results, Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES).then(value => {
         app.status.nativeElement.style.backgroundColor = "green"
         app.status.nativeElement.innerHTML = value
       })
 
-      DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE).then(value => {
+      DocumentReader.graphicFieldImageByType(results, Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE).then(value => {
         if (value != undefined)
           app.documentImage.nativeElement.src = "data:image/png;base64," + value
       })
 
-      DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_PORTRAIT).then(value => {
+      DocumentReader.graphicFieldImageByType(results, Enum.eGraphicFieldType.GF_PORTRAIT).then(value => {
         if (value != undefined)
           app.portraitImage.nativeElement.src = "data:image/png;base64," + value
       })
