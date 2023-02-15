@@ -514,6 +514,7 @@ export declare class DocumentReaderResults {
     documentType?: DocumentReaderDocumentType[];
     status?: DocumentReaderResultsStatus;
     vdsncData?: VDSNCData;
+    static fromJson(jsonObject?: any): DocumentReaderResults | undefined;
     /**
      * @deprecated Use DocumentReader.textFieldValueBy...()
      */
@@ -560,7 +561,6 @@ export declare class DocumentReaderResults {
      * @deprecated Use DocumentReader.encryptedContainers()
      */
     getEncryptedContainers(): string | undefined;
-    static fromJson(jsonObject?: any): DocumentReaderResults | undefined;
 }
 export declare const FontStyle: {
     NORMAL: number;

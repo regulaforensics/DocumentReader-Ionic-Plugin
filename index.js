@@ -1267,6 +1267,68 @@ export { DocumentReaderValidity };
 var DocumentReaderResults = /** @class */ (function () {
     function DocumentReaderResults() {
     }
+    DocumentReaderResults.fromJson = function (jsonObject) {
+        if (jsonObject == null || jsonObject == undefined)
+            return undefined;
+        var result = new DocumentReaderResults;
+        result.chipPage = jsonObject["chipPage"];
+        result.processingFinishedStatus = jsonObject["processingFinishedStatus"];
+        result.elapsedTime = jsonObject["elapsedTime"];
+        result.elapsedTimeRFID = jsonObject["elapsedTimeRFID"];
+        result.morePagesAvailable = jsonObject["morePagesAvailable"];
+        result.rfidResult = jsonObject["rfidResult"];
+        result.highResolution = jsonObject["highResolution"];
+        result.graphicResult = DocumentReaderGraphicResult.fromJson(jsonObject["graphicResult"]);
+        result.textResult = DocumentReaderTextResult.fromJson(jsonObject["textResult"]);
+        result.documentPosition = [];
+        if (jsonObject["documentPosition"] != null) {
+            for (var i in jsonObject["documentPosition"]) {
+                var item = ElementPosition.fromJson(jsonObject["documentPosition"][i]);
+                if (item != undefined)
+                    result.documentPosition.push(item);
+            }
+        }
+        result.barcodePosition = [];
+        if (jsonObject["barcodePosition"] != null) {
+            for (var i in jsonObject["barcodePosition"]) {
+                var item = ElementPosition.fromJson(jsonObject["barcodePosition"][i]);
+                if (item != undefined)
+                    result.barcodePosition.push(item);
+            }
+        }
+        result.mrzPosition = [];
+        if (jsonObject["mrzPosition"] != null) {
+            for (var i in jsonObject["mrzPosition"]) {
+                var item = ElementPosition.fromJson(jsonObject["mrzPosition"][i]);
+                if (item != undefined)
+                    result.mrzPosition.push(item);
+            }
+        }
+        result.imageQuality = [];
+        if (jsonObject["imageQuality"] != null) {
+            for (var i in jsonObject["imageQuality"]) {
+                var item = ImageQualityGroup.fromJson(jsonObject["imageQuality"][i]);
+                if (item != undefined)
+                    result.imageQuality.push(item);
+            }
+        }
+        result.rawResult = jsonObject["rawResult"];
+        result.documentReaderNotification = DocumentReaderNotification.fromJson(jsonObject["documentReaderNotification"]);
+        result.rfidSessionData = RFIDSessionData.fromJson(jsonObject["rfidSessionData"]);
+        result.authenticityResult = DocumentReaderAuthenticityResult.fromJson(jsonObject["authenticityResult"]);
+        result.barcodeResult = DocumentReaderBarcodeResult.fromJson(jsonObject["barcodeResult"]);
+        result.documentType = [];
+        if (jsonObject["documentType"] != null) {
+            for (var i in jsonObject["documentType"]) {
+                var item = DocumentReaderDocumentType.fromJson(jsonObject["documentType"][i]);
+                if (item != undefined)
+                    result.documentType.push(item);
+            }
+        }
+        result.status = DocumentReaderResultsStatus.fromJson(jsonObject["status"]);
+        result.vdsncData = VDSNCData.fromJson(jsonObject["vdsncData"]);
+        return result;
+    };
     /**
      * @deprecated Use DocumentReaderOriginal.textFieldValueBy...()
      */
