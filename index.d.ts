@@ -88,6 +88,8 @@ export declare class DocumentReaderTextField {
     values?: DocumentReaderValue[];
     comparisonList?: DocumentReaderComparison[];
     validityList?: DocumentReaderValidity[];
+    comparisonStatus?: number;
+    validityStatus?: number;
     static fromJson(jsonObject?: any): DocumentReaderTextField | undefined;
 }
 export declare class DocumentReaderTextResult {
@@ -151,8 +153,10 @@ export declare class DocumentReaderDocumentType {
 }
 export declare class DocumentReaderNotification {
     code?: number;
-    attachment?: number;
     value?: number;
+    notificationCode?: number;
+    dataFileType?: number;
+    progress?: number;
     static fromJson(jsonObject?: any): DocumentReaderNotification | undefined;
 }
 export declare class AccessControlProcedureType {
@@ -486,7 +490,9 @@ export declare class DocumentReaderValidity {
     static fromJson(jsonObject?: any): DocumentReaderValidity | undefined;
 }
 export declare class DocumentReaderResults {
+    videoCaptureSessionId?: string;
     chipPage?: number;
+    irElapsedTime?: number;
     processingFinishedStatus?: number;
     elapsedTime?: number;
     elapsedTimeRFID?: number;
@@ -504,10 +510,57 @@ export declare class DocumentReaderResults {
     rfidSessionData?: RFIDSessionData;
     authenticityResult?: DocumentReaderAuthenticityResult;
     barcodeResult?: DocumentReaderBarcodeResult;
+    ppmIn?: number;
     documentType?: DocumentReaderDocumentType[];
     status?: DocumentReaderResultsStatus;
     vdsncData?: VDSNCData;
     static fromJson(jsonObject?: any): DocumentReaderResults | undefined;
+    /**
+     * @deprecated Use DocumentReader.textFieldValueBy...()
+     */
+    getTextFieldValueByType({ fieldType, lcid, source, original }: {
+        fieldType: number;
+        lcid?: number;
+        source?: number;
+        original?: boolean;
+    }): string | undefined;
+    /**
+     * @deprecated
+     */
+    getTextFieldStatusByType(fieldType: number, lcid?: number): number;
+    /**
+     * @deprecated Use DocumentReader.graphicFieldImageBy...()
+     */
+    getGraphicFieldImageByType({ fieldType, source, light, pageIndex }: {
+        fieldType: number;
+        source?: number;
+        light?: number;
+        pageIndex?: number;
+    }): string | undefined;
+    /**
+     * @deprecated
+     */
+    getQualityResult({ imageQualityCheckType, securityFeature, pageIndex }: {
+        imageQualityCheckType: number;
+        securityFeature?: number;
+        pageIndex?: number;
+    }): number;
+    /**
+     * @deprecated
+     */
+    findByTypeAndLcid(type: number, lcid?: number): DocumentReaderTextField | undefined;
+    /**
+     * @deprecated
+     */
+    findBySource(field: DocumentReaderTextField, sourceType: number): DocumentReaderValue | undefined;
+    /**
+     * @deprecated Use DocumentReader.containers()
+     */
+    getContainers(resultTypes: number[]): string | undefined;
+    /**
+     * @deprecated Use DocumentReader.encryptedContainers()
+     */
+    getEncryptedContainers(): string | undefined;
 }
 export declare const FontStyle: {
     NORMAL: number;
@@ -826,6 +879,7 @@ export declare const eRPRM_ResultType: {
     RPRM_RESULT_TYPE_INTERNAL_RFID_SESSION: number;
     RPRM_RESULT_TYPE_INTERNAL_ENCRYPTED_RCL: number;
     RPRM_RESULT_TYPE_INTERNAL_LICENSE: number;
+    RPRM_RESULT_TYPE_TEXT: number;
     RPRM_RESULT_TYPE_IMAGES: number;
     RPRM_RESULT_TYPE_HOLO_PARAMS: number;
     RPRM_RESULT_TYPE_DOCUMENT_POSITION: number;
@@ -863,15 +917,15 @@ export declare const eRPRM_FieldVerificationResult: {
 export declare const DocReaderAction: {
     COMPLETE: number;
     PROCESS: number;
+    MORE_PAGES_AVAILABLE: number;
     CANCEL: number;
     ERROR: number;
-    NOTIFICATION: number;
-    PROCESS_WHITE_UV_IMAGES: number;
     PROCESS_WHITE_FLASHLIGHT: number;
-    MORE_PAGES_AVAILABLE: number;
-    PROCESS_IR_FRAME: number;
     TIMEOUT: number;
     PROCESSING_ON_SERVICE: number;
+    NOTIFICATION: number;
+    PROCESS_WHITE_UV_IMAGES: number;
+    PROCESS_IR_FRAME: number;
 };
 export declare const eProcessGLCommands: {
     ePC_ProcMgr_SetLicense: number;
@@ -1128,6 +1182,12 @@ export declare const RFIDDelegate: {
     NO_PA: number;
     FULL: number;
 };
+export declare const TextProcessing: {
+    ocNoChange: number;
+    ocUppercase: number;
+    ocLowercase: number;
+    ocCapital: number;
+};
 export declare const ProcessingFinishedStatus: {
     NOT_READY: number;
     READY: number;
@@ -1382,6 +1442,7 @@ export declare const eImageQualityCheckType: {
     IQC_SCREEN_CAPTURE: number;
     IQC_PORTRAIT: number;
     IQC_HANDWRITTEN: number;
+    getTranslation(value: number): string;
 };
 export declare const MRZFormat: {
     FORMAT_1X30: string;
@@ -1728,6 +1789,9 @@ export declare const eGraphicFieldType: {
     GF_FINGER_RIGHT_RING: number;
     GF_FINGER_RIGHT_LITTLE: number;
     getTranslation(value: number): string;
+};
+export declare const RegDeviceConfigType: {
+    DEVICE_7310: number;
 };
 export declare const CameraMode: {
     AUTO: number;
@@ -2440,6 +2504,12 @@ export declare const eVisualFieldType: {
     FT_THIRD_NAME: number;
     FT_FOURTH_NAME: number;
     FT_LAST_NAME: number;
+    FT_DLCLASSCODE_RM_FROM: number;
+    FT_DLCLASSCODE_RM_NOTES: number;
+    FT_DLCLASSCODE_RM_TO: number;
+    FT_DLCLASSCODE_PW_FROM: number;
+    FT_DLCLASSCODE_PW_NOTES: number;
+    FT_DLCLASSCODE_PW_TO: number;
     getTranslation(value: number): string;
 };
 export declare const DocReaderOrientation: {
@@ -2993,6 +3063,7 @@ export declare const Enum: {
         RPRM_RESULT_TYPE_INTERNAL_RFID_SESSION: number;
         RPRM_RESULT_TYPE_INTERNAL_ENCRYPTED_RCL: number;
         RPRM_RESULT_TYPE_INTERNAL_LICENSE: number;
+        RPRM_RESULT_TYPE_TEXT: number;
         RPRM_RESULT_TYPE_IMAGES: number;
         RPRM_RESULT_TYPE_HOLO_PARAMS: number;
         RPRM_RESULT_TYPE_DOCUMENT_POSITION: number;
@@ -3030,15 +3101,15 @@ export declare const Enum: {
     DocReaderAction: {
         COMPLETE: number;
         PROCESS: number;
+        MORE_PAGES_AVAILABLE: number;
         CANCEL: number;
         ERROR: number;
-        NOTIFICATION: number;
-        PROCESS_WHITE_UV_IMAGES: number;
         PROCESS_WHITE_FLASHLIGHT: number;
-        MORE_PAGES_AVAILABLE: number;
-        PROCESS_IR_FRAME: number;
         TIMEOUT: number;
         PROCESSING_ON_SERVICE: number;
+        NOTIFICATION: number;
+        PROCESS_WHITE_UV_IMAGES: number;
+        PROCESS_IR_FRAME: number;
     };
     eProcessGLCommands: {
         ePC_ProcMgr_SetLicense: number;
@@ -3295,6 +3366,12 @@ export declare const Enum: {
         NO_PA: number;
         FULL: number;
     };
+    TextProcessing: {
+        ocNoChange: number;
+        ocUppercase: number;
+        ocLowercase: number;
+        ocCapital: number;
+    };
     ProcessingFinishedStatus: {
         NOT_READY: number;
         READY: number;
@@ -3549,6 +3626,7 @@ export declare const Enum: {
         IQC_SCREEN_CAPTURE: number;
         IQC_PORTRAIT: number;
         IQC_HANDWRITTEN: number;
+        getTranslation(value: number): string;
     };
     MRZFormat: {
         FORMAT_1X30: string;
@@ -3895,6 +3973,9 @@ export declare const Enum: {
         GF_FINGER_RIGHT_RING: number;
         GF_FINGER_RIGHT_LITTLE: number;
         getTranslation(value: number): string;
+    };
+    RegDeviceConfigType: {
+        DEVICE_7310: number;
     };
     CameraMode: {
         AUTO: number;
@@ -4607,6 +4688,12 @@ export declare const Enum: {
         FT_THIRD_NAME: number;
         FT_FOURTH_NAME: number;
         FT_LAST_NAME: number;
+        FT_DLCLASSCODE_RM_FROM: number;
+        FT_DLCLASSCODE_RM_NOTES: number;
+        FT_DLCLASSCODE_RM_TO: number;
+        FT_DLCLASSCODE_PW_FROM: number;
+        FT_DLCLASSCODE_PW_NOTES: number;
+        FT_DLCLASSCODE_PW_TO: number;
         getTranslation(value: number): string;
     };
     DocReaderOrientation: {
@@ -5352,23 +5439,23 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     recognizeImagesWithImageInputs(images: any): Promise<any>;
-    getTextFieldValueByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
-    getTextFieldValueByTypeLcid(results: DocumentReaderResults, fieldType: number, lcid: number): Promise<string | undefined>;
-    getTextFieldValueByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
-    getTextFieldValueByTypeLcidSource(results: DocumentReaderResults, fieldType: number, lcid: number, source: number): Promise<string | undefined>;
-    getTextFieldValueByTypeSourceOriginal(results: DocumentReaderResults, fieldType: number, source: number, original: boolean): Promise<string | undefined>;
-    getTextFieldValueByTypeLcidSourceOriginal(results: DocumentReaderResults, fieldType: number, lcid: number, source: number, original: boolean): Promise<string | undefined>;
-    getTextFieldByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
-    getTextFieldByTypeLcid(results: DocumentReaderResults, fieldType: number, lcid: number): Promise<string | undefined>;
-    getGraphicFieldByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
-    getGraphicFieldByTypeSourcePageIndex(results: DocumentReaderResults, fieldType: number, source: number, pageIndex: number): Promise<string | undefined>;
-    getGraphicFieldByTypeSourcePageIndexLight(results: DocumentReaderResults, fieldType: number, source: number, pageIndex: number, light: number): Promise<string | undefined>;
-    getGraphicFieldImageByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
-    getGraphicFieldImageByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
-    getGraphicFieldImageByTypeSourcePageIndex(results: DocumentReaderResults, fieldType: number, source: number, pageIndex: number): Promise<string | undefined>;
-    getGraphicFieldImageByTypeSourcePageIndexLight(results: DocumentReaderResults, fieldType: number, source: number, pageIndex: number, light: number): Promise<string | undefined>;
-    getContainers(results: DocumentReaderResults, resultType: number[]): Promise<string | undefined>;
-    getEncryptedContainers(results: DocumentReaderResults): Promise<string | undefined>;
+    textFieldValueByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
+    textFieldValueByTypeLcid(results: DocumentReaderResults, fieldType: number, lcid: number): Promise<string | undefined>;
+    textFieldValueByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
+    textFieldValueByTypeLcidSource(results: DocumentReaderResults, fieldType: number, lcid: number, source: number): Promise<string | undefined>;
+    textFieldValueByTypeSourceOriginal(results: DocumentReaderResults, fieldType: number, source: number, original: boolean): Promise<string | undefined>;
+    textFieldValueByTypeLcidSourceOriginal(results: DocumentReaderResults, fieldType: number, lcid: number, source: number, original: boolean): Promise<string | undefined>;
+    textFieldByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
+    textFieldByTypeLcid(results: DocumentReaderResults, fieldType: number, lcid: number): Promise<string | undefined>;
+    graphicFieldByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
+    graphicFieldByTypeSourcePageIndex(results: DocumentReaderResults, fieldType: number, source: number, pageIndex: number): Promise<string | undefined>;
+    graphicFieldByTypeSourcePageIndexLight(results: DocumentReaderResults, fieldType: number, source: number, pageIndex: number, light: number): Promise<string | undefined>;
+    graphicFieldImageByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
+    graphicFieldImageByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
+    graphicFieldImageByTypeSourcePageIndex(results: DocumentReaderResults, fieldType: number, source: number, pageIndex: number): Promise<string | undefined>;
+    graphicFieldImageByTypeSourcePageIndexLight(results: DocumentReaderResults, fieldType: number, source: number, pageIndex: number, light: number): Promise<string | undefined>;
+    containers(results: DocumentReaderResults, resultType: number[]): Promise<string | undefined>;
+    encryptedContainers(results: DocumentReaderResults): Promise<string | undefined>;
 }
 
 export declare const DocumentReader: DocumentReaderOriginal;

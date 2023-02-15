@@ -130,8 +130,6 @@ function handleCompletion(completion?: DocumentReaderCompletion) {
       handleResults(completion.results!)
   if (completion.action === Enum.DocReaderAction.TIMEOUT)
     handleResults(completion.results!)
-  if (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR)
-    isReadingRfid = false
 }
 
 function showRfidUI() {
@@ -159,7 +157,7 @@ function restartRfidUI() {
 
 function updateRfidUI(notification: DocumentReaderNotification) {
   if (notification.code === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP)
-    rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(notification.attachment!)
+    rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(notification.dataFileType!)
   rfidUIHeader = "Reading RFID"
   rfidUIHeaderColor = "black"
   rfidProgress = notification.value!
@@ -270,22 +268,22 @@ function handleResults(results: DocumentReaderResults) {
 }
 
 function displayResults(results: DocumentReaderResults) {
-  if(results == null) return
+  if (results == null) return
 
-  DocumentReader.getTextFieldValueByType(results, Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES).then((value: string | undefined) => {
-    if(value != null){
+  DocumentReader.textFieldValueByType(results, Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES).then((value: string | undefined) => {
+    if (value != null) {
       status.innerHTML = value
       status.style.backgroundColor = "green"
     }
   })
 
-  DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE).then((value: string | undefined) => {
-    if(value != null)
+  DocumentReader.graphicFieldImageByType(results, Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE).then((value: string | undefined) => {
+    if (value != null)
       documentImage.src = "data:image/png;base64," + value
   })
 
-  DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_PORTRAIT).then((value: string | undefined) => {
-    if(value != null)
+  DocumentReader.graphicFieldImageByType(results, Enum.eGraphicFieldType.GF_PORTRAIT).then((value: string | undefined) => {
+    if (value != null)
       portraitImage.src = "data:image/png;base64," + value
   })
 }
@@ -311,7 +309,8 @@ function recognize() {
     File.readAsDataURL((isPlatform("ios") ? "file://" : "") + results[0].substring(0, (results[0] as string).lastIndexOf("/")), results[0].substring((results[0] as string).lastIndexOf("/") + 1)).then((file => {
       status.innerHTML = "processing image......"
       status.style.backgroundColor = "grey"
-      DocumentReader.recognizeImage((file as string).substring(23)).subscribe((m: string) =>
+      let fileString = (file as string)
+      DocumentReader.recognizeImage(fileString.substring(fileString.indexOf(",") + 1)).subscribe((m: string) =>
         handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m))))
     })).catch(error2)
   }, error2)

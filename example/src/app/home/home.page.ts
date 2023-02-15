@@ -140,8 +140,6 @@ export class HomePage {
           handleResults(completion.results)
       if (completion.action === Enum.DocReaderAction.TIMEOUT)
         handleResults(completion.results)
-      if (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR)
-        isReadingRfid = false
     }
 
     function showRfidUI() {
@@ -169,7 +167,7 @@ export class HomePage {
 
     function updateRfidUI(notification: DocumentReaderNotification) {
       if (notification.code === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP)
-        rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(notification.attachment)
+        rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(notification.dataFileType)
       rfidUIHeader = "Reading RFID"
       rfidUIHeaderColor = "black"
       rfidProgress = notification.value
@@ -283,17 +281,17 @@ export class HomePage {
     function displayResults(results: DocumentReaderResults) {
       if (results == undefined) return
 
-      DocumentReader.getTextFieldValueByType(results, Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES).then(value => {
+      DocumentReader.textFieldValueByType(results, Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES).then(value => {
         app.status.nativeElement.style.backgroundColor = "green"
         app.status.nativeElement.innerHTML = value
       })
 
-      DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE).then(value => {
+      DocumentReader.graphicFieldImageByType(results, Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE).then(value => {
         if (value != undefined)
           app.documentImage.nativeElement.src = "data:image/png;base64," + value
       })
 
-      DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_PORTRAIT).then(value => {
+      DocumentReader.graphicFieldImageByType(results, Enum.eGraphicFieldType.GF_PORTRAIT).then(value => {
         if (value != undefined)
           app.portraitImage.nativeElement.src = "data:image/png;base64," + value
       })
@@ -320,7 +318,8 @@ export class HomePage {
         File.readAsDataURL((app.platform.is("ios") ? "file://" : "") + results[0].substring(0, (results[0] as string).lastIndexOf("/")), results[0].substring((results[0] as string).lastIndexOf("/") + 1)).then((file => {
           app.status.nativeElement.innerHTML = "processing image......"
           app.status.nativeElement.style.backgroundColor = "grey"
-          DocumentReader.recognizeImage((file as string).substring(23)).subscribe(m =>
+          let fileString = (file as string)
+          DocumentReader.recognizeImage(fileString.substring(fileString.indexOf(",") + 1)).subscribe(m =>
             handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m))))
         })).catch(error2)
       }, error2)
