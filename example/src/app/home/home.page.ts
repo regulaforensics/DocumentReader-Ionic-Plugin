@@ -140,8 +140,6 @@ export class HomePage {
           handleResults(completion.results)
       if (completion.action === Enum.DocReaderAction.TIMEOUT)
         handleResults(completion.results)
-      if (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR)
-        isReadingRfid = false
     }
 
     function showRfidUI() {

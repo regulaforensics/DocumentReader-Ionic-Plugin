@@ -130,8 +130,6 @@ function handleCompletion(completion?: DocumentReaderCompletion) {
       handleResults(completion.results!)
   if (completion.action === Enum.DocReaderAction.TIMEOUT)
     handleResults(completion.results!)
-  if (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR)
-    isReadingRfid = false
 }
 
 function showRfidUI() {
@@ -159,7 +157,7 @@ function restartRfidUI() {
 
 function updateRfidUI(notification: DocumentReaderNotification) {
   if (notification.code === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP)
-    rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(notification.attachment!)
+    rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(notification.dataFileType!)
   rfidUIHeader = "Reading RFID"
   rfidUIHeaderColor = "black"
   rfidProgress = notification.value!
