@@ -157,7 +157,7 @@ function restartRfidUI() {
 
 function updateRfidUI(notification: DocumentReaderNotification) {
   if (notification.code === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP)
-    rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(notification.dataFileType!)
+    rfidDescription = notification.dataFileType!.toString()
   rfidUIHeader = "Reading RFID"
   rfidUIHeaderColor = "black"
   rfidProgress = notification.value!

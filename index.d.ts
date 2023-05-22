@@ -54,6 +54,7 @@ export declare class DocumentReaderGraphicField {
     fieldType?: number;
     lightType?: number;
     pageIndex?: number;
+    originalPageIndex?: number;
     fieldName?: string;
     lightName?: string;
     value?: string;
@@ -143,6 +144,7 @@ export declare class DocumentReaderDocumentType {
     dType?: number;
     dFormat?: number;
     dMRZ?: boolean;
+    isDeprecated?: boolean;
     name?: string;
     ICAOCode?: string;
     dDescription?: string;
@@ -368,6 +370,8 @@ export declare class ImageInputParam {
     width?: number;
     height?: number;
     type?: number;
+    disableFrameShiftIR?: boolean;
+    doFlipYAxis?: boolean;
     static fromJson(jsonObject?: any): ImageInputParam | undefined;
 }
 export declare class PAResourcesIssuer {
@@ -514,7 +518,6 @@ export declare class DocumentReaderResults {
     documentType?: DocumentReaderDocumentType[];
     status?: DocumentReaderResultsStatus;
     vdsncData?: VDSNCData;
-    static fromJson(jsonObject?: any): DocumentReaderResults | undefined;
     /**
      * @deprecated Use DocumentReader.textFieldValueBy...()
      */
@@ -561,6 +564,7 @@ export declare class DocumentReaderResults {
      * @deprecated Use DocumentReader.encryptedContainers()
      */
     getEncryptedContainers(): string | undefined;
+    static fromJson(jsonObject?: any): DocumentReaderResults | undefined;
 }
 export declare const FontStyle: {
     NORMAL: number;
@@ -586,6 +590,7 @@ export declare const eRPRM_Authenticity: {
     KINEGRAM: number;
     HOLOGRAMS_DETECTION: number;
     MRZ: number;
+    RPRM_Authenticity_StatusOnly: number;
 };
 export declare const eRFID_ErrorCodes: {
     RFID_ERROR_NO_ERROR: number;
@@ -702,7 +707,6 @@ export declare const eRFID_ErrorCodes: {
     RFID_ERROR_LAYER34_SAM_ERROR: number;
     RFID_ERROR_LAYER34_SAM_COLLISION: number;
     RFID_ERROR_LAYER34_SAM_ACKNOWLEDGE: number;
-    getTranslation(value: number): string;
 };
 export declare const eLDS_ParsingErrorCodes: {
     ERR_LDS_OK: number;
@@ -831,7 +835,6 @@ export declare const eLDS_ParsingErrorCodes: {
     ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_SIG_ALGORITHM: number;
     ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_CERTIFICATE: number;
     ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_SIG_VALUE: number;
-    getTranslation(value: number): string;
 };
 export declare const eRFID_CertificateType: {
     CT_UNDEFINED: number;
@@ -977,6 +980,7 @@ export declare const ScenarioIdentifier: {
     SCENARIO_OCR_FREE: string;
     SCENARIO_CREDIT_CARD: string;
     SCENARIO_CAPTURE: string;
+    SCENARIO_BARCODE_AND_LOCATE: string;
 };
 export declare const eRFID_AccessControl_ProcedureType: {
     ACPT_UNDEFINED: number;
@@ -1173,8 +1177,16 @@ export declare const eCheckDiagnose: {
     FINISHED_BY_TIMEOUT: number;
     HOLO_PHOTO_DOCUMENT_OUTSIDE_FRAME: number;
     LIVENESS_DEPTH_CHECK_FAILED: number;
-    MRZ_QUALITY_WRONG_MRZ_DPI: number;
+    MRZ_QUALITY_WRONG_SYMBOL_POSITION: number;
     MRZ_QUALITY_WRONG_BACKGROUND: number;
+    MRZ_QUALITY_WRONG_MRZ_WIDTH: number;
+    MRZ_QUALITY_WRONG_MRZ_HEIGHT: number;
+    MRZ_QUALITY_WRONG_LINE_POSITION: number;
+    MRZ_QUALITY_WRONG_FONT_TYPE: number;
+    OCR_QUALITY_TEXT_POSITION: number;
+    OCR_QUALITY_INVALID_FONT: number;
+    OCR_QUALITY_INVALID_BACKGROUND: number;
+    LAS_INK_INVALID_LINES_FREQUENCY: number;
     LAST_DIAGNOSE_VALUE: number;
 };
 export declare const RFIDDelegate: {
@@ -1430,7 +1442,6 @@ export declare const eLDS_ParsingNotificationCodes: {
     NTF_LDS_AUTH_ML_SIGNER_INFO_CERTIFICATE_CANT_FIND_CSCA: number;
     NTF_LDS_AUTH_ML_SIGNER_INFO_CERTIFICATE_REVOKED: number;
     NTF_LDS_AUTH_ML_SIGNER_INFO_CERTIFICATE_SIGNATURE_INVALID: number;
-    getTranslation(value: number): string;
 };
 export declare const eImageQualityCheckType: {
     IQC_IMAGE_GLARES: number;
@@ -1442,7 +1453,6 @@ export declare const eImageQualityCheckType: {
     IQC_SCREEN_CAPTURE: number;
     IQC_PORTRAIT: number;
     IQC_HANDWRITTEN: number;
-    getTranslation(value: number): string;
 };
 export declare const MRZFormat: {
     FORMAT_1X30: string;
@@ -1504,6 +1514,18 @@ export declare const eRPRM_SecurityFeatureType: {
     SECURITY_FEATURE_TYPE_PHOTO_SHAPE: number;
     SECURITY_FEATURE_TYPE_PHOTO_CORNERS: number;
     DOCUMENT_CANCELLING_DETECTOR: number;
+    SECURITY_FEATURE_TYPE_LASINK: number;
+    SECURITY_FEATURE_TYPE_OCR: number;
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSVISUAL: number;
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSRFID: number;
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSLIVE: number;
+    SECURITY_FEATURE_TYPE_LIVENESS_DEPTH: number;
+    SECURITY_FEATURE_TYPE_MICROTEXT: number;
+    SECURITY_FEATURE_TYPE_FLUORESCENTOBJECT: number;
+    SECURITY_FEATURE_TYPE_LANDMARKSCHECK: number;
+    SECURITY_FEATURE_TYPE_FACEPRESENCE: number;
+    SECURITY_FEATURE_TYPE_FACEABSENCE: number;
+    SECURITY_FEATURE_TYPE_BARCODESIZECHECK: number;
 };
 export declare const OnlineMode: {
     MANUAL: number;
@@ -1788,7 +1810,6 @@ export declare const eGraphicFieldType: {
     GF_FINGER_RIGHT_MIDDLE: number;
     GF_FINGER_RIGHT_RING: number;
     GF_FINGER_RIGHT_LITTLE: number;
-    getTranslation(value: number): string;
 };
 export declare const RegDeviceConfigType: {
     DEVICE_7310: number;
@@ -1901,7 +1922,6 @@ export declare const eRFID_DataFile_Type: {
     DFT_VDS: number;
     DFT_VDSNC: number;
     DFT_USERDEFINED: number;
-    getTranslation(value: number): string;
 };
 export declare const eVisualFieldType: {
     FT_DOCUMENT_CLASS_CODE: number;
@@ -2510,7 +2530,16 @@ export declare const eVisualFieldType: {
     FT_DLCLASSCODE_PW_FROM: number;
     FT_DLCLASSCODE_PW_NOTES: number;
     FT_DLCLASSCODE_PW_TO: number;
-    getTranslation(value: number): string;
+    FT_DLCLASSCODE_EB_FROM: number;
+    FT_DLCLASSCODE_EB_NOTES: number;
+    FT_DLCLASSCODE_EB_TO: number;
+    FT_DLCLASSCODE_EC_FROM: number;
+    FT_DLCLASSCODE_EC_NOTES: number;
+    FT_DLCLASSCODE_EC_TO: number;
+    FT_DLCLASSCODE_EC1_FROM: number;
+    FT_DLCLASSCODE_EC1_NOTES: number;
+    FT_DLCLASSCODE_EC1_TO: number;
+    FT_PLACE_OF_BIRTH_CITY: number;
 };
 export declare const DocReaderOrientation: {
     ALL: number;
@@ -2676,7 +2705,6 @@ export declare const LCID: {
     VIETNAMESE: number;
     CTC_SIMPLIFIED: number;
     CTC_TRADITIONAL: number;
-    getTranslation(value: number): string;
 };
 export declare const DocReaderFrame: {
     MAX: string;
@@ -2693,7 +2721,7 @@ export declare const eRPRM_Lights: {
     RPRM_Light_IR_SIDE: number;
     RPRM_Light_IR_Full: number;
     RPRM_LIGHT_OVD: number;
-    getTranslation(value: number): string;
+    RPRM_LIGHT_WHITE_FULL_OVD: number;
 };
 export declare const LineCap: {
     Butt: number;
@@ -2770,6 +2798,7 @@ export declare const Enum: {
         KINEGRAM: number;
         HOLOGRAMS_DETECTION: number;
         MRZ: number;
+        RPRM_Authenticity_StatusOnly: number;
     };
     eRFID_ErrorCodes: {
         RFID_ERROR_NO_ERROR: number;
@@ -2886,7 +2915,6 @@ export declare const Enum: {
         RFID_ERROR_LAYER34_SAM_ERROR: number;
         RFID_ERROR_LAYER34_SAM_COLLISION: number;
         RFID_ERROR_LAYER34_SAM_ACKNOWLEDGE: number;
-        getTranslation(value: number): string;
     };
     eLDS_ParsingErrorCodes: {
         ERR_LDS_OK: number;
@@ -3015,7 +3043,6 @@ export declare const Enum: {
         ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_SIG_ALGORITHM: number;
         ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_CERTIFICATE: number;
         ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_SIG_VALUE: number;
-        getTranslation(value: number): string;
     };
     eRFID_CertificateType: {
         CT_UNDEFINED: number;
@@ -3161,6 +3188,7 @@ export declare const Enum: {
         SCENARIO_OCR_FREE: string;
         SCENARIO_CREDIT_CARD: string;
         SCENARIO_CAPTURE: string;
+        SCENARIO_BARCODE_AND_LOCATE: string;
     };
     eRFID_AccessControl_ProcedureType: {
         ACPT_UNDEFINED: number;
@@ -3357,8 +3385,16 @@ export declare const Enum: {
         FINISHED_BY_TIMEOUT: number;
         HOLO_PHOTO_DOCUMENT_OUTSIDE_FRAME: number;
         LIVENESS_DEPTH_CHECK_FAILED: number;
-        MRZ_QUALITY_WRONG_MRZ_DPI: number;
+        MRZ_QUALITY_WRONG_SYMBOL_POSITION: number;
         MRZ_QUALITY_WRONG_BACKGROUND: number;
+        MRZ_QUALITY_WRONG_MRZ_WIDTH: number;
+        MRZ_QUALITY_WRONG_MRZ_HEIGHT: number;
+        MRZ_QUALITY_WRONG_LINE_POSITION: number;
+        MRZ_QUALITY_WRONG_FONT_TYPE: number;
+        OCR_QUALITY_TEXT_POSITION: number;
+        OCR_QUALITY_INVALID_FONT: number;
+        OCR_QUALITY_INVALID_BACKGROUND: number;
+        LAS_INK_INVALID_LINES_FREQUENCY: number;
         LAST_DIAGNOSE_VALUE: number;
     };
     RFIDDelegate: {
@@ -3614,7 +3650,6 @@ export declare const Enum: {
         NTF_LDS_AUTH_ML_SIGNER_INFO_CERTIFICATE_CANT_FIND_CSCA: number;
         NTF_LDS_AUTH_ML_SIGNER_INFO_CERTIFICATE_REVOKED: number;
         NTF_LDS_AUTH_ML_SIGNER_INFO_CERTIFICATE_SIGNATURE_INVALID: number;
-        getTranslation(value: number): string;
     };
     eImageQualityCheckType: {
         IQC_IMAGE_GLARES: number;
@@ -3626,7 +3661,6 @@ export declare const Enum: {
         IQC_SCREEN_CAPTURE: number;
         IQC_PORTRAIT: number;
         IQC_HANDWRITTEN: number;
-        getTranslation(value: number): string;
     };
     MRZFormat: {
         FORMAT_1X30: string;
@@ -3688,6 +3722,18 @@ export declare const Enum: {
         SECURITY_FEATURE_TYPE_PHOTO_SHAPE: number;
         SECURITY_FEATURE_TYPE_PHOTO_CORNERS: number;
         DOCUMENT_CANCELLING_DETECTOR: number;
+        SECURITY_FEATURE_TYPE_LASINK: number;
+        SECURITY_FEATURE_TYPE_OCR: number;
+        SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSVISUAL: number;
+        SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSRFID: number;
+        SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSLIVE: number;
+        SECURITY_FEATURE_TYPE_LIVENESS_DEPTH: number;
+        SECURITY_FEATURE_TYPE_MICROTEXT: number;
+        SECURITY_FEATURE_TYPE_FLUORESCENTOBJECT: number;
+        SECURITY_FEATURE_TYPE_LANDMARKSCHECK: number;
+        SECURITY_FEATURE_TYPE_FACEPRESENCE: number;
+        SECURITY_FEATURE_TYPE_FACEABSENCE: number;
+        SECURITY_FEATURE_TYPE_BARCODESIZECHECK: number;
     };
     OnlineMode: {
         MANUAL: number;
@@ -3972,7 +4018,6 @@ export declare const Enum: {
         GF_FINGER_RIGHT_MIDDLE: number;
         GF_FINGER_RIGHT_RING: number;
         GF_FINGER_RIGHT_LITTLE: number;
-        getTranslation(value: number): string;
     };
     RegDeviceConfigType: {
         DEVICE_7310: number;
@@ -4085,7 +4130,6 @@ export declare const Enum: {
         DFT_VDS: number;
         DFT_VDSNC: number;
         DFT_USERDEFINED: number;
-        getTranslation(value: number): string;
     };
     eVisualFieldType: {
         FT_DOCUMENT_CLASS_CODE: number;
@@ -4694,7 +4738,16 @@ export declare const Enum: {
         FT_DLCLASSCODE_PW_FROM: number;
         FT_DLCLASSCODE_PW_NOTES: number;
         FT_DLCLASSCODE_PW_TO: number;
-        getTranslation(value: number): string;
+        FT_DLCLASSCODE_EB_FROM: number;
+        FT_DLCLASSCODE_EB_NOTES: number;
+        FT_DLCLASSCODE_EB_TO: number;
+        FT_DLCLASSCODE_EC_FROM: number;
+        FT_DLCLASSCODE_EC_NOTES: number;
+        FT_DLCLASSCODE_EC_TO: number;
+        FT_DLCLASSCODE_EC1_FROM: number;
+        FT_DLCLASSCODE_EC1_NOTES: number;
+        FT_DLCLASSCODE_EC1_TO: number;
+        FT_PLACE_OF_BIRTH_CITY: number;
     };
     DocReaderOrientation: {
         ALL: number;
@@ -4860,7 +4913,6 @@ export declare const Enum: {
         VIETNAMESE: number;
         CTC_SIMPLIFIED: number;
         CTC_TRADITIONAL: number;
-        getTranslation(value: number): string;
     };
     DocReaderFrame: {
         MAX: string;
@@ -4877,7 +4929,7 @@ export declare const Enum: {
         RPRM_Light_IR_SIDE: number;
         RPRM_Light_IR_Full: number;
         RPRM_LIGHT_OVD: number;
-        getTranslation(value: number): string;
+        RPRM_LIGHT_WHITE_FULL_OVD: number;
     };
     LineCap: {
         Butt: number;
@@ -5439,6 +5491,20 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     recognizeImagesWithImageInputs(images: any): Promise<any>;
+    /**
+     *  Use this method to set OnClickListener
+     *  for buttons from UICustomizationLayer
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    setOnCustomButtonTappedListener(): Observable<any>;
+    /**
+     *  description
+     *
+     * @param {string} language description
+     * @return {Promise<any>} Returns a promise
+     */
+    setLanguage(language: any): Promise<any>;
     textFieldValueByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
     textFieldValueByTypeLcid(results: DocumentReaderResults, fieldType: number, lcid: number): Promise<string | undefined>;
     textFieldValueByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
