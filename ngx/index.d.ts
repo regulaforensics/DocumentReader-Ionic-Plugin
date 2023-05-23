@@ -590,7 +590,11 @@ export declare const eRPRM_Authenticity: {
     KINEGRAM: number;
     HOLOGRAMS_DETECTION: number;
     MRZ: number;
-    RPRM_Authenticity_StatusOnly: number;
+    STATUS_ONLY: number;
+    OVI: number;
+    LIVENESS: number;
+    OCR: number;
+    UV: number;
 };
 export declare const eRFID_ErrorCodes: {
     RFID_ERROR_NO_ERROR: number;
@@ -1188,6 +1192,7 @@ export declare const eCheckDiagnose: {
     OCR_QUALITY_INVALID_BACKGROUND: number;
     LAS_INK_INVALID_LINES_FREQUENCY: number;
     LAST_DIAGNOSE_VALUE: number;
+    DOC_LIVENESS_ELECTRONIC_DEVICE_DETECTED: number;
 };
 export declare const RFIDDelegate: {
     NULL: number;
@@ -1484,7 +1489,7 @@ export declare const BarcodeType: {
     CODE11: number;
 };
 export declare const eRPRM_SecurityFeatureType: {
-    NONE: number;
+    SECURITY_FEATURE_TYPE_NONE: number;
     SECURITY_FEATURE_TYPE_BLANK: number;
     SECURITY_FEATURE_TYPE_FILL: number;
     SECURITY_FEATURE_TYPE_PHOTO: number;
@@ -1513,7 +1518,7 @@ export declare const eRPRM_SecurityFeatureType: {
     SECURITY_FEATURE_TYPE_PHOTO_COLOR: number;
     SECURITY_FEATURE_TYPE_PHOTO_SHAPE: number;
     SECURITY_FEATURE_TYPE_PHOTO_CORNERS: number;
-    DOCUMENT_CANCELLING_DETECTOR: number;
+    SECURITY_FEATURE_TYPE_DOCUMENT_CANCELLING_DETECTOR: number;
     SECURITY_FEATURE_TYPE_LASINK: number;
     SECURITY_FEATURE_TYPE_OCR: number;
     SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSVISUAL: number;
@@ -1526,6 +1531,7 @@ export declare const eRPRM_SecurityFeatureType: {
     SECURITY_FEATURE_TYPE_FACEPRESENCE: number;
     SECURITY_FEATURE_TYPE_FACEABSENCE: number;
     SECURITY_FEATURE_TYPE_BARCODESIZECHECK: number;
+    SECURITY_FEATURE_TYPE_DOC_LIVENESS_ELECTRONIC_DEVICE: number;
 };
 export declare const OnlineMode: {
     MANUAL: number;
@@ -2798,7 +2804,11 @@ export declare const Enum: {
         KINEGRAM: number;
         HOLOGRAMS_DETECTION: number;
         MRZ: number;
-        RPRM_Authenticity_StatusOnly: number;
+        STATUS_ONLY: number;
+        OVI: number;
+        LIVENESS: number;
+        OCR: number;
+        UV: number;
     };
     eRFID_ErrorCodes: {
         RFID_ERROR_NO_ERROR: number;
@@ -3396,6 +3406,7 @@ export declare const Enum: {
         OCR_QUALITY_INVALID_BACKGROUND: number;
         LAS_INK_INVALID_LINES_FREQUENCY: number;
         LAST_DIAGNOSE_VALUE: number;
+        DOC_LIVENESS_ELECTRONIC_DEVICE_DETECTED: number;
     };
     RFIDDelegate: {
         NULL: number;
@@ -3692,7 +3703,7 @@ export declare const Enum: {
         CODE11: number;
     };
     eRPRM_SecurityFeatureType: {
-        NONE: number;
+        SECURITY_FEATURE_TYPE_NONE: number;
         SECURITY_FEATURE_TYPE_BLANK: number;
         SECURITY_FEATURE_TYPE_FILL: number;
         SECURITY_FEATURE_TYPE_PHOTO: number;
@@ -3721,7 +3732,7 @@ export declare const Enum: {
         SECURITY_FEATURE_TYPE_PHOTO_COLOR: number;
         SECURITY_FEATURE_TYPE_PHOTO_SHAPE: number;
         SECURITY_FEATURE_TYPE_PHOTO_CORNERS: number;
-        DOCUMENT_CANCELLING_DETECTOR: number;
+        SECURITY_FEATURE_TYPE_DOCUMENT_CANCELLING_DETECTOR: number;
         SECURITY_FEATURE_TYPE_LASINK: number;
         SECURITY_FEATURE_TYPE_OCR: number;
         SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSVISUAL: number;
@@ -3734,6 +3745,7 @@ export declare const Enum: {
         SECURITY_FEATURE_TYPE_FACEPRESENCE: number;
         SECURITY_FEATURE_TYPE_FACEABSENCE: number;
         SECURITY_FEATURE_TYPE_BARCODESIZECHECK: number;
+        SECURITY_FEATURE_TYPE_DOC_LIVENESS_ELECTRONIC_DEVICE: number;
     };
     OnlineMode: {
         MANUAL: number;
