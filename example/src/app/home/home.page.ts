@@ -166,8 +166,9 @@ export class HomePage {
     }
 
     function updateRfidUI(notification: DocumentReaderNotification) {
+      if (notification.value === undefined) return
       if (notification.code === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP)
-        rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(notification.dataFileType)
+        rfidDescription = notification.dataFileType.toString()
       rfidUIHeader = "Reading RFID"
       rfidUIHeaderColor = "black"
       rfidProgress = notification.value
@@ -178,32 +179,33 @@ export class HomePage {
 
     function customRFID() {
       showRfidUI()
-      DocumentReader.readRFID().subscribe(m =>
-        handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m))))
+      DocumentReader.readRFID().subscribe(m => handleRfidCompletion(m))
     }
 
     function usualRFID() {
       isReadingRfid = true
+      DocumentReader.startRFIDReader().subscribe(m => handleRfidCompletion(m))
+    }
+
+    function handleRfidCompletion(raw: string) {
       var notification = "rfidNotificationCompletionEvent"
       var paCert = "paCertificateCompletionEvent"
       var taCert = "taCertificateCompletionEvent"
       var taSig = "taSignatureCompletionEvent"
-      DocumentReader.startRFIDReader().subscribe(m => {
-        if (m.substring(0, notification.length) === notification) {
-          m = m.substring(notification.length, m.length)
-          console.log(notification + ": " + m)
-        } else if (m.substring(0, paCert.length) === paCert) {
-          m = m.substring(paCert.length, m.length)
-          console.log(paCert + ": " + m)
-        } else if (m.substring(0, taCert.length) === taCert) {
-          m = m.substring(taCert.length, m.length)
-          console.log(taCert + ": " + m)
-        } else if (m.substring(0, taSig.length) === taSig) {
-          m = m.substring(taSig.length, m.length)
-          console.log(taSig + ": " + m)
-        } else
-          handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m)))
-      })
+      if (raw.substring(0, notification.length) === notification) {
+        raw = raw.substring(notification.length, raw.length)
+        console.log(notification + ": " + raw)
+      } else if (raw.substring(0, paCert.length) === paCert) {
+        raw = raw.substring(paCert.length, raw.length)
+        console.log(paCert + ": " + raw)
+      } else if (raw.substring(0, taCert.length) === taCert) {
+        raw = raw.substring(taCert.length, raw.length)
+        console.log(taCert + ": " + raw)
+      } else if (raw.substring(0, taSig.length) === taSig) {
+        raw = raw.substring(taSig.length, raw.length)
+        console.log(taSig + ": " + raw)
+      } else
+        handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(raw)))
     }
 
     function onInitialized() {
