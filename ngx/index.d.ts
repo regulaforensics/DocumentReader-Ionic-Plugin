@@ -483,11 +483,11 @@ export declare class DocumentReaderValidity {
 export declare class FaceApiParams {
     url?: string;
     mode?: string;
-    search?: Search;
+    searchParams?: Search;
     threshold?: number;
     serviceTimeout?: number;
     proxy?: string;
-    proxyUserPwd?: string;
+    proxyPassword?: string;
     proxyType?: number;
     static fromJson(jsonObject?: any): FaceApiParams | undefined;
 }
