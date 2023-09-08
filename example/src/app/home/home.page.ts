@@ -3,8 +3,9 @@ import { File } from '@awesome-cordova-plugins/file'
 import { ImagePicker } from '@awesome-cordova-plugins/image-picker/ngx'
 import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx'
 import { Platform } from '@ionic/angular'
-import { DocumentReader, DocumentReaderScenario, Enum, DocumentReaderCompletion, DocumentReaderResults, DocumentReaderNotification } from '@regulaforensics/ionic-native-document-reader/ngx';
+import { DocumentReader, DocumentReaderScenario, Enum, DocumentReaderCompletion, DocumentReaderResults, DocumentReaderNotification, ScannerConfig, RecognizeConfig } from '@regulaforensics/ionic-native-document-reader/ngx'
 
+var selectedScenario = "Mrz"
 var doRfid: boolean = false
 var isReadingRfidCustomUi: boolean = false
 var isReadingRfid: boolean = false
@@ -123,6 +124,7 @@ export class HomePage {
     }
 
     function handleCompletion(completion: DocumentReaderCompletion) {
+      console.log("DocReaderAction: " + completion.action)
       if (isReadingRfidCustomUi && (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR))
         hideRfidUI()
       if (isReadingRfidCustomUi && completion.action === Enum.DocReaderAction.NOTIFICATION)
@@ -166,15 +168,15 @@ export class HomePage {
     }
 
     function updateRfidUI(notification: DocumentReaderNotification) {
-      if (notification.value === undefined) return
-      if (notification.code === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP)
+      if (notification.progress === undefined) return
+      if (notification.notificationCode === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP)
         rfidDescription = notification.dataFileType.toString()
       rfidUIHeader = "Reading RFID"
       rfidUIHeaderColor = "black"
-      rfidProgress = notification.value
+      rfidProgress = notification.progress
       updateUI()
       if (app.platform.is("ios"))
-        DocumentReader.setRfidSessionStatus(rfidDescription + "\n" + notification.value + "%")
+        DocumentReader.setRfidSessionStatus(rfidDescription + "\n" + notification.progress + "%")
     }
 
     function customRFID() {
@@ -247,7 +249,7 @@ export class HomePage {
         input.value = DocumentReaderScenario.fromJson(typeof index === "string" ? JSON.parse(index) : index).name
         if (index == 0)
           input.checked = true
-        input.onclick = () => DocumentReader.setConfig({ processParams: { scenario: DocumentReaderScenario.fromJson(typeof index === "string" ? JSON.parse(index) : index).name } })
+        input.onclick = () => selectedScenario = DocumentReaderScenario.fromJson(typeof index === "string" ? JSON.parse(index) : index).name
         input.style.display = "inline-block"
       }
       for (let input of inputs) {
@@ -306,7 +308,9 @@ export class HomePage {
     }
 
     function scan() {
-      DocumentReader.showScanner().subscribe(m =>
+      var config = new ScannerConfig()
+      config.scenario = selectedScenario
+      DocumentReader.scan(config).subscribe(m =>
         handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m))))
     }
 
@@ -321,7 +325,10 @@ export class HomePage {
           app.status.nativeElement.innerHTML = "processing image......"
           app.status.nativeElement.style.backgroundColor = "grey"
           let fileString = (file as string)
-          DocumentReader.recognizeImage(fileString.substring(fileString.indexOf(",") + 1)).subscribe(m =>
+          var config = new RecognizeConfig()
+          config.scenario = selectedScenario
+          config.image = fileString.substring(fileString.indexOf(",") + 1)
+          DocumentReader.recognize(config).subscribe(m =>
             handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m))))
         })).catch(error2)
       }, error2)

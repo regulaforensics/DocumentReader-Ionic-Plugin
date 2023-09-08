@@ -1,10 +1,11 @@
-import { IonPage, isPlatform } from '@ionic/react';
-import { DocumentReader, DocumentReaderScenario, Enum, DocumentReaderCompletion, DocumentReaderResults, DocumentReaderNotification } from '@regulaforensics/ionic-native-document-reader';
-import React from "react";
+import { IonPage, isPlatform } from '@ionic/react'
+import { DocumentReader, DocumentReaderScenario, Enum, DocumentReaderCompletion, DocumentReaderResults, DocumentReaderNotification, ScannerConfig, RecognizeConfig } from '@regulaforensics/ionic-native-document-reader'
+import React from "react"
 import { DirectoryEntry, Entry, File, FileEntry, IFile } from '@awesome-cordova-plugins/file'
 import { AndroidPermissions } from "@awesome-cordova-plugins/android-permissions"
 import { ImagePicker } from "@awesome-cordova-plugins/image-picker"
 
+var selectedScenario = "Mrz"
 var doRfid: boolean = false
 var isReadingRfidCustomUi: boolean = false
 var isReadingRfid: boolean = false
@@ -43,7 +44,7 @@ cancelButtonRef.addEventListener("click", stopRfid)
 updateUI()
 status.innerHTML = "loading......"
 status.style.backgroundColor = "grey"
-document.addEventListener("deviceready", onDeviceReady, false);
+document.addEventListener("deviceready", onDeviceReady, false)
 
 function onDeviceReady() {
   readFile("public/assets", "regula.license", (license: any) => {
@@ -112,7 +113,8 @@ function stopRfid() {
 }
 
 function handleCompletion(completion?: DocumentReaderCompletion) {
-  if (completion == undefined) return;
+  if (completion == undefined) return
+  console.log("DocReaderAction: " + completion.action)
   if (isReadingRfidCustomUi && (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR))
     hideRfidUI()
   if (isReadingRfidCustomUi && completion.action === Enum.DocReaderAction.NOTIFICATION)
@@ -156,14 +158,14 @@ function restartRfidUI() {
 }
 
 function updateRfidUI(notification: DocumentReaderNotification) {
-  if (notification.code === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP)
+  if (notification.notificationCode === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP)
     rfidDescription = notification.dataFileType!.toString()
   rfidUIHeader = "Reading RFID"
   rfidUIHeaderColor = "black"
-  rfidProgress = notification.value!
+  rfidProgress = notification.progress!
   updateUI()
   if (isPlatform("ios"))
-    DocumentReader.setRfidSessionStatus(rfidDescription + "\n" + notification.value + "%")
+    DocumentReader.setRfidSessionStatus(rfidDescription + "\n" + notification.progress + "%")
 }
 
 function customRFID() {
@@ -235,7 +237,7 @@ function postInitialize(scenarios: Array<any>, canRfid: boolean) {
     input.value = (DocumentReaderScenario.fromJson(typeof index === "string" ? JSON.parse(index) : index)!.name)!
     if (index == 0)
       input.checked = true
-    input.onclick = () => DocumentReader.setConfig({ processParams: { scenario: DocumentReaderScenario.fromJson(typeof index === "string" ? JSON.parse(index) : index)!.name } })
+    input.onclick = () => selectedScenario = DocumentReaderScenario.fromJson(typeof index === "string" ? JSON.parse(index) : index)!.name!
     input.style.display = "inline-block"
   }
   for (let input of inputs) {
@@ -295,7 +297,9 @@ function clearResults() {
 }
 
 function scan() {
-  DocumentReader.showScanner().subscribe((m: string) =>
+  var config = new ScannerConfig()
+  config.scenario = selectedScenario
+  DocumentReader.scan(config).subscribe((m: string) =>
     handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m))))
 }
 
@@ -310,7 +314,10 @@ function recognize() {
       status.innerHTML = "processing image......"
       status.style.backgroundColor = "grey"
       let fileString = (file as string)
-      DocumentReader.recognizeImage(fileString.substring(fileString.indexOf(",") + 1)).subscribe((m: string) =>
+      var config = new RecognizeConfig()
+      config.scenario = selectedScenario
+      config.image = fileString.substring(fileString.indexOf(",") + 1)
+      DocumentReader.recognize(config).subscribe((m: string) =>
         handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m))))
     })).catch(error2)
   }, error2)
@@ -334,7 +341,7 @@ const Home: React.FC = () => {
   return (
     <IonPage>
     </IonPage>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
