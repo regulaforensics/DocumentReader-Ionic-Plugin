@@ -33,7 +33,7 @@ export declare class DocReaderFieldRect {
 export declare class DocumentReaderGraphicField {
     sourceType?: number;
     fieldType?: number;
-    lightType?: number;
+    light?: number;
     pageIndex?: number;
     originalPageIndex?: number;
     fieldName?: string;
