@@ -23,13 +23,6 @@ export declare class Rect {
     right?: number;
     static fromJson(jsonObject?: any): Rect | undefined;
 }
-export declare class DocReaderFieldRect {
-    bottom?: number;
-    top?: number;
-    left?: number;
-    right?: number;
-    static fromJson(jsonObject?: any): DocReaderFieldRect | undefined;
-}
 export declare class DocumentReaderGraphicField {
     sourceType?: number;
     fieldType?: number;
@@ -39,7 +32,7 @@ export declare class DocumentReaderGraphicField {
     fieldName?: string;
     lightName?: string;
     value?: string;
-    fieldRect?: DocReaderFieldRect;
+    fieldRect?: Rect;
     static fromJson(jsonObject?: any): DocumentReaderGraphicField | undefined;
 }
 export declare class DocumentReaderGraphicResult {
@@ -49,12 +42,10 @@ export declare class DocumentReaderGraphicResult {
 export declare class DocumentReaderValue {
     pageIndex?: number;
     sourceType?: number;
-    validity?: number;
     probability?: number;
     value?: string;
     originalValue?: string;
     boundRect?: Rect;
-    comparison?: Record<number, number>;
     originalSymbols?: DocumentReaderSymbol[];
     rfidOrigin?: DocumentReaderRfidOrigin;
     static fromJson(jsonObject?: any): DocumentReaderValue | undefined;
@@ -110,6 +101,7 @@ export declare class ImageQuality {
     featureType?: number;
     result?: number;
     type?: number;
+    boundRects?: Rect[];
     static fromJson(jsonObject?: any): ImageQuality | undefined;
 }
 export declare class ImageQualityGroup {
@@ -166,6 +158,7 @@ export declare class SecurityObjectCertificates {
 export declare class File {
     readingTime?: number;
     type?: number;
+    typeName?: string;
     pAStatus?: number;
     readingStatus?: number;
     fileID?: string;
@@ -352,6 +345,14 @@ export declare class PKDCertificate {
     privateKey?: string;
     static fromJson(jsonObject?: any): PKDCertificate | undefined;
 }
+export declare class TccParams {
+    serviceUrlTA?: string;
+    serviceUrlPA?: string;
+    pfxCertUrl?: string;
+    pfxPassPhrase?: string;
+    pfxCert?: string;
+    static fromJson(jsonObject?: any): TccParams | undefined;
+}
 export declare class ImageInputParam {
     width?: number;
     height?: number;
@@ -497,16 +498,42 @@ export declare class Search {
     groupIds?: number[];
     static fromJson(jsonObject?: any): Search | undefined;
 }
+export declare class AuthenticityParams {
+    useLivenessCheck?: boolean;
+    livenessParams?: LivenessParams;
+    checkUVLuminiscence?: boolean;
+    checkIRB900?: boolean;
+    checkImagePatterns?: boolean;
+    checkFibers?: boolean;
+    checkExtMRZ?: boolean;
+    checkExtOCR?: boolean;
+    checkAxial?: boolean;
+    checkBarcodeFormat?: boolean;
+    checkIRVisibility?: boolean;
+    checkIPI?: boolean;
+    checkPhotoEmbedding?: boolean;
+    checkPhotoComparison?: boolean;
+    checkLetterScreen?: boolean;
+    static fromJson(jsonObject?: any): AuthenticityParams | undefined;
+}
+export declare class LivenessParams {
+    checkOVI?: boolean;
+    checkMLI?: boolean;
+    checkHolo?: boolean;
+    checkED?: boolean;
+    static fromJson(jsonObject?: any): LivenessParams | undefined;
+}
 export declare class ImageQA {
     dpiThreshold?: number;
     angleThreshold?: number;
     focusCheck?: boolean;
     glaresCheck?: boolean;
     colornessCheck?: boolean;
-    moireCheck?: boolean;
+    screenCapture?: boolean;
+    documentPositionIndent?: number;
     expectedPass?: number[];
     glaresCheckParams?: GlaresCheckParams;
-    documentPositionIndent?: number;
+    brightnessThreshold?: number;
     static fromJson(jsonObject?: any): ImageQA | undefined;
 }
 export declare class GlaresCheckParams {
@@ -526,6 +553,15 @@ export declare class OnlineProcessingConfig {
     imageCompressionQuality?: number;
     static fromJson(jsonObject?: any): OnlineProcessingConfig | undefined;
 }
+export declare class DocReaderConfig {
+    license?: string;
+    customDb?: string;
+    databasePath?: string;
+    licenseUpdate?: boolean;
+    delayedNNLoad?: boolean;
+    blackList?: any;
+    static fromJson(jsonObject?: any): DocReaderConfig | undefined;
+}
 export declare class ScannerConfig {
     scenario?: string;
     livePortrait?: string;
@@ -536,25 +572,40 @@ export declare class ScannerConfig {
 }
 export declare class RecognizeConfig {
     scenario?: string;
+    onlineProcessingConfig?: OnlineProcessingConfig;
+    oneShotIdentification?: boolean;
     livePortrait?: string;
     extPortrait?: string;
-    onlineProcessingConfig?: OnlineProcessingConfig;
     image?: string;
-    oneShotIdentification?: boolean;
+    data?: string;
     images?: string[];
     imageInputData?: ImageInputData[];
     static fromJson(jsonObject?: any): RecognizeConfig | undefined;
 }
+export declare class License {
+    expiryDate?: string;
+    countryFilter?: string[];
+    isRfidAvailable?: boolean;
+    static fromJson(jsonObject?: any): License | undefined;
+}
+export declare class DocReaderVersion {
+    api?: string;
+    core?: string;
+    coreMode?: string;
+    database?: DocReaderDocumentsDatabase;
+    static fromJson(jsonObject?: any): DocReaderVersion | undefined;
+}
+export declare class TransactionInfo {
+    transactionId?: string;
+    tag?: string;
+    static fromJson(jsonObject?: any): TransactionInfo | undefined;
+}
 export declare class DocumentReaderResults {
-    videoCaptureSessionId?: string;
     chipPage?: number;
-    irElapsedTime?: number;
     processingFinishedStatus?: number;
     elapsedTime?: number;
     elapsedTimeRFID?: number;
     morePagesAvailable?: number;
-    rfidResult?: number;
-    highResolution?: boolean;
     graphicResult?: DocumentReaderGraphicResult;
     textResult?: DocumentReaderTextResult;
     documentPosition?: ElementPosition[];
@@ -562,14 +613,13 @@ export declare class DocumentReaderResults {
     mrzPosition?: ElementPosition[];
     imageQuality?: ImageQualityGroup[];
     rawResult?: string;
-    documentReaderNotification?: DocumentReaderNotification;
     rfidSessionData?: RFIDSessionData;
     authenticityResult?: DocumentReaderAuthenticityResult;
     barcodeResult?: DocumentReaderBarcodeResult;
-    ppmIn?: number;
     documentType?: DocumentReaderDocumentType[];
     status?: DocumentReaderResultsStatus;
     vdsncData?: VDSNCData;
+    transactionInfo?: TransactionInfo;
     static fromJson(jsonObject?: any): DocumentReaderResults | undefined;
 }
 export declare const FontStyle: {
@@ -600,6 +650,15 @@ export declare const eRPRM_Authenticity: {
     OVI: number;
     LIVENESS: number;
     OCR: number;
+};
+export declare const CustomizationColor: {
+    RFID_PROCESSING_SCREEN_BACKGROUND: string;
+    RFID_PROCESSING_SCREEN_HINT_LABEL_TEXT: string;
+    RFID_PROCESSING_SCREEN_HINT_LABEL_BACKGROUND: string;
+    RFID_PROCESSING_SCREEN_PROGRESS_LABEL_TEXT: string;
+    RFID_PROCESSING_SCREEN_PROGRESS_BAR: string;
+    RFID_PROCESSING_SCREEN_PROGRESS_BAR_BACKGROUND: string;
+    RFID_PROCESSING_SCREEN_RESULT_LABEL_TEXT: string;
 };
 export declare const eRFID_ErrorCodes: {
     RFID_ERROR_NO_ERROR: number;
@@ -950,11 +1009,13 @@ export declare const eProcessGLCommands: {
     ePC_ProcMgr_ProcessImage: number;
     ePC_ProcMgr_StartNewDocument: number;
     ePC_ProcMgr_StartNewPage: number;
+    ePC_ProcMgr_AddDataToPackage: number;
+    ePC_ProcMgr_FinalizePackage: number;
+    ePC_ProcMgr_CreateBackendTransaction: number;
     ePC_ProcMgr_Unload: number;
     ePC_ProcMgr_CheckDatabase: number;
     ePC_ProcMgr_ComparePortraits: number;
     ePC_RFID_SetTCCParams: number;
-    ePC_RFID_SetReprocessingParams: number;
 };
 export declare const PKDResourceType: {
     CERTIFICATE_PA: number;
@@ -1016,6 +1077,7 @@ export declare const ScenarioIdentifier: {
     SCENARIO_MRZ_OR_BARCODE: string;
     SCENARIO_MRZ_OR_LOCATE: string;
     SCENARIO_MRZ_AND_LOCATE: string;
+    SCENARIO_BARCODE_AND_LOCATE: string;
     SCENARIO_MRZ_OR_OCR: string;
     SCENARIO_MRZ_OR_BARCODE_OR_OCR: string;
     SCENARIO_LOCATE_VISUAL_AND_MRZ_OR_OCR: string;
@@ -1026,7 +1088,6 @@ export declare const ScenarioIdentifier: {
     SCENARIO_OCR_FREE: string;
     SCENARIO_CREDIT_CARD: string;
     SCENARIO_CAPTURE: string;
-    SCENARIO_BARCODE_AND_LOCATE: string;
 };
 export declare const eRFID_AccessControl_ProcedureType: {
     ACPT_UNDEFINED: number;
@@ -1151,6 +1212,7 @@ export declare const eCheckDiagnose: {
     INCORRECT_TEXT_COLOR: number;
     PHOTO_FALSE_LUMINISCENCE: number;
     TOO_MUCH_SHIFT: number;
+    CONTACT_CHIP_TYPE_MISMATCH: number;
     FIBERS_NOT_FOUND: number;
     TOO_MANY_OBJECTS: number;
     SPECKS_IN_UV: number;
@@ -1248,6 +1310,19 @@ export declare const TextProcessing: {
     ocUppercase: number;
     ocLowercase: number;
     ocCapital: number;
+};
+export declare const AnimationImage: {
+    UNKNOWN: number;
+    PASSPORT_SINGLE_PAGE: number;
+    PASSPORT_TWO_PAGES: number;
+    ID_FRONT: number;
+    ID_FRONT_MRZ: number;
+    ID_BACK: number;
+    ID_BACK_MRZ: number;
+    ID_BACK_BARCODE: number;
+    ID_BACK_BARCODE_MRZ: number;
+    BANK_CARD_FRONT: number;
+    BANK_CARD_BACK: number;
 };
 export declare const ProcessingFinishedStatus: {
     NOT_READY: number;
@@ -1502,6 +1577,7 @@ export declare const eImageQualityCheckType: {
     IQC_SCREEN_CAPTURE: number;
     IQC_PORTRAIT: number;
     IQC_HANDWRITTEN: number;
+    IQC_BRIGHTNESS: number;
 };
 export declare const MRZFormat: {
     FORMAT_1X30: string;
@@ -1580,6 +1656,12 @@ export declare const eRPRM_SecurityFeatureType: {
     SECURITY_FEATURE_TYPE_LAS_INK: number;
     SECURITY_FEATURE_TYPE_LIVENESS_MLI: number;
     SECURITY_FEATURE_TYPE_LIVENESS_BARCODE_BACKGROUND: number;
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_VS_BARCODE: number;
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_RFID_VS_BARCODE: number;
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXT_VS_BARCODE: number;
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_BARCODE_VS_CAMERA: number;
+    SECURITY_FEATURE_TYPE_CHECK_DIGITAL_SIGNATURE: number;
+    SECURITY_FEATURE_TYPE_CONTACT_CHIP_CLASSIFICATION: number;
 };
 export declare const OnlineMode: {
     MANUAL: number;
@@ -1821,6 +1903,14 @@ export declare const diDocType: {
     dtInvoice: number;
     dtPassengerLocatorForm: number;
 };
+export declare const ButtonTag: {
+    CLOSE: number;
+    TORCH: number;
+    CAPTURE: number;
+    CHANGE_FRAME: number;
+    SKIP: number;
+    CAMERA_SWITCH: number;
+};
 export declare const HoloAnimationType: {
     DocumentHoloAnimationUnknown: number;
     DocumentHoloAnimationTypeHorizontal: number;
@@ -1836,6 +1926,11 @@ export declare const eRequestCommand: {
     eReqCmd_InternetSend: number;
     eReqCmd_GetGuid: number;
     eReqCmd_WltToImage: number;
+};
+export declare const CustomizationFont: {
+    RFID_PROCESSING_SCREEN_HINT_LABEL: string;
+    RFID_PROCESSING_SCREEN_PROGRESS_LABEL: string;
+    RFID_PROCESSING_SCREEN_RESULT_LABEL: string;
 };
 export declare const ImageFormat: {
     PNG: number;
@@ -1853,6 +1948,7 @@ export declare const eGraphicFieldType: {
     GF_GHOST_PORTRAIT: number;
     GF_STAMP: number;
     GF_PORTRAIT_OF_CHILD: number;
+    GF_CONTACT_CHIP: number;
     GF_OTHER: number;
     GF_FINGER_LEFT_THUMB: number;
     GF_FINGER_LEFT_INDEX: number;
@@ -1866,7 +1962,7 @@ export declare const eGraphicFieldType: {
     GF_FINGER_RIGHT_LITTLE: number;
 };
 export declare const RegDeviceConfigType: {
-    DEVICE_7310: number;
+    DEVICE_7310: string;
 };
 export declare const CameraMode: {
     AUTO: number;
@@ -2608,6 +2704,8 @@ export declare const eVisualFieldType: {
     FT_ADDRESS_COUNTY_TYPE: number;
     FT_ADDRESS_CITY_TYPE: number;
     FT_ADDRESS_BUILDING_TYPE: number;
+    FT_DATE_OF_RETIREMENT: number;
+    FT_DOCUMENT_STATUS: number;
 };
 export declare const DocReaderOrientation: {
     ALL: number;
@@ -2649,7 +2747,7 @@ export declare const LCID: {
     BANK_CARD_NUMBER: number;
     BANK_CARD_VALID_THRU: number;
     BELARUSIAN: number;
-    BENGALI: number;
+    BENGALI_BANGLADESH: number;
     BULGARIAN: number;
     CATALAN: number;
     CHINESE_HONGKONG_SAR: number;
@@ -2715,6 +2813,7 @@ export declare const LCID: {
     LITHUANIAN: number;
     MALAY_MALAYSIA: number;
     MALAY_BRUNEI_DARUSSALAM: number;
+    ASSAMESE: number;
     MARATHI: number;
     MONGOLIAN_CYRILIC: number;
     NORWEGIAN_BOKMAL: number;
@@ -2761,6 +2860,7 @@ export declare const LCID: {
     SYRIAC: number;
     TAMIL: number;
     TATAR: number;
+    BENGALI_INDIA: number;
     TELUGU: number;
     THAI_THAILAND: number;
     TURKISH: number;
@@ -2773,6 +2873,17 @@ export declare const LCID: {
     VIETNAMESE: number;
     CTC_SIMPLIFIED: number;
     CTC_TRADITIONAL: number;
+    MALTESE: number;
+    BURMESE: number;
+    KHMER: number;
+    KARAKALPAK_LATIN: number;
+    MALAYALAM: number;
+    NEPALI: number;
+    ORIYA: number;
+    URDU_DETECTION: number;
+};
+export declare const CustomizationImage: {
+    RFID_PROCESSING_SCREEN_FAILURE_IMAGE: string;
 };
 export declare const DocReaderFrame: {
     MAX: string;
@@ -2870,6 +2981,15 @@ export declare const Enum: {
         OVI: number;
         LIVENESS: number;
         OCR: number;
+    };
+    CustomizationColor: {
+        RFID_PROCESSING_SCREEN_BACKGROUND: string;
+        RFID_PROCESSING_SCREEN_HINT_LABEL_TEXT: string;
+        RFID_PROCESSING_SCREEN_HINT_LABEL_BACKGROUND: string;
+        RFID_PROCESSING_SCREEN_PROGRESS_LABEL_TEXT: string;
+        RFID_PROCESSING_SCREEN_PROGRESS_BAR: string;
+        RFID_PROCESSING_SCREEN_PROGRESS_BAR_BACKGROUND: string;
+        RFID_PROCESSING_SCREEN_RESULT_LABEL_TEXT: string;
     };
     eRFID_ErrorCodes: {
         RFID_ERROR_NO_ERROR: number;
@@ -3220,11 +3340,13 @@ export declare const Enum: {
         ePC_ProcMgr_ProcessImage: number;
         ePC_ProcMgr_StartNewDocument: number;
         ePC_ProcMgr_StartNewPage: number;
+        ePC_ProcMgr_AddDataToPackage: number;
+        ePC_ProcMgr_FinalizePackage: number;
+        ePC_ProcMgr_CreateBackendTransaction: number;
         ePC_ProcMgr_Unload: number;
         ePC_ProcMgr_CheckDatabase: number;
         ePC_ProcMgr_ComparePortraits: number;
         ePC_RFID_SetTCCParams: number;
-        ePC_RFID_SetReprocessingParams: number;
     };
     PKDResourceType: {
         CERTIFICATE_PA: number;
@@ -3286,6 +3408,7 @@ export declare const Enum: {
         SCENARIO_MRZ_OR_BARCODE: string;
         SCENARIO_MRZ_OR_LOCATE: string;
         SCENARIO_MRZ_AND_LOCATE: string;
+        SCENARIO_BARCODE_AND_LOCATE: string;
         SCENARIO_MRZ_OR_OCR: string;
         SCENARIO_MRZ_OR_BARCODE_OR_OCR: string;
         SCENARIO_LOCATE_VISUAL_AND_MRZ_OR_OCR: string;
@@ -3296,7 +3419,6 @@ export declare const Enum: {
         SCENARIO_OCR_FREE: string;
         SCENARIO_CREDIT_CARD: string;
         SCENARIO_CAPTURE: string;
-        SCENARIO_BARCODE_AND_LOCATE: string;
     };
     eRFID_AccessControl_ProcedureType: {
         ACPT_UNDEFINED: number;
@@ -3421,6 +3543,7 @@ export declare const Enum: {
         INCORRECT_TEXT_COLOR: number;
         PHOTO_FALSE_LUMINISCENCE: number;
         TOO_MUCH_SHIFT: number;
+        CONTACT_CHIP_TYPE_MISMATCH: number;
         FIBERS_NOT_FOUND: number;
         TOO_MANY_OBJECTS: number;
         SPECKS_IN_UV: number;
@@ -3518,6 +3641,19 @@ export declare const Enum: {
         ocUppercase: number;
         ocLowercase: number;
         ocCapital: number;
+    };
+    AnimationImage: {
+        UNKNOWN: number;
+        PASSPORT_SINGLE_PAGE: number;
+        PASSPORT_TWO_PAGES: number;
+        ID_FRONT: number;
+        ID_FRONT_MRZ: number;
+        ID_BACK: number;
+        ID_BACK_MRZ: number;
+        ID_BACK_BARCODE: number;
+        ID_BACK_BARCODE_MRZ: number;
+        BANK_CARD_FRONT: number;
+        BANK_CARD_BACK: number;
     };
     ProcessingFinishedStatus: {
         NOT_READY: number;
@@ -3772,6 +3908,7 @@ export declare const Enum: {
         IQC_SCREEN_CAPTURE: number;
         IQC_PORTRAIT: number;
         IQC_HANDWRITTEN: number;
+        IQC_BRIGHTNESS: number;
     };
     MRZFormat: {
         FORMAT_1X30: string;
@@ -3850,6 +3987,12 @@ export declare const Enum: {
         SECURITY_FEATURE_TYPE_LAS_INK: number;
         SECURITY_FEATURE_TYPE_LIVENESS_MLI: number;
         SECURITY_FEATURE_TYPE_LIVENESS_BARCODE_BACKGROUND: number;
+        SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_VS_BARCODE: number;
+        SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_RFID_VS_BARCODE: number;
+        SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXT_VS_BARCODE: number;
+        SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_BARCODE_VS_CAMERA: number;
+        SECURITY_FEATURE_TYPE_CHECK_DIGITAL_SIGNATURE: number;
+        SECURITY_FEATURE_TYPE_CONTACT_CHIP_CLASSIFICATION: number;
     };
     OnlineMode: {
         MANUAL: number;
@@ -4091,6 +4234,14 @@ export declare const Enum: {
         dtInvoice: number;
         dtPassengerLocatorForm: number;
     };
+    ButtonTag: {
+        CLOSE: number;
+        TORCH: number;
+        CAPTURE: number;
+        CHANGE_FRAME: number;
+        SKIP: number;
+        CAMERA_SWITCH: number;
+    };
     HoloAnimationType: {
         DocumentHoloAnimationUnknown: number;
         DocumentHoloAnimationTypeHorizontal: number;
@@ -4106,6 +4257,11 @@ export declare const Enum: {
         eReqCmd_InternetSend: number;
         eReqCmd_GetGuid: number;
         eReqCmd_WltToImage: number;
+    };
+    CustomizationFont: {
+        RFID_PROCESSING_SCREEN_HINT_LABEL: string;
+        RFID_PROCESSING_SCREEN_PROGRESS_LABEL: string;
+        RFID_PROCESSING_SCREEN_RESULT_LABEL: string;
     };
     ImageFormat: {
         PNG: number;
@@ -4123,6 +4279,7 @@ export declare const Enum: {
         GF_GHOST_PORTRAIT: number;
         GF_STAMP: number;
         GF_PORTRAIT_OF_CHILD: number;
+        GF_CONTACT_CHIP: number;
         GF_OTHER: number;
         GF_FINGER_LEFT_THUMB: number;
         GF_FINGER_LEFT_INDEX: number;
@@ -4136,7 +4293,7 @@ export declare const Enum: {
         GF_FINGER_RIGHT_LITTLE: number;
     };
     RegDeviceConfigType: {
-        DEVICE_7310: number;
+        DEVICE_7310: string;
     };
     CameraMode: {
         AUTO: number;
@@ -4878,6 +5035,8 @@ export declare const Enum: {
         FT_ADDRESS_COUNTY_TYPE: number;
         FT_ADDRESS_CITY_TYPE: number;
         FT_ADDRESS_BUILDING_TYPE: number;
+        FT_DATE_OF_RETIREMENT: number;
+        FT_DOCUMENT_STATUS: number;
     };
     DocReaderOrientation: {
         ALL: number;
@@ -4919,7 +5078,7 @@ export declare const Enum: {
         BANK_CARD_NUMBER: number;
         BANK_CARD_VALID_THRU: number;
         BELARUSIAN: number;
-        BENGALI: number;
+        BENGALI_BANGLADESH: number;
         BULGARIAN: number;
         CATALAN: number;
         CHINESE_HONGKONG_SAR: number;
@@ -4985,6 +5144,7 @@ export declare const Enum: {
         LITHUANIAN: number;
         MALAY_MALAYSIA: number;
         MALAY_BRUNEI_DARUSSALAM: number;
+        ASSAMESE: number;
         MARATHI: number;
         MONGOLIAN_CYRILIC: number;
         NORWEGIAN_BOKMAL: number;
@@ -5031,6 +5191,7 @@ export declare const Enum: {
         SYRIAC: number;
         TAMIL: number;
         TATAR: number;
+        BENGALI_INDIA: number;
         TELUGU: number;
         THAI_THAILAND: number;
         TURKISH: number;
@@ -5043,6 +5204,17 @@ export declare const Enum: {
         VIETNAMESE: number;
         CTC_SIMPLIFIED: number;
         CTC_TRADITIONAL: number;
+        MALTESE: number;
+        BURMESE: number;
+        KHMER: number;
+        KARAKALPAK_LATIN: number;
+        MALAYALAM: number;
+        NEPALI: number;
+        ORIYA: number;
+        URDU_DETECTION: number;
+    };
+    CustomizationImage: {
+        RFID_PROCESSING_SCREEN_FAILURE_IMAGE: string;
     };
     DocReaderFrame: {
         MAX: string;
@@ -5137,88 +5309,6 @@ export declare const Enum: {
  */
 export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
     /**
-     *  Initially made for capacitor as it has no convenient way to read assets
-     *  Allows you to initialize document reader without reading license yourself.
-     *  License will be automatically read from
-     *  Android: "android/app/src/main/assets/regula.license"
-     *  iOS: "ios/App/App/regula.license"
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    initializeReaderAutomatically(): Promise<any>;
-    /**
-     *  Checks if all required bluetooth permissions are granted and requests them if needed(Android only, ignored on iOS)
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    isBlePermissionsGranted(): Promise<any>;
-    /**
-     *  Searches for ble devices(Android only, ignored on iOS)
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    startBluetoothService(): Promise<any>;
-    /**
-     *  Initializes document reader with license from connected Device7310(Android only, ignored on iOS)
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    initializeReaderBleDeviceConfig(): Promise<any>;
-    /**
-     *  returns tag property of DocumentReader class
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    getTag(): Promise<any>;
-    /**
-     *  Allows you to get the API version
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    getAPIVersion(): Promise<any>;
-    /**
-     *  Allows you to get the available scenarios
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    getAvailableScenarios(): Promise<any>;
-    /**
-     *  Allows you to check if NFC chip reading capability is available
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    isRFIDAvailableForUse(): Promise<any>;
-    /**
-     *  Allows you to get the Core mode
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    getCoreMode(): Promise<any>;
-    /**
-     *  Allows you to get the Core version
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    getCoreVersion(): Promise<any>;
-    /**
-     *  Allows you to get the database export date
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    getDatabaseDate(): Promise<any>;
-    /**
-     *  Allows you to get the database ID
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    getDatabaseID(): Promise<any>;
-    /**
-     *  Allows you to get the database version
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    getDatabaseVersion(): Promise<any>;
-    /**
      *  Allows you to check if the SDK is ready for use
      *
      * @return {Promise<any>} Returns a promise
@@ -5231,159 +5321,17 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      */
     getDocumentReaderStatus(): Promise<any>;
     /**
-     *  Allows you to get the number of supported database countries
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    getDatabaseCountriesNumber(): Promise<any>;
-    /**
-     *  Allows you to get the number of supported database documents
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    getDatabaseDocumentsNumber(): Promise<any>;
-    /**
-     *  Allows you to get the selected scenario
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    selectedScenario(): Promise<any>;
-    /**
-     *  Allows you to get the path to the folder of the current session. Before using this, enable log saving. Each new session provides a different path
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    getSessionLogFolder(): Promise<any>;
-    /**
-     *  Allows you to get the list of supported database documents use
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    getDatabaseDescription(): Promise<any>;
-    /**
-     *  Use this method to open the camera preview which will pass frames for recognition and return results in the completion block when they are ready
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    /**
-     * @deprecated
-     */
-    showScanner(): Observable<any>;
-    /**
-     *  Use this method to indicate than the processing of the next page is started
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    startNewPage(): Promise<any>;
-    /**
-     *  Use this method to start a new session
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    startNewSession(): Promise<any>;
-    /**
-     *  Use the method below to open the RFID chip reading controller and start its processing
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    startRFIDReader(): Observable<any>;
-    /**
-     *  Use the method below to close the RFID chip reading controller and end its processing
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    stopRFIDReader(): Promise<any>;
-    /**
-     *  Use the method to display an error message after stop reading RFID on iOS
-     *
-     * @param {string} message error message
-     * @return {Promise<any>} Returns a promise
-     */
-    stopRFIDReaderWithErrorMessage(message: any): Promise<any>;
-    /**
-     *  Use this method to close camera preview and stop processing
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    stopScanner(): Promise<any>;
-    /**
-     *  Use this method to deinitialize Document Reader
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    deinitializeReader(): Promise<any>;
-    /**
      *  Allows you to check if a mobile authenticator is available for use
      *
      * @return {Promise<any>} Returns a promise
      */
     isAuthenticatorAvailableForUse(): Promise<any>;
     /**
-     *  Use this method to get the config
+     *  Checks if all required bluetooth permissions are granted and requests them if needed(Android only, ignored on iOS)
      *
      * @return {Promise<any>} Returns a promise
      */
-    getConfig(): Promise<any>;
-    /**
-     *  Use this method to get the RFID scenario
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    getRfidScenario(): Promise<any>;
-    /**
-     *  Allows you to get an expiration date of the license
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    getLicenseExpiryDate(): Promise<any>;
-    /**
-     *  Allows you to get a list of country identifiers that are defined for processing in the license. If the array is empty, there are no restrictions for processing
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    getLicenseCountryFilter(): Promise<any>;
-    /**
-     *  Allows you to check if NFC chip reading capability is available
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    licenseIsRfidAvailable(): Promise<any>;
-    /**
-     *  Use this method to get the camera session
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    getCameraSessionIsPaused(): Promise<any>;
-    /**
-     *  Allows you to remove the added database
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    removeDatabase(): Promise<any>;
-    /**
-     *  Allows you to cancel database update
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    cancelDBUpdate(): Promise<any>;
-    /**
-     *  Use this method to reset configuration
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    resetConfiguration(): Promise<any>;
-    /**
-     *  Use this method to clear PKD certificates
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    clearPKDCertificates(): Promise<any>;
-    /**
-     *  Use this method to start RFID chip processing
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    readRFID(): Observable<any>;
+    isBlePermissionsGranted(): Promise<any>;
     /**
      *  Use this method to get an RFID session status
      *
@@ -5391,40 +5339,18 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      */
     getRfidSessionStatus(): Promise<any>;
     /**
-     *  Use this method to set RFID delegate on iOS to either null,
-     *  delegate with onRequestPACertificates callback or without
+     *  Use this method to set an RFID session status
      *
-     * @param {int} delegate use enum RFIDDelegate
-     *  NULL = 0
-     *  NO_PA = 1
-     *  FULL = 2
+     * @param {string} status
      * @return {Promise<any>} Returns a promise
      */
-    setRfidDelegate(delegate: any): Promise<any>;
+    setRfidSessionStatus(status: any): Promise<any>;
     /**
-     *  Use this method to enable Core logs
+     *  returns tag property of DocumentReader class
      *
-     * @param {boolean} logs
      * @return {Promise<any>} Returns a promise
      */
-    setEnableCoreLogs(logs: any): Promise<any>;
-    /**
-     *  Allows to add a list of PKD certificates during initialization process which will be passed to Core
-     *
-     * @param {PKDCertificate[]} certificates Array of jsonObjects with structure {binaryData: binaryData, resourceType: resourceType, privateKey: privateKey}
-     *  binaryData - base64 string
-     *  resourceType - number
-     *  privateKey(optional) - base64 string
-     * @return {Promise<any>} Returns a promise
-     */
-    addPKDCertificates(certificates: any): Promise<any>;
-    /**
-     *  If set, the camera session will be paused as soon as the result is received
-     *
-     * @param {boolean} paused
-     * @return {Promise<any>} Returns a promise
-     */
-    setCameraSessionIsPaused(paused: any): Promise<any>;
+    getTag(): Promise<any>;
     /**
      *  sets DocumentReader.tag
      *
@@ -5432,6 +5358,114 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     setTag(tag: any): Promise<any>;
+    /**
+     *  description
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    getFunctionality(): Promise<any>;
+    /**
+     *  description
+     *
+     * @param {object} functionality description
+     * @return {Promise<any>} Returns a promise
+     */
+    setFunctionality(functionality: any): Promise<any>;
+    /**
+     *  description
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    getProcessParams(): Promise<any>;
+    /**
+     *  description
+     *
+     * @param {object} processParams description
+     * @return {Promise<any>} Returns a promise
+     */
+    setProcessParams(processParams: any): Promise<any>;
+    /**
+     *  description
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    getCustomization(): Promise<any>;
+    /**
+     *  description
+     *
+     * @param {object} customization description
+     * @return {Promise<any>} Returns a promise
+     */
+    setCustomization(customization: any): Promise<any>;
+    /**
+     *  description
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    getRfidScenario(): Promise<any>;
+    /**
+     *  description
+     *
+     * @param {object} rfidScenario description
+     * @return {Promise<any>} Returns a promise
+     */
+    setRfidScenario(rfidScenario: any): Promise<any>;
+    /**
+     *  Use this method to initialize Document Reader
+     *
+     * @param {object} config Object with structure
+     *      "license": "license base64 string(necessary)"
+     *      "customDb": "custom database base64 string(Android only, ignored on iOS)"
+     *      "databasePath": "database path(iOS only, ignored on android)"
+     *      "licenseUpdate": true
+     *      "delayedNNLoad": false
+     *      "blackList": {} // Android only, ignored on iOS
+     * @return {Promise<any>} Returns a promise
+     */
+    initializeReader(config: any): Promise<any>;
+    /**
+     *  Initializes document reader with license from connected Device7310(Android only, ignored on iOS)
+     *
+     * @param {object} config Object with structure
+     *      "customDb": "custom database base64 string(Android only, ignored on iOS)"
+     *      "licenseUpdate": true
+     *      "delayedNNLoad": false
+     *      "blackList": {} // Android only, ignored on iOS
+     * @return {Promise<any>} Returns a promise
+     */
+    initializeReaderWithBleDeviceConfig(config: any): Promise<any>;
+    /**
+     *  Use this method to deinitialize Document Reader
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    deinitializeReader(): Promise<any>;
+    /**
+     *  Use this method to download a database from the Regula's server
+     *
+     * @param {string} databaseType
+     * @return {Promise<any>} Returns a promise
+     */
+    prepareDatabase(databaseType: any): Observable<any>;
+    /**
+     *  Allows you to remove the added database
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    removeDatabase(): Promise<any>;
+    /**
+     *  Use this method for getting always the latest version of the database
+     *
+     * @param {string} databaseId
+     * @return {Promise<any>} Returns a promise
+     */
+    runAutoUpdate(databaseId: any): Observable<any>;
+    /**
+     *  Allows you to cancel database update
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    cancelDBUpdate(): Promise<any>;
     /**
      *  checks for database update
      *
@@ -5454,100 +5488,41 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      */
     recognize(config: any): Observable<any>;
     /**
-     *  Use this method to recognize images
+     *  Use this method to indicate than the processing of the next page is started
      *
-     * @param {string[]} images Array of strings that are base64 representations of images
      * @return {Promise<any>} Returns a promise
      */
+    startNewPage(): Promise<any>;
     /**
-     * @deprecated
-     */
-    recognizeImages(images: any): Observable<any>;
-    /**
-     *  Use this method to open the camera preview with the desired camera ID which will pass frames for recognition and return results in the completion block when they are ready
+     *  Use this method to close camera preview and stop processing
      *
-     * @param {number} cameraID
      * @return {Promise<any>} Returns a promise
      */
+    stopScanner(): Promise<any>;
     /**
-     * @deprecated
-     */
-    showScannerWithCameraID(cameraID: any): Observable<any>;
-    /**
-     *  Use this method for getting always the latest version of the database
+     *  Use the method below to open the RFID chip reading controller and start its processing
      *
-     * @param {string} databaseType
+     * @param {boolean} requestPACertificates description
+     * @param {boolean} requestTACertificates description
+     * @param {boolean} requestTASignature description
      * @return {Promise<any>} Returns a promise
      */
-    runAutoUpdate(databaseType: any): Observable<any>;
+    startRFIDReader(requestPACertificates: any, requestTACertificates: any, requestTASignature: any): Observable<any>;
     /**
-     *  Use this method to set config
+     *  Use the method below to close the RFID chip reading controller and end its processing
      *
-     * @param {object} config JsonObject with structure
-     *    {functionality?: {name?: value1, name?: value2, ...},
-     *    customization?: {name?: value3, name?: value4, ...},
-     *    processParams?: {name?: value5, name?: value6, ...}}
-     *  name - string
-     *  value - any
      * @return {Promise<any>} Returns a promise
      */
-    setConfig(config: any): Promise<any>;
+    stopRFIDReader(): Promise<any>;
     /**
-     *  Use this method to set an RFID scenario
+     *  Use this method to start RFID chip processing
      *
-     * @param {object} scenario JsonObject with structure {name?: value1,name?: value2, ...}
-     *  name - string
-     *  value - any
+     * @param {boolean} requestPACertificates description
+     * @param {boolean} requestTACertificates description
+     * @param {boolean} requestTASignature description
      * @return {Promise<any>} Returns a promise
      */
-    setRfidScenario(scenario: any): Promise<any>;
-    /**
-     *  Use this method to initialize Document Reader
-     *
-     * @param {object} config Object with structure
-     *      "license": "license base64 string(necessary)"
-     *      "customDb": "custom database base64 string(Android only, ignored on iOS)"
-     *      "databasePath": "database path(iOS only, ignored on android)"
-     *      "licenseUpdate": true
-     *      "delayedNNLoad": false
-     *      "blackList": {} // Android only, ignored on iOS
-     * @return {Promise<any>} Returns a promise
-     */
-    initializeReader(config: any): Promise<any>;
-    /**
-     *  Use this method to download a database from the Regula's server
-     *
-     * @param {string} databaseType
-     * @return {Promise<any>} Returns a promise
-     */
-    prepareDatabase(databaseType: any): Observable<any>;
-    /**
-     *  Use this method to recognize an image
-     *
-     * @param {string} image Image`s base64 representation
-     * @return {Promise<any>} Returns a promise
-     */
-    /**
-     * @deprecated
-     */
-    recognizeImage(image: any): Observable<any>;
-    /**
-     *  Use this method to recognize an image using byte array
-     *
-     * @param {byte[]} data Image`s byte[] representation
-     * @return {Promise<any>} Returns a promise
-     */
-    /**
-     * @deprecated
-     */
-    recognizeData(data: any): Observable<any>;
-    /**
-     *  Use this method to set an RFID session status
-     *
-     * @param {string} status
-     * @return {Promise<any>} Returns a promise
-     */
-    setRfidSessionStatus(status: any): Promise<any>;
+    readRFID(requestPACertificates: any, requestTACertificates: any, requestTASignature: any): Observable<any>;
     /**
      *  Use this method to send PACertificates to the chip after you`ve got a request for them
      *
@@ -5576,13 +5551,6 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      */
     provideTASignature(signature: any): Promise<any>;
     /**
-     *  Use this method to parse results returned by the server when using an encrypted license
-     *
-     * @param {string} json results to parse
-     * @return {Promise<any>} Returns a promise
-     */
-    parseCoreResults(json: any): Promise<any>;
-    /**
      *  The method call sets the given TCCParams to the RFID session. The parameters are required to be set before starting RFID session.
      *
      * @param {object} params Object with structure
@@ -5595,70 +5563,84 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      */
     setTCCParams(params: any): Promise<any>;
     /**
-     *  Use this method to recognize an image with options
+     *  Allows to add a list of PKD certificates during initialization process which will be passed to Core
      *
-     * @param {string} image Image`s base64 representation
-     * @param {object} options JsonObject with structure
-     *    {functionality?: {name?: value1, name?: value2, ...},
-     *    customization?: {name?: value3, name?: value4, ...},
-     *    processParams?: {name?: value5, name?: value6, ...}}
-     *  name - string
-     *  value - any
+     * @param {PKDCertificate[]} certificates Array of jsonObjects with structure {binaryData: binaryData, resourceType: resourceType, privateKey: privateKey}
+     *  binaryData - base64 string
+     *  resourceType - number
+     *  privateKey(optional) - base64 string
      * @return {Promise<any>} Returns a promise
      */
+    addPKDCertificates(certificates: any): Promise<any>;
     /**
-     * @deprecated
-     */
-    recognizeImageWithOpts(image: any, options: any): Observable<any>;
-    /**
-     *  Use this method to recognize a stream of frames
+     *  Use this method to clear PKD certificates
      *
-     * @param {string} byteString
-     * @param {ImageInputParam} params Image input params
      * @return {Promise<any>} Returns a promise
      */
-    recognizeVideoFrame(byteString: any, params: any): Observable<any>;
+    clearPKDCertificates(): Promise<any>;
     /**
-     *  Use this method to open the camera preview with the desired camera ID and options which will pass frames for recognition and return results in the completion block when they are ready
+     *  Use this method to start a new session
      *
-     * @param {number} cameraID
-     * @param {object} options JsonObject with structure
-     *    {functionality?: {name?: value1, name?: value2, ...},
-     *    customization?: {name?: value3, name?: value4, ...},
-     *    processParams?: {name?: value5, name?: value6, ...}}
-     *  name - string
-     *  value - any
      * @return {Promise<any>} Returns a promise
      */
+    startNewSession(): Promise<any>;
     /**
-     * @deprecated
-     */
-    showScannerWithCameraIDAndOpts(cameraID: any, options: any): Observable<any>;
-    /**
-     *  Use this method to recognize a stream of frames
+     *  Searches for ble devices(Android only, ignored on iOS)
      *
-     * @param {string} image Image`s base64 representation
-     * @param {boolean} mode
      * @return {Promise<any>} Returns a promise
      */
-    recognizeImageWithCameraMode(image: any, mode: any): Observable<any>;
-    /**
-     *  Use this method to recognize images using ImageInputData
-     *
-     * @param {ImageInputData[]} images array of ImageInputData objects
-     * @return {Promise<any>} Returns a promise
-     */
-    /**
-     * @deprecated
-     */
-    recognizeImagesWithImageInputs(images: any): Promise<any>;
+    startBluetoothService(): Promise<any>;
     /**
      *  description
      *
-     * @param {string} language description
+     * @param {object} dictionary description
      * @return {Promise<any>} Returns a promise
      */
-    setLanguage(language: any): Promise<any>;
+    setLocalizationDictionary(dictionary: any): Promise<any>;
+    /**
+     *  description
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    getLicense(): Promise<any>;
+    /**
+     *  Allows you to get the available scenarios
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    getAvailableScenarios(): Promise<any>;
+    /**
+     *  Allows you to check if NFC chip reading capability is available
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    getIsRFIDAvailableForUse(): Promise<any>;
+    /**
+     *  description
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    getDocReaderVersion(): Promise<any>;
+    /**
+     *  description
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    getDocReaderDocumentsDatabase(): Promise<any>;
+    /**
+     *  description
+     *
+     * @param {string} className description
+     * @param {int} value byte array
+     * @return {Promise<any>} Returns a promise
+     */
+    getTranslation(className: any, value: any): Promise<any>;
+    /**
+     *  description
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    finalizePackage(): Promise<any>;
     textFieldValueByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
     textFieldValueByTypeLcid(results: DocumentReaderResults, fieldType: number, lcid: number): Promise<string | undefined>;
     textFieldValueByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
