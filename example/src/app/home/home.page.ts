@@ -56,33 +56,25 @@ export class HomePage {
     app.status.nativeElement.style.backgroundColor = "grey"
     app.platform.ready().then(() => {
       readFile("www/assets", "regula.license", (license: string) => {
-        DocumentReader.prepareDatabase("Full").subscribe((message: string) => {
-          if (!JSON.parse(message).success)
-            app.status.nativeElement.innerHTML = "Downloading database: " + message + "%"
-          else {
-            console.log("Database prepared")
-            app.status.nativeElement.innerHTML = "Loading......"
-            var config = new DocReaderConfig()
-            config.license = license
-            config.delayedNNLoad = true
-            DocumentReader.initializeReader(config).then((message: string) => {
-              var callback = JSON.parse(message)
-              if (!callback.success) {
-                var error = "Init error: " + callback.error.message
-                console.log(error)
-                this.status.nativeElement.innerHTML = error
-                this.status.nativeElement.style.backgroundColor = "red"
-                return
-              }
-              console.log("Init complete")
-              app.showScannerButton.nativeElement.addEventListener("click", scan)
-              app.showImagePicker.nativeElement.addEventListener("click", recognize)
-              DocumentReader.getAvailableScenarios().then(sc =>
-                DocumentReader.getIsRFIDAvailableForUse().then((canRfid: boolean) =>
-                  postInitialize(JSON.parse(sc), canRfid)))
-              onInitialized()
-            })
+        var config = new DocReaderConfig()
+        config.license = license
+        config.delayedNNLoad = true
+        DocumentReader.initializeReader(config).then((message: string) => {
+          var callback = JSON.parse(message)
+          if (!callback.success) {
+            var error = "Init error: " + callback.error.message
+            console.log(error)
+            this.status.nativeElement.innerHTML = error
+            this.status.nativeElement.style.backgroundColor = "red"
+            return
           }
+          console.log("Init complete")
+          app.showScannerButton.nativeElement.addEventListener("click", scan)
+          app.showImagePicker.nativeElement.addEventListener("click", recognize)
+          DocumentReader.getAvailableScenarios().then(sc =>
+            DocumentReader.getIsRFIDAvailableForUse().then((canRfid: boolean) =>
+              postInitialize(JSON.parse(sc), canRfid)))
+          onInitialized()
         })
       })
     })

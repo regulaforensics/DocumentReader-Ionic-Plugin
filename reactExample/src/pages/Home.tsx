@@ -45,33 +45,25 @@ document.addEventListener("deviceready", onDeviceReady, false)
 
 function onDeviceReady() {
   readFile("public/assets", "regula.license", (license: string) => {
-    DocumentReader.prepareDatabase("Full").subscribe((message: string) => {
-      if (!JSON.parse(message).success)
-        status.innerHTML = "Downloading database: " + message + "%"
-      else {
-        console.log("Database prepared")
-        status.innerHTML = "Loading......"
-        var config = new DocReaderConfig()
-        config.license = license
-        config.delayedNNLoad = true
-        DocumentReader.initializeReader(config).then((message: string) => {
-          var callback = JSON.parse(message)
-          if (!callback.success) {
-            var error = "Init error: " + callback.error.message
-            console.log(error)
-            status.innerHTML = error
-            status.style.backgroundColor = "red"
-            return
-          }
-          console.log("Init complete")
-          showScannerButton.addEventListener("click", scan)
-          showImagePicker.addEventListener("click", recognize)
-          DocumentReader.getAvailableScenarios().then((sc: string) =>
-            DocumentReader.getIsRFIDAvailableForUse().then((canRfid: boolean) =>
-              postInitialize(JSON.parse(sc), canRfid)))
-          onInitialized()
-        })
+    var config = new DocReaderConfig()
+    config.license = license
+    config.delayedNNLoad = true
+    DocumentReader.initializeReader(config).then((message: string) => {
+      var callback = JSON.parse(message)
+      if (!callback.success) {
+        var error = "Init error: " + callback.error.message
+        console.log(error)
+        status.innerHTML = error
+        status.style.backgroundColor = "red"
+        return
       }
+      console.log("Init complete")
+      showScannerButton.addEventListener("click", scan)
+      showImagePicker.addEventListener("click", recognize)
+      DocumentReader.getAvailableScenarios().then((sc: string) =>
+        DocumentReader.getIsRFIDAvailableForUse().then((canRfid: boolean) =>
+          postInitialize(JSON.parse(sc), canRfid)))
+      onInitialized()
     })
   })
 }
