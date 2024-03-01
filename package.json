@@ -1,6 +1,6 @@
 {
   "name": "@regulaforensics/ionic-native-document-reader",
-  "version": "6.9.1",
+  "version": "7.1.0",
   "description": "Ionic Native wrapper for cordova documentreader",
   "main": "index.js",
   "keywords": [

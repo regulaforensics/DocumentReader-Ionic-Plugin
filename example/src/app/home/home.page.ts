@@ -1,9 +1,8 @@
 import { Component, ViewChild, ElementRef } from '@angular/core'
 import { File } from '@awesome-cordova-plugins/file'
-import { ImagePicker } from '@awesome-cordova-plugins/image-picker/ngx'
-import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx'
+import { Camera, DestinationType, MediaType, PictureSourceType } from '@awesome-cordova-plugins/camera/ngx'
 import { Platform } from '@ionic/angular'
-import { DocumentReader, DocumentReaderScenario, Enum, DocumentReaderCompletion, DocumentReaderResults, DocumentReaderNotification, ScannerConfig, RecognizeConfig } from '@regulaforensics/ionic-native-document-reader/ngx'
+import { DocumentReader, DocumentReaderScenario, Enum, DocumentReaderCompletion, DocumentReaderResults, DocumentReaderNotification, ScannerConfig, RecognizeConfig, DocReaderConfig } from '@regulaforensics/ionic-native-document-reader/ngx'
 
 var selectedScenario = "Mrz"
 var doRfid: boolean = false
@@ -36,71 +35,54 @@ export class HomePage {
   @ViewChild('rfidProgress', { static: false }) rfidProgress: ElementRef
   @ViewChild('cancelButton', { static: false }) cancelButton: ElementRef
 
-  constructor(public DocumentReader: DocumentReader, public platform: Platform, private imagePicker: ImagePicker, private androidPermissions: AndroidPermissions) {
+  constructor(public DocumentReader: DocumentReader, public platform: Platform, private camera: Camera) {
   }
 
   ionViewDidEnter() {
-    var app = this
-    var DocumentReader = this.DocumentReader
-    var error1 = e => {
-      console.log(e)
-      this.status.nativeElement.innerHTML = e
-      this.status.nativeElement.style.backgroundColor = "red"
-    }
-    var error2 = e => {
-      e = JSON.stringify(e, undefined, 2)
-      console.log(e)
-      alert(e)
+    function onInitialized() {
+      app.status.nativeElement.innerHTML = "Ready"
+      app.status.nativeElement.style.backgroundColor = "green"
+
+      DocumentReader.setFunctionality({
+        showCaptureButton: true
+      })
     }
 
-    app.cancelButton.nativeElement.addEventListener("click", stopRfid)
+    var app = this
+    var DocumentReader = this.DocumentReader
+    app.cancelButton.nativeElement.addEventListener("click", hideRfidUI)
     updateUI()
     app.status.nativeElement.innerHTML = "loading......"
     app.status.nativeElement.style.backgroundColor = "grey"
     app.platform.ready().then(() => {
-      readFile("www/assets", "regula.license", (license) => {
-        DocumentReader.prepareDatabase("Full").subscribe(r => {
-          if (r != "database prepared")
-            app.status.nativeElement.innerHTML = "Downloading database: " + r + "%"
-          else {
-            app.status.nativeElement.innerHTML = "Loading......"
-            DocumentReader.initializeReader({
-              license: license,
-              delayedNNLoad: true
-            }).then(m => onInitialized()).catch(error1)
+      readFile("www/assets", "regula.license", (license: string) => {
+        var config = new DocReaderConfig()
+        config.license = license
+        config.delayedNNLoad = true
+        DocumentReader.initializeReader(config).then((message: string) => {
+          var callback = JSON.parse(message)
+          if (!callback.success) {
+            var error = "Init error: " + callback.error.message
+            console.log(error)
+            this.status.nativeElement.innerHTML = error
+            this.status.nativeElement.style.backgroundColor = "red"
+            return
           }
+          console.log("Init complete")
+          app.showScannerButton.nativeElement.addEventListener("click", scan)
+          app.showImagePicker.nativeElement.addEventListener("click", recognize)
+          DocumentReader.getAvailableScenarios().then(sc =>
+            DocumentReader.getIsRFIDAvailableForUse().then((canRfid: boolean) =>
+              postInitialize(JSON.parse(sc), canRfid)))
+          onInitialized()
         })
       })
     })
 
-    function addCertificates() {
-      File.resolveDirectoryUrl(File.applicationDirectory + "certificates").then(dir => {
-        dir.createReader().readEntries(entries => {
-          for (let i = 0; i < entries.length; i++) {
-            if (entries[i].isFile) {
-              var findExt = entries[i].name.split('.')
-              var pkdResourceType = 0
-              if (findExt.length > 0)
-                pkdResourceType = Enum.PKDResourceType.getType(findExt[findExt.length - 1].toLowerCase())
-              readFile("certificates", entries[i].name, (file, resType) => {
-                resType = resType[0]
-                var certificates = []
-                certificates.push({
-                  'binaryData': file,
-                  'resourceType': resType
-                })
-                DocumentReader.addPKDCertificates(certificates).then(s => console.log("certificate added")).catch(e => console.log(e))
-              }, pkdResourceType)
-            }
-          }
-        })
-      })
-    }
-
-    function readFile(dirPath: string, fileName: string, callback, ...items) {
+    function readFile(dirPath: string, fileName: string, callback: any, ...items: any) {
       File.resolveDirectoryUrl(File.applicationDirectory + dirPath).then(dir => File.getFile(dir, fileName, null).then(fileEntry => fileEntry.file(file => {
         var reader = new FileReader()
-        reader.onloadend = (evt) => {
+        reader.onloadend = (_) => {
           var data = reader.result as String
           data = data.substring(data.indexOf(',') + 1)
           callback(data, items)
@@ -118,30 +100,25 @@ export class HomePage {
       app.rfidProgress.nativeElement.value = rfidProgress
     }
 
-    function stopRfid() {
-      hideRfidUI()
-      DocumentReader.stopRFIDReader()
+    function handleCompletion(completion: DocumentReaderCompletion) {
+      if (isReadingRfidCustomUi) {
+        if (completion.action == Enum.DocReaderAction.ERROR) restartRfidUI()
+        if (actionSuccess(completion.action) || actionError(completion.action)) {
+          hideRfidUI()
+          displayResults(completion.results)
+        }
+      } else if (actionSuccess(completion.action))
+        handleResults(completion.results)
     }
 
-    function handleCompletion(completion: DocumentReaderCompletion) {
-      console.log("DocReaderAction: " + completion.action)
-      if (isReadingRfidCustomUi && (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR))
-        hideRfidUI()
-      if (isReadingRfidCustomUi && completion.action === Enum.DocReaderAction.NOTIFICATION)
-        updateRfidUI(completion.results.documentReaderNotification)
-      if (completion.action === Enum.DocReaderAction.COMPLETE)
-        if (isReadingRfidCustomUi) {
-          if (completion.results.rfidResult !== 1)
-            restartRfidUI()
-          else {
-            hideRfidUI()
-            displayResults(completion.results)
-          }
-        }
-        else
-          handleResults(completion.results)
-      if (completion.action === Enum.DocReaderAction.TIMEOUT)
-        handleResults(completion.results)
+    function actionSuccess(action: number) {
+      if (action == Enum.DocReaderAction.COMPLETE || action == Enum.DocReaderAction.TIMEOUT) return true
+      return false
+    }
+
+    function actionError(action: number) {
+      if (action == Enum.DocReaderAction.CANCEL || action == Enum.DocReaderAction.ERROR) return true
+      return false
     }
 
     function showRfidUI() {
@@ -152,6 +129,7 @@ export class HomePage {
 
     function hideRfidUI() {
       // show animation
+      DocumentReader.stopRFIDReader()
       restartRfidUI()
       isReadingRfidCustomUi = false
       rfidUIHeader = "Reading RFID"
@@ -168,75 +146,37 @@ export class HomePage {
     }
 
     function updateRfidUI(notification: DocumentReaderNotification) {
-      if (notification.progress === undefined) return
       if (notification.notificationCode === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP)
-        rfidDescription = notification.dataFileType.toString()
+        rfidDescription = "ERFIDDataFileType: " + notification.dataFileType
       rfidUIHeader = "Reading RFID"
       rfidUIHeaderColor = "black"
-      rfidProgress = notification.progress
+      if (notification.progress != undefined)
+        rfidProgress = notification.progress
       updateUI()
-      if (app.platform.is("ios"))
-        DocumentReader.setRfidSessionStatus(rfidDescription + "\n" + notification.progress + "%")
     }
 
     function customRFID() {
       showRfidUI()
-      DocumentReader.readRFID().subscribe(m => handleRfidCompletion(m))
+      DocumentReader.readRFID(false, false, false).subscribe((m: string) => handleRfidCompletion(m))
     }
 
     function usualRFID() {
       isReadingRfid = true
-      DocumentReader.startRFIDReader().subscribe(m => handleRfidCompletion(m))
+      DocumentReader.startRFIDReader(false, false, false).subscribe((m: string) => handleRfidCompletion(m))
     }
 
     function handleRfidCompletion(raw: string) {
-      var notification = "rfidNotificationCompletionEvent"
-      var paCert = "paCertificateCompletionEvent"
-      var taCert = "taCertificateCompletionEvent"
-      var taSig = "taSignatureCompletionEvent"
-      if (raw.substring(0, notification.length) === notification) {
-        raw = raw.substring(notification.length, raw.length)
-        console.log(notification + ": " + raw)
-      } else if (raw.substring(0, paCert.length) === paCert) {
-        raw = raw.substring(paCert.length, raw.length)
-        console.log(paCert + ": " + raw)
-      } else if (raw.substring(0, taCert.length) === taCert) {
-        raw = raw.substring(taCert.length, raw.length)
-        console.log(taCert + ": " + raw)
-      } else if (raw.substring(0, taSig.length) === taSig) {
-        raw = raw.substring(taSig.length, raw.length)
-        console.log(taSig + ": " + raw)
-      } else
+      var idDetected = "rfidOnChipDetectedEvent"
+      var idProgress = "rfidOnProgressCompletion"
+      var idRetry = "rfidOnRetryReadChipEvent"
+      if (raw.substring(0, idDetected.length) === idDetected)
+        console.log("chip detected")
+      else if (raw.substring(0, idRetry.length) === idRetry)
+        console.log("error reading chip, retrying...")
+      else if (raw.substring(0, idProgress.length) === idProgress)
+        updateRfidUI(DocumentReaderNotification.fromJson(JSON.parse(raw.substring(idProgress.length, raw.length))))
+      else
         handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(raw)))
-    }
-
-    function onInitialized() {
-      app.status.nativeElement.innerHTML = "Ready"
-      app.status.nativeElement.style.backgroundColor = "green"
-      app.showScannerButton.nativeElement.addEventListener("click", scan)
-      if (app.platform.is("android"))
-        app.showImagePicker.nativeElement.addEventListener("click", recognizeAndroid)
-      if (app.platform.is("ios"))
-        app.showImagePicker.nativeElement.addEventListener("click", recognize)
-      DocumentReader.setConfig({
-        functionality: {
-          videoCaptureMotionControl: true,
-          showCaptureButton: true
-        },
-        customization: {
-          showResultStatusMessages: true,
-          showStatusMessages: true
-        },
-        processParams: {
-          scenario: "Mrz",
-          doRfid: false
-        },
-      })
-      DocumentReader.getAvailableScenarios().then(sc =>
-        DocumentReader.isRFIDAvailableForUse().then(canRfid =>
-          postInitialize(JSON.parse(sc), canRfid)))
-      DocumentReader.setRfidDelegate(Enum.RFIDDelegate.NO_PA)
-      // addCertificates()
     }
 
     function postInitialize(scenarios: Array<any>, canRfid: boolean) {
@@ -273,7 +213,7 @@ export class HomePage {
 
     function handleResults(results: DocumentReaderResults) {
       clearResults()
-      if (doRfid && !isReadingRfid && results != null && results.chipPage != 0) {
+      if (doRfid && !isReadingRfid && results != null) {
         // customRFID()
         usualRFID()
       } else {
@@ -310,42 +250,25 @@ export class HomePage {
     function scan() {
       var config = new ScannerConfig()
       config.scenario = selectedScenario
-      DocumentReader.scan(config).subscribe(m =>
+      DocumentReader.scan(config).subscribe((m: string) =>
         handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m))))
     }
 
     function recognize() {
-      app.imagePicker.getPictures({ maximumImagesCount: 1 }).then((results) => {
-        if (results.length > 0) {
-          clearResults()
-          app.status.nativeElement.innerHTML = "copying image......"
-          app.status.nativeElement.style.backgroundColor = "grey"
-        }
-        File.readAsDataURL((app.platform.is("ios") ? "file://" : "") + results[0].substring(0, (results[0] as string).lastIndexOf("/")), results[0].substring((results[0] as string).lastIndexOf("/") + 1)).then((file => {
-          app.status.nativeElement.innerHTML = "processing image......"
-          app.status.nativeElement.style.backgroundColor = "grey"
-          let fileString = (file as string)
-          var config = new RecognizeConfig()
-          config.scenario = selectedScenario
-          config.image = fileString.substring(fileString.indexOf(",") + 1)
-          DocumentReader.recognize(config).subscribe(m =>
-            handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m))))
-        })).catch(error2)
-      }, error2)
-    }
-
-    function recognizeAndroid() {
-      app.androidPermissions.checkPermission(app.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE).then(result => {
-        if (result.hasPermission)
-          recognize()
-        else
-          app.androidPermissions.requestPermission(app.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE).then(result => {
-            if (result.hasPermission)
-              recognize()
-            else
-              console.log("storage permission denied")
-          }, err => console.log(JSON.stringify(err)))
-      }, err => console.log(JSON.stringify(err)))
+      app.camera.getPicture({
+        destinationType: DestinationType.DATA_URL,
+        mediaType: MediaType.PICTURE,
+        sourceType: PictureSourceType.PHOTOLIBRARY
+      }).then((result: string) => {
+        clearResults()
+        app.status.nativeElement.innerHTML = "processing image......"
+        app.status.nativeElement.style.backgroundColor = "grey"
+        var config = new RecognizeConfig()
+        config.scenario = selectedScenario
+        config.image = result
+        DocumentReader.recognize(config).subscribe((m: string) =>
+          handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m))))
+      })
     }
   }
 }

@@ -19,22 +19,17 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <platform name="android">
+        <resource-file src="src/assets/db.dat" target="app/src/main/assets/Regula/db.dat"/>
         <framework src="com.android.support:appcompat-v7:+" />
         <config-file parent="/*" target="AndroidManifest.xml">
             <uses-permission android:name="android.permission.NFC" />
             <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
             <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
         </config-file>
-        <config-file parent="/manifest/application" target="AndroidManifest.xml">
-            <activity android:label="@string/multi_app_name" android:name="com.synconset.MultiImageChooserActivity" android:theme="@style/Theme.AppCompat.Light" />
-        </config-file>
         
         <preference name="android-minSdkVersion" value="21" />
         <preference name="android-targetSdkVersion" value="33" />
-        <preference name="AndroidXEnabled" value="true" />
         <preference name="GradlePluginKotlinEnabled" value="true" />
-        <preference name="GradlePluginKotlinCodeStyle" value="official" />
-        <preference name="GradlePluginKotlinVersion" value="1.7.10" />
 
         <resource-file src="resources/android/xml/network_security_config.xml" target="app/src/main/res/xml/network_security_config.xml" />
         <allow-intent href="market:*" />
@@ -58,11 +53,14 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <platform name="ios">
+        <resource-file src="src/assets/db.dat" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
-        <preference default=" " name="CAMERA_USAGE_DESCRIPTION" />
         <config-file parent="NSCameraUsageDescription" target="*-Info.plist">
             <string>To use camera</string>
+        </config-file>
+        <config-file parent="NSPhotoLibraryUsageDescription" target="*-Info.plist">
+            <string>To pick images</string>
         </config-file>
         <config-file parent="NFCReaderUsageDescription" target="*-Info.plist">
             <string>To use NFC</string>
@@ -136,7 +134,6 @@
         <splash height="2436" src="resources/ios/splash/Default-2436h.png" width="1125" />
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
     </platform>
-    <plugin name="cordova-plugin-whitelist" spec="1.3.3" />
     <plugin name="cordova-plugin-statusbar" spec="2.4.2" />
     <plugin name="cordova-plugin-device" spec="2.0.2" />
     <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
