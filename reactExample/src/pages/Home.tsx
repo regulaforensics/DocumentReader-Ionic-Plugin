@@ -1,5 +1,5 @@
 import { IonPage } from '@ionic/react'
-import { DocumentReader, DocumentReaderScenario, Enum, DocumentReaderCompletion, DocumentReaderResults, DocumentReaderNotification, ScannerConfig, RecognizeConfig, DocReaderConfig } from '@regulaforensics/ionic-native-document-reader'
+import { DocumentReader, DocumentReaderScenario, Enum, DocumentReaderCompletion, DocumentReaderResults, DocumentReaderNotification, ScannerConfig, RecognizeConfig, DocReaderConfig, Functionality } from '@regulaforensics/ionic-native-document-reader'
 import React from "react"
 import { DirectoryEntry, File, FileEntry, IFile } from '@awesome-cordova-plugins/file'
 import { Camera, DestinationType, MediaType, PictureSourceType } from '@awesome-cordova-plugins/camera'
@@ -32,9 +32,9 @@ function onInitialized() {
   status.innerHTML = "Ready"
   status.style.backgroundColor = "green"
 
-  DocumentReader.setFunctionality({
-    showCaptureButton: true
-  })
+  var functionality = new Functionality()
+  functionality.showCaptureButton = true
+  DocumentReader.setFunctionality(functionality)
 }
 
 cancelButtonRef.addEventListener("click", hideRfidUI)
@@ -96,7 +96,7 @@ function handleCompletion(completion: DocumentReaderCompletion) {
       hideRfidUI()
       displayResults(completion.results!)
     }
-  } else if (actionSuccess(completion.action!))
+  } else if (actionSuccess(completion.action!) || actionError(completion.action!))
     handleResults(completion.results!)
 }
 
@@ -200,7 +200,7 @@ function postInitialize(scenarios: Array<any>, canRfid: boolean) {
 }
 
 function handleResults(results: DocumentReaderResults) {
-  if (doRfid && !isReadingRfid && results != null) {
+  if (doRfid && !isReadingRfid && results != null && results.chipPage != 0) {
     // customRFID()
     usualRFID()
   } else {

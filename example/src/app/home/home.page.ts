@@ -2,7 +2,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core'
 import { File } from '@awesome-cordova-plugins/file'
 import { Camera, DestinationType, MediaType, PictureSourceType } from '@awesome-cordova-plugins/camera/ngx'
 import { Platform } from '@ionic/angular'
-import { DocumentReader, DocumentReaderScenario, Enum, DocumentReaderCompletion, DocumentReaderResults, DocumentReaderNotification, ScannerConfig, RecognizeConfig, DocReaderConfig } from '@regulaforensics/ionic-native-document-reader/ngx'
+import { DocumentReader, DocumentReaderScenario, Enum, DocumentReaderCompletion, DocumentReaderResults, DocumentReaderNotification, ScannerConfig, RecognizeConfig, DocReaderConfig, Functionality } from '@regulaforensics/ionic-native-document-reader/ngx'
 
 var selectedScenario = "Mrz"
 var doRfid: boolean = false
@@ -43,9 +43,9 @@ export class HomePage {
       app.status.nativeElement.innerHTML = "Ready"
       app.status.nativeElement.style.backgroundColor = "green"
 
-      DocumentReader.setFunctionality({
-        showCaptureButton: true
-      })
+      var functionality = new Functionality()
+      functionality.showCaptureButton = true
+      DocumentReader.setFunctionality(functionality)
     }
 
     var app = this
@@ -107,7 +107,7 @@ export class HomePage {
           hideRfidUI()
           displayResults(completion.results)
         }
-      } else if (actionSuccess(completion.action))
+      } else if (actionSuccess(completion.action) || actionError(completion.action))
         handleResults(completion.results)
     }
 
@@ -213,7 +213,7 @@ export class HomePage {
 
     function handleResults(results: DocumentReaderResults) {
       clearResults()
-      if (doRfid && !isReadingRfid && results != null) {
+      if (doRfid && !isReadingRfid && results != null && results.chipPage != 0) {
         // customRFID()
         usualRFID()
       } else {

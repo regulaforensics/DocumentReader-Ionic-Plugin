@@ -307,7 +307,7 @@ export declare class DocumentReaderBarcodeField {
     status?: number;
     pageIndex?: number;
     pdf417Info?: PDF417Info;
-    data?: any[];
+    data?: string;
     static fromJson(jsonObject?: any): DocumentReaderBarcodeField | undefined;
 }
 export declare class DocumentReaderAuthenticityResult {
@@ -362,7 +362,7 @@ export declare class ImageInputParam {
     static fromJson(jsonObject?: any): ImageInputParam | undefined;
 }
 export declare class PAResourcesIssuer {
-    data?: any[];
+    data?: string;
     friendlyName?: string;
     attributes?: PAAttribute[];
     static fromJson(jsonObject?: any): PAResourcesIssuer | undefined;
@@ -373,7 +373,7 @@ export declare class PAAttribute {
     static fromJson(jsonObject?: any): PAAttribute | undefined;
 }
 export declare class TAChallenge {
-    data?: any[];
+    data?: string;
     auxPCD?: string;
     challengePICC?: string;
     hashPK?: string;
@@ -416,7 +416,7 @@ export declare class VDSNCData {
     type?: string;
     version?: number;
     issuingCountry?: string;
-    message?: any;
+    message?: Record<string, any>;
     signatureAlgorithm?: string;
     signature?: BytesData;
     certificate?: BytesData;
@@ -438,7 +438,7 @@ export declare class ImageInputData {
     width?: number;
     height?: number;
     bitmap?: string;
-    imgBytes?: any[];
+    imgBytes?: string;
     static fromJson(jsonObject?: any): ImageInputData | undefined;
 }
 export declare class DocReaderDocumentsDatabase {
@@ -481,74 +481,10 @@ export declare class DocumentReaderValidity {
     status?: number;
     static fromJson(jsonObject?: any): DocumentReaderValidity | undefined;
 }
-export declare class FaceApiParams {
-    url?: string;
-    mode?: string;
-    searchParams?: Search;
-    threshold?: number;
-    serviceTimeout?: number;
-    proxy?: string;
-    proxyPassword?: string;
-    proxyType?: number;
-    static fromJson(jsonObject?: any): FaceApiParams | undefined;
-}
-export declare class Search {
-    limit?: number;
-    threshold?: number;
-    groupIds?: number[];
-    static fromJson(jsonObject?: any): Search | undefined;
-}
-export declare class AuthenticityParams {
-    useLivenessCheck?: boolean;
-    livenessParams?: LivenessParams;
-    checkUVLuminiscence?: boolean;
-    checkIRB900?: boolean;
-    checkImagePatterns?: boolean;
-    checkFibers?: boolean;
-    checkExtMRZ?: boolean;
-    checkExtOCR?: boolean;
-    checkAxial?: boolean;
-    checkBarcodeFormat?: boolean;
-    checkIRVisibility?: boolean;
-    checkIPI?: boolean;
-    checkPhotoEmbedding?: boolean;
-    checkPhotoComparison?: boolean;
-    checkLetterScreen?: boolean;
-    static fromJson(jsonObject?: any): AuthenticityParams | undefined;
-}
-export declare class LivenessParams {
-    checkOVI?: boolean;
-    checkMLI?: boolean;
-    checkHolo?: boolean;
-    checkED?: boolean;
-    static fromJson(jsonObject?: any): LivenessParams | undefined;
-}
-export declare class ImageQA {
-    dpiThreshold?: number;
-    angleThreshold?: number;
-    focusCheck?: boolean;
-    glaresCheck?: boolean;
-    colornessCheck?: boolean;
-    screenCapture?: boolean;
-    documentPositionIndent?: number;
-    expectedPass?: number[];
-    glaresCheckParams?: GlaresCheckParams;
-    brightnessThreshold?: number;
-    static fromJson(jsonObject?: any): ImageQA | undefined;
-}
-export declare class GlaresCheckParams {
-    imgMarginPart?: number;
-    maxGlaringPart?: number;
-    static fromJson(jsonObject?: any): GlaresCheckParams | undefined;
-}
-export declare class RFIDParams {
-    paIgnoreNotificationCodes?: number[];
-    static fromJson(jsonObject?: any): RFIDParams | undefined;
-}
 export declare class OnlineProcessingConfig {
     mode?: number;
     url?: string;
-    processParam?: any;
+    processParam?: ProcessParams;
     imageFormat?: number;
     imageCompressionQuality?: number;
     static fromJson(jsonObject?: any): OnlineProcessingConfig | undefined;
@@ -559,7 +495,7 @@ export declare class DocReaderConfig {
     databasePath?: string;
     licenseUpdate?: boolean;
     delayedNNLoad?: boolean;
-    blackList?: any;
+    blackList?: Record<string, string>;
     static fromJson(jsonObject?: any): DocReaderConfig | undefined;
 }
 export declare class ScannerConfig {
@@ -621,6 +557,394 @@ export declare class DocumentReaderResults {
     vdsncData?: VDSNCData;
     transactionInfo?: TransactionInfo;
     static fromJson(jsonObject?: any): DocumentReaderResults | undefined;
+}
+export declare class CameraSize {
+    width?: number;
+    height?: number;
+    static fromJson(jsonObject?: any): CameraSize | undefined;
+}
+export declare class Functionality {
+    pictureOnBoundsReady?: boolean;
+    showTorchButton?: boolean;
+    showCloseButton?: boolean;
+    videoCaptureMotionControl?: boolean;
+    showCaptureButton?: boolean;
+    showChangeFrameButton?: boolean;
+    showSkipNextPageButton?: boolean;
+    useAuthenticator?: boolean;
+    skipFocusingFrames?: boolean;
+    showCameraSwitchButton?: boolean;
+    displayMetadata?: boolean;
+    isZoomEnabled?: boolean;
+    isCameraTorchCheckDisabled?: boolean;
+    recordScanningProcess?: boolean;
+    manualMultipageMode?: boolean;
+    singleResult?: boolean;
+    showCaptureButtonDelayFromDetect?: number;
+    showCaptureButtonDelayFromStart?: number;
+    rfidTimeout?: number;
+    forcePagesCount?: number;
+    orientation?: number;
+    captureMode?: number;
+    cameraMode?: number;
+    cameraPositionIOS?: number;
+    cameraFrame?: string;
+    btDeviceName?: string;
+    zoomFactor?: number;
+    exposure?: number;
+    excludedCamera2Models?: string[];
+    cameraSize?: CameraSize;
+    videoSessionPreset?: number;
+    static fromJson(jsonObject?: any): Functionality | undefined;
+}
+export declare class GlaresCheckParams {
+    imgMarginPart?: number;
+    maxGlaringPart?: number;
+    static fromJson(jsonObject?: any): GlaresCheckParams | undefined;
+}
+export declare class ImageQA {
+    dpiThreshold?: number;
+    angleThreshold?: number;
+    focusCheck?: boolean;
+    glaresCheck?: boolean;
+    glaresCheckParams?: GlaresCheckParams;
+    colornessCheck?: boolean;
+    screenCapture?: boolean;
+    expectedPass?: number[];
+    documentPositionIndent?: number;
+    brightnessThreshold?: number;
+    static fromJson(jsonObject?: any): ImageQA | undefined;
+}
+export declare class RFIDParams {
+    paIgnoreNotificationCodes?: number[];
+    static fromJson(jsonObject?: any): RFIDParams | undefined;
+}
+export declare class FaceApiSearchParams {
+    limit?: number;
+    threshold?: number;
+    groupIds?: number[];
+    static fromJson(jsonObject?: any): FaceApiSearchParams | undefined;
+}
+export declare class FaceApiParams {
+    url?: string;
+    mode?: string;
+    threshold?: number;
+    searchParams?: FaceApiSearchParams;
+    serviceTimeout?: number;
+    proxy?: string;
+    proxyPassword?: string;
+    proxyType?: number;
+    static fromJson(jsonObject?: any): FaceApiParams | undefined;
+}
+export declare class BackendProcessingConfig {
+    url?: string;
+    httpHeaders?: Record<string, string>;
+    rfidServerSideChipVerification?: boolean;
+    static fromJson(jsonObject?: any): BackendProcessingConfig | undefined;
+}
+export declare class LivenessParams {
+    checkOVI?: boolean;
+    checkMLI?: boolean;
+    checkHolo?: boolean;
+    checkED?: boolean;
+    static fromJson(jsonObject?: any): LivenessParams | undefined;
+}
+export declare class AuthenticityParams {
+    useLivenessCheck?: boolean;
+    livenessParams?: LivenessParams;
+    checkUVLuminiscence?: boolean;
+    checkIRB900?: boolean;
+    checkImagePatterns?: boolean;
+    checkFibers?: boolean;
+    checkExtMRZ?: boolean;
+    checkExtOCR?: boolean;
+    checkAxial?: boolean;
+    checkBarcodeFormat?: boolean;
+    checkIRVisibility?: boolean;
+    checkIPI?: boolean;
+    checkPhotoEmbedding?: boolean;
+    checkPhotoComparison?: boolean;
+    checkLetterScreen?: boolean;
+    static fromJson(jsonObject?: any): AuthenticityParams | undefined;
+}
+export declare class ProcessParams {
+    multipageProcessing?: boolean;
+    logs?: boolean;
+    debugSaveImages?: boolean;
+    debugSaveLogs?: boolean;
+    returnUncroppedImage?: boolean;
+    uvTorchEnabled?: boolean;
+    debugSaveCroppedImages?: boolean;
+    disableFocusingCheck?: boolean;
+    debugSaveRFIDSession?: boolean;
+    doublePageSpread?: boolean;
+    manualCrop?: boolean;
+    integralImage?: boolean;
+    returnCroppedBarcode?: boolean;
+    checkRequiredTextFields?: boolean;
+    depersonalizeLog?: boolean;
+    generateDoublePageSpreadImage?: boolean;
+    alreadyCropped?: boolean;
+    matchTextFieldMask?: boolean;
+    updateOCRValidityByGlare?: boolean;
+    noGraphics?: boolean;
+    multiDocOnImage?: boolean;
+    forceReadMrzBeforeLocate?: boolean;
+    parseBarcodes?: boolean;
+    shouldReturnPackageForReprocess?: boolean;
+    disablePerforationOCR?: boolean;
+    respectImageQuality?: boolean;
+    splitNames?: boolean;
+    useFaceApi?: boolean;
+    useAuthenticityCheck?: boolean;
+    checkHologram?: boolean;
+    barcodeParserType?: number;
+    perspectiveAngle?: number;
+    minDPI?: number;
+    imageDpiOutMax?: number;
+    forceDocFormat?: number;
+    shiftExpiryDate?: number;
+    minimalHolderAge?: number;
+    imageOutputMaxHeight?: number;
+    imageOutputMaxWidth?: number;
+    processAuth?: number;
+    convertCase?: number;
+    measureSystem?: number;
+    forceDocID?: number;
+    dateFormat?: string;
+    scenario?: string;
+    captureButtonScenario?: string;
+    sessionLogFolder?: string;
+    timeout?: number;
+    timeoutFromFirstDetect?: number;
+    timeoutFromFirstDocType?: number;
+    documentAreaMin?: number;
+    documentIDList?: number[];
+    barcodeTypes?: number[];
+    fieldTypesFilter?: number[];
+    resultTypeOutput?: number[];
+    documentGroupFilter?: number[];
+    lcidIgnoreFilter?: number[];
+    lcidFilter?: number[];
+    mrzFormatsFilter?: string[];
+    imageQA?: ImageQA;
+    rfidParams?: RFIDParams;
+    faceApiParams?: FaceApiParams;
+    backendProcessingConfig?: BackendProcessingConfig;
+    authenticityParams?: AuthenticityParams;
+    customParams?: Record<string, any>;
+    static fromJson(jsonObject?: any): ProcessParams | undefined;
+}
+export declare class Font {
+    name?: string;
+    size?: number;
+    style?: number;
+    static fromJson(jsonObject?: any): Font | undefined;
+}
+export declare class CustomizationColors {
+    rfidProcessingScreenBackground?: number;
+    rfidProcessingScreenHintLabelText?: number;
+    rfidProcessingScreenHintLabelBackground?: number;
+    rfidProcessingScreenProgressLabelText?: number;
+    rfidProcessingScreenProgressBar?: number;
+    rfidProcessingScreenProgressBarBackground?: number;
+    rfidProcessingScreenResultLabelText?: number;
+    static fromJson(jsonObject?: any): CustomizationColors | undefined;
+}
+export declare class CustomizationFonts {
+    rfidProcessingScreenHintLabel?: Font;
+    rfidProcessingScreenProgressLabel?: Font;
+    rfidProcessingScreenResultLabel?: Font;
+    static fromJson(jsonObject?: any): CustomizationFonts | undefined;
+}
+export declare class CustomizationImages {
+    rfidProcessingScreenFailureImage?: string;
+    static fromJson(jsonObject?: any): CustomizationImages | undefined;
+}
+export declare class Customization {
+    showStatusMessages?: boolean;
+    showResultStatusMessages?: boolean;
+    showHelpAnimation?: boolean;
+    showNextPageAnimation?: boolean;
+    showBackgroundMask?: boolean;
+    cameraFrameBorderWidth?: number;
+    cameraFrameLineLength?: number;
+    cameraFrameOffsetWidth?: number;
+    cameraFrameShapeType?: number;
+    status?: string;
+    resultStatus?: string;
+    cameraFrameDefaultColor?: number;
+    cameraFrameActiveColor?: number;
+    statusTextColor?: number;
+    resultStatusTextColor?: number;
+    resultStatusBackgroundColor?: number;
+    multipageButtonBackgroundColor?: number;
+    tintColor?: number;
+    activityIndicatorColor?: number;
+    statusBackgroundColor?: number;
+    cameraPreviewBackgroundColor?: number;
+    statusPositionMultiplier?: number;
+    resultStatusPositionMultiplier?: number;
+    toolbarSize?: number;
+    backgroundMaskAlpha?: number;
+    customStatusPositionMultiplier?: number;
+    livenessAnimationPositionMultiplier?: number;
+    cameraFrameVerticalPositionMultiplier?: number;
+    cameraFrameLandscapeAspectRatio?: number;
+    cameraFramePortraitAspectRatio?: number;
+    cameraFrameCornerRadius?: number;
+    multipageAnimationFrontImage?: string;
+    multipageAnimationBackImage?: string;
+    borderBackgroundImage?: string;
+    helpAnimationImage?: string;
+    closeButtonImage?: string;
+    captureButtonImage?: string;
+    cameraSwitchButtonImage?: string;
+    torchButtonOnImage?: string;
+    torchButtonOffImage?: string;
+    changeFrameButtonExpandImage?: string;
+    changeFrameButtonCollapseImage?: string;
+    livenessAnimationImage?: string;
+    statusTextFont?: Font;
+    resultStatusTextFont?: Font;
+    customLabelStatus?: string;
+    cameraFrameLineCap?: number;
+    uiCustomizationLayer?: Record<string, any>;
+    helpAnimationImageContentMode?: number;
+    multipageAnimationFrontImageContentMode?: number;
+    multipageAnimationBackImageContentMode?: number;
+    livenessAnimationImageContentMode?: number;
+    borderBackgroundImageContentMode?: number;
+    helpAnimationImageMatrix?: number[];
+    multipageAnimationFrontImageMatrix?: number[];
+    multipageAnimationBackImageMatrix?: number[];
+    livenessAnimationImageMatrix?: number[];
+    borderBackgroundImageMatrix?: number[];
+    colors?: CustomizationColors;
+    fonts?: CustomizationFonts;
+    images?: CustomizationImages;
+    static fromJson(jsonObject?: any): Customization | undefined;
+}
+export declare class EDLDataGroups {
+    DG1?: boolean;
+    DG2?: boolean;
+    DG3?: boolean;
+    DG4?: boolean;
+    DG5?: boolean;
+    DG6?: boolean;
+    DG7?: boolean;
+    DG8?: boolean;
+    DG9?: boolean;
+    DG10?: boolean;
+    DG11?: boolean;
+    DG12?: boolean;
+    DG13?: boolean;
+    DG14?: boolean;
+    static fromJson(jsonObject?: any): EDLDataGroups | undefined;
+}
+export declare class EPassportDataGroups {
+    DG1?: boolean;
+    DG2?: boolean;
+    DG3?: boolean;
+    DG4?: boolean;
+    DG5?: boolean;
+    DG6?: boolean;
+    DG7?: boolean;
+    DG8?: boolean;
+    DG9?: boolean;
+    DG10?: boolean;
+    DG11?: boolean;
+    DG12?: boolean;
+    DG13?: boolean;
+    DG14?: boolean;
+    DG15?: boolean;
+    DG16?: boolean;
+    static fromJson(jsonObject?: any): EPassportDataGroups | undefined;
+}
+export declare class EIDDataGroups {
+    DG1?: boolean;
+    DG2?: boolean;
+    DG3?: boolean;
+    DG4?: boolean;
+    DG5?: boolean;
+    DG6?: boolean;
+    DG7?: boolean;
+    DG8?: boolean;
+    DG9?: boolean;
+    DG10?: boolean;
+    DG11?: boolean;
+    DG12?: boolean;
+    DG13?: boolean;
+    DG14?: boolean;
+    DG15?: boolean;
+    DG16?: boolean;
+    DG17?: boolean;
+    DG18?: boolean;
+    DG19?: boolean;
+    DG20?: boolean;
+    DG21?: boolean;
+    static fromJson(jsonObject?: any): EIDDataGroups | undefined;
+}
+export declare class RFIDScenario {
+    paceStaticBinding?: boolean;
+    onlineTA?: boolean;
+    writeEid?: boolean;
+    universalAccessRights?: boolean;
+    authorizedRestrictedIdentification?: boolean;
+    auxVerificationCommunityID?: boolean;
+    auxVerificationDateOfBirth?: boolean;
+    skipAA?: boolean;
+    strictProcessing?: boolean;
+    pkdDSCertPriority?: boolean;
+    pkdUseExternalCSCA?: boolean;
+    trustedPKD?: boolean;
+    passiveAuth?: boolean;
+    useSFI?: boolean;
+    readEPassport?: boolean;
+    readEID?: boolean;
+    readEDL?: boolean;
+    authorizedSTSignature?: boolean;
+    authorizedSTQSignature?: boolean;
+    authorizedWriteDG17?: boolean;
+    authorizedWriteDG18?: boolean;
+    authorizedWriteDG19?: boolean;
+    authorizedWriteDG20?: boolean;
+    authorizedWriteDG21?: boolean;
+    authorizedVerifyAge?: boolean;
+    authorizedVerifyCommunityID?: boolean;
+    authorizedPrivilegedTerminal?: boolean;
+    authorizedCANAllowed?: boolean;
+    authorizedPINManagement?: boolean;
+    authorizedInstallCert?: boolean;
+    authorizedInstallQCert?: boolean;
+    applyAmendments?: boolean;
+    autoSettings?: boolean;
+    proceedReadingAlways?: boolean;
+    readingBuffer?: number;
+    onlineTAToSignDataType?: number;
+    defaultReadingBufferSize?: number;
+    signManagementAction?: number;
+    profilerType?: number;
+    authProcType?: number;
+    baseSMProcedure?: number;
+    pacePasswordType?: number;
+    terminalType?: number;
+    password?: string;
+    pkdPA?: string;
+    pkdEAC?: string;
+    mrz?: string;
+    eSignPINDefault?: string;
+    eSignPINNewValue?: string;
+    eDLDataGroups?: EDLDataGroups;
+    ePassportDataGroups?: EPassportDataGroups;
+    eIDDataGroups?: EIDDataGroups;
+    static fromJson(jsonObject?: any): RFIDScenario | undefined;
+}
+export declare class PrepareProgress {
+    downloadedBytes?: number;
+    totalBytes?: number;
+    progress?: number;
+    static fromJson(jsonObject?: any): PrepareProgress | undefined;
 }
 export declare const FontStyle: {
     NORMAL: number;
@@ -967,10 +1291,6 @@ export declare const eRPRM_ResultType: {
     RPRM_RESULT_TYPE_PORTRAIT_COMPARISON: number;
     RPRM_RESULT_TYPE_EXT_PORTRAIT: number;
 };
-export declare const CameraTypes: {
-    FRONT: string;
-    BACK: string;
-};
 export declare const FrameShapeType: {
     LINE: number;
     CORNER: number;
@@ -980,6 +1300,11 @@ export declare const eRFID_BaudRate: {
     rfbr_212: number;
     rfbr_424: number;
     rfbr_848: number;
+};
+export declare const LineCap: {
+    BUTT: number;
+    ROUND: number;
+    SQUARE: number;
 };
 export declare const eRPRM_FieldVerificationResult: {
     RCF_DISABLED: number;
@@ -1059,6 +1384,11 @@ export declare const DocumentReaderErrorCodes: {
     LICENSE_DATABASE_INCORRECT: number;
     INVALID_TCC_PARAMS: number;
     RFID_IN_PROGRESS: number;
+    START_BACKEND_PROCESSING: number;
+    ADD_DATA_TO_PACKAGE: number;
+    FINALIZE_FAILED: number;
+    CAMERA_NO_PERMISSION: number;
+    CAMERA_NOT_AVAILABLE: number;
     NATIVE_JAVA_EXCEPTION: number;
     BACKEND_ONLINE_PROCESSING: number;
     WRONG_INPUT: number;
@@ -1137,6 +1467,11 @@ export declare const eRFID_NotificationCodes: {
     RFID_NOTIFICATION_RI_SECTOR_ID: number;
     RFID_NOTIFICATION_BIOMETRICS_EMPTY_PLACEHOLDER: number;
 };
+export declare const CameraPosition: {
+    UNSPECIFIED: number;
+    BACK: number;
+    FRONT: number;
+};
 export declare const eRFID_Password_Type: {
     PPT_UNKNOWN: number;
     PPT_MRZ: number;
@@ -1145,6 +1480,22 @@ export declare const eRFID_Password_Type: {
     PPT_PUK: number;
     PPT_PIN_ESIGN: number;
     PPT_SAI: number;
+};
+export declare const ViewContentMode: {
+    UNKNOWN: number;
+    SCALE_TO_FILL: number;
+    SCALE_ASPECT_FIT: number;
+    SCALE_ASPECT_FILL: number;
+    REDRAW: number;
+    CENTER: number;
+    TOP: number;
+    BOTTOM: number;
+    LEFT: number;
+    RIGHT: number;
+    TOP_LEFT: number;
+    TOP_RIGHT: number;
+    BOTTOM_LEFT: number;
+    BOTTOM_RIGHT: number;
 };
 export declare const BarcodeResult: {
     NO_ERR: number;
@@ -1298,6 +1649,12 @@ export declare const eCheckDiagnose: {
     LAS_INK_INVALID_LINES_FREQUENCY: number;
     DOC_LIVENESS_ELECTRONIC_DEVICE_DETECTED: number;
     DOC_LIVENESS_INVALID_BARCODE_BACKGROUND: number;
+    ICAO_IDB_BASE_32_ERROR: number;
+    ICAO_IDB_ZIPPED_ERROR: number;
+    ICAO_IDB_MESSAGE_ZONE_EMPTY: number;
+    ICAO_IDB_SIGNATURE_MUST_BE_PRESENT: number;
+    ICAO_IDB_SIGNATURE_MUST_NOT_BE_PRESENT: number;
+    ICAO_IDB_CERTIFICATE_MUST_NOT_BE_PRESENT: number;
     LAST_DIAGNOSE_VALUE: number;
 };
 export declare const RFIDDelegate: {
@@ -1566,6 +1923,10 @@ export declare const eLDS_ParsingNotificationCodes: {
     NTF_LDS_AUTH_ML_SIGNER_INFO_CERTIFICATE_CANT_FIND_CSCA: number;
     NTF_LDS_AUTH_ML_SIGNER_INFO_CERTIFICATE_REVOKED: number;
     NTF_LDS_AUTH_ML_SIGNER_INFO_CERTIFICATE_SIGNATURE_INVALID: number;
+    NTF_LDS_ICAO_CERTIFICATE_CHAIN_COUNTRY_NON_MATCHING: number;
+    NTF_LDS_ICAO_CERTIFICATE_VISUAL_MRZ_COUNTRY_NON_MATCHING: number;
+    NTF_LDS_MRZ_COUNTRYCODE_VISUALMRZ_NON_MATCHING: number;
+    NTF_LDS_ICAO_CERTIFICATE_MRZ_COUNTRY_NON_MATCHING: number;
 };
 export declare const eImageQualityCheckType: {
     IQC_IMAGE_GLARES: number;
@@ -1963,6 +2324,21 @@ export declare const eGraphicFieldType: {
 };
 export declare const RegDeviceConfigType: {
     DEVICE_7310: string;
+};
+export declare const CaptureSessionPreset: {
+    UNKNOWN: number;
+    LOW: number;
+    MEDIUM: number;
+    HIGH: number;
+    PHOTO: number;
+    INPUT_PRIORITY: number;
+    PRESET_1280x720: number;
+    PRESET_1920x1080: number;
+    PRESET_3840x2160: number;
+    FRAME_960x540: number;
+    FRAME_1280x720: number;
+    PRESET_640x480: number;
+    PRESET_352x288: number;
 };
 export declare const CameraMode: {
     AUTO: number;
@@ -2706,6 +3082,7 @@ export declare const eVisualFieldType: {
     FT_ADDRESS_BUILDING_TYPE: number;
     FT_DATE_OF_RETIREMENT: number;
     FT_DOCUMENT_STATUS: number;
+    FT_SIGNATURE: number;
 };
 export declare const DocReaderOrientation: {
     ALL: number;
@@ -2901,56 +3278,6 @@ export declare const eRPRM_Lights: {
     RPRM_Light_IR_Full: number;
     RPRM_LIGHT_OVD: number;
     RPRM_LIGHT_WHITE_FULL_OVD: number;
-};
-export declare const LineCap: {
-    Butt: number;
-    Round: number;
-    Square: number;
-};
-export declare const UIInterfaceOrientationMask: {
-    Portrait: number;
-    LandscapeLeft: number;
-    LandscapeRight: number;
-    PortraitUpsideDown: number;
-    Landscape: number;
-    All: number;
-    AllButUpsideDown: number;
-};
-export declare const AVCaptureSessionPreset: {
-    Low: number;
-    Medium: number;
-    High: number;
-    Photo: number;
-    InputPriority: number;
-    QHD960x540: number;
-    Hd1280x720: number;
-    Hd1920x1080: number;
-    Hd4K3840x2160: number;
-    IFrame960x540: number;
-    IFrame1280x720: number;
-    Qvga320x240: number;
-    Vga640x480: number;
-    Cif352x288: number;
-};
-export declare const AVCaptureDevicePosition: {
-    Front: number;
-    Back: number;
-    Unspecified: number;
-};
-export declare const UIViewContentMode: {
-    ScaleToFill: number;
-    ScaleAspectFit: number;
-    ScaleAspectFill: number;
-    Redraw: number;
-    Center: number;
-    Top: number;
-    Bottom: number;
-    Left: number;
-    Right: number;
-    TopLeft: number;
-    TopRight: number;
-    BottomLeft: number;
-    BottomRight: number;
 };
 export declare const Enum: {
     FontStyle: {
@@ -3298,10 +3625,6 @@ export declare const Enum: {
         RPRM_RESULT_TYPE_PORTRAIT_COMPARISON: number;
         RPRM_RESULT_TYPE_EXT_PORTRAIT: number;
     };
-    CameraTypes: {
-        FRONT: string;
-        BACK: string;
-    };
     FrameShapeType: {
         LINE: number;
         CORNER: number;
@@ -3311,6 +3634,11 @@ export declare const Enum: {
         rfbr_212: number;
         rfbr_424: number;
         rfbr_848: number;
+    };
+    LineCap: {
+        BUTT: number;
+        ROUND: number;
+        SQUARE: number;
     };
     eRPRM_FieldVerificationResult: {
         RCF_DISABLED: number;
@@ -3390,6 +3718,11 @@ export declare const Enum: {
         LICENSE_DATABASE_INCORRECT: number;
         INVALID_TCC_PARAMS: number;
         RFID_IN_PROGRESS: number;
+        START_BACKEND_PROCESSING: number;
+        ADD_DATA_TO_PACKAGE: number;
+        FINALIZE_FAILED: number;
+        CAMERA_NO_PERMISSION: number;
+        CAMERA_NOT_AVAILABLE: number;
         NATIVE_JAVA_EXCEPTION: number;
         BACKEND_ONLINE_PROCESSING: number;
         WRONG_INPUT: number;
@@ -3468,6 +3801,11 @@ export declare const Enum: {
         RFID_NOTIFICATION_RI_SECTOR_ID: number;
         RFID_NOTIFICATION_BIOMETRICS_EMPTY_PLACEHOLDER: number;
     };
+    CameraPosition: {
+        UNSPECIFIED: number;
+        BACK: number;
+        FRONT: number;
+    };
     eRFID_Password_Type: {
         PPT_UNKNOWN: number;
         PPT_MRZ: number;
@@ -3476,6 +3814,22 @@ export declare const Enum: {
         PPT_PUK: number;
         PPT_PIN_ESIGN: number;
         PPT_SAI: number;
+    };
+    ViewContentMode: {
+        UNKNOWN: number;
+        SCALE_TO_FILL: number;
+        SCALE_ASPECT_FIT: number;
+        SCALE_ASPECT_FILL: number;
+        REDRAW: number;
+        CENTER: number;
+        TOP: number;
+        BOTTOM: number;
+        LEFT: number;
+        RIGHT: number;
+        TOP_LEFT: number;
+        TOP_RIGHT: number;
+        BOTTOM_LEFT: number;
+        BOTTOM_RIGHT: number;
     };
     BarcodeResult: {
         NO_ERR: number;
@@ -3629,6 +3983,12 @@ export declare const Enum: {
         LAS_INK_INVALID_LINES_FREQUENCY: number;
         DOC_LIVENESS_ELECTRONIC_DEVICE_DETECTED: number;
         DOC_LIVENESS_INVALID_BARCODE_BACKGROUND: number;
+        ICAO_IDB_BASE_32_ERROR: number;
+        ICAO_IDB_ZIPPED_ERROR: number;
+        ICAO_IDB_MESSAGE_ZONE_EMPTY: number;
+        ICAO_IDB_SIGNATURE_MUST_BE_PRESENT: number;
+        ICAO_IDB_SIGNATURE_MUST_NOT_BE_PRESENT: number;
+        ICAO_IDB_CERTIFICATE_MUST_NOT_BE_PRESENT: number;
         LAST_DIAGNOSE_VALUE: number;
     };
     RFIDDelegate: {
@@ -3897,6 +4257,10 @@ export declare const Enum: {
         NTF_LDS_AUTH_ML_SIGNER_INFO_CERTIFICATE_CANT_FIND_CSCA: number;
         NTF_LDS_AUTH_ML_SIGNER_INFO_CERTIFICATE_REVOKED: number;
         NTF_LDS_AUTH_ML_SIGNER_INFO_CERTIFICATE_SIGNATURE_INVALID: number;
+        NTF_LDS_ICAO_CERTIFICATE_CHAIN_COUNTRY_NON_MATCHING: number;
+        NTF_LDS_ICAO_CERTIFICATE_VISUAL_MRZ_COUNTRY_NON_MATCHING: number;
+        NTF_LDS_MRZ_COUNTRYCODE_VISUALMRZ_NON_MATCHING: number;
+        NTF_LDS_ICAO_CERTIFICATE_MRZ_COUNTRY_NON_MATCHING: number;
     };
     eImageQualityCheckType: {
         IQC_IMAGE_GLARES: number;
@@ -4294,6 +4658,21 @@ export declare const Enum: {
     };
     RegDeviceConfigType: {
         DEVICE_7310: string;
+    };
+    CaptureSessionPreset: {
+        UNKNOWN: number;
+        LOW: number;
+        MEDIUM: number;
+        HIGH: number;
+        PHOTO: number;
+        INPUT_PRIORITY: number;
+        PRESET_1280x720: number;
+        PRESET_1920x1080: number;
+        PRESET_3840x2160: number;
+        FRAME_960x540: number;
+        FRAME_1280x720: number;
+        PRESET_640x480: number;
+        PRESET_352x288: number;
     };
     CameraMode: {
         AUTO: number;
@@ -5037,6 +5416,7 @@ export declare const Enum: {
         FT_ADDRESS_BUILDING_TYPE: number;
         FT_DATE_OF_RETIREMENT: number;
         FT_DOCUMENT_STATUS: number;
+        FT_SIGNATURE: number;
     };
     DocReaderOrientation: {
         ALL: number;
@@ -5233,56 +5613,6 @@ export declare const Enum: {
         RPRM_LIGHT_OVD: number;
         RPRM_LIGHT_WHITE_FULL_OVD: number;
     };
-    LineCap: {
-        Butt: number;
-        Round: number;
-        Square: number;
-    };
-    UIInterfaceOrientationMask: {
-        Portrait: number;
-        LandscapeLeft: number;
-        LandscapeRight: number;
-        PortraitUpsideDown: number;
-        Landscape: number;
-        All: number;
-        AllButUpsideDown: number;
-    };
-    AVCaptureSessionPreset: {
-        Low: number;
-        Medium: number;
-        High: number;
-        Photo: number;
-        InputPriority: number;
-        QHD960x540: number;
-        Hd1280x720: number;
-        Hd1920x1080: number;
-        Hd4K3840x2160: number;
-        IFrame960x540: number;
-        IFrame1280x720: number;
-        Qvga320x240: number;
-        Vga640x480: number;
-        Cif352x288: number;
-    };
-    AVCaptureDevicePosition: {
-        Front: number;
-        Back: number;
-        Unspecified: number;
-    };
-    UIViewContentMode: {
-        ScaleToFill: number;
-        ScaleAspectFit: number;
-        ScaleAspectFill: number;
-        Redraw: number;
-        Center: number;
-        Top: number;
-        Bottom: number;
-        Left: number;
-        Right: number;
-        TopLeft: number;
-        TopRight: number;
-        BottomLeft: number;
-        BottomRight: number;
-    };
 };
 /**
  * @name DocumentReader
@@ -5344,7 +5674,7 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      * @param {string} status
      * @return {Promise<any>} Returns a promise
      */
-    setRfidSessionStatus(status: any): Promise<any>;
+    setRfidSessionStatus(status: string): Promise<any>;
     /**
      *  returns tag property of DocumentReader class
      *
@@ -5354,86 +5684,82 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
     /**
      *  sets DocumentReader.tag
      *
-     * @param {string} tag tag
+     * @param {string} tag
      * @return {Promise<any>} Returns a promise
      */
-    setTag(tag: any): Promise<any>;
+    setTag(tag: string | null): Promise<any>;
     /**
-     *  description
+     *
      *
      * @return {Promise<any>} Returns a promise
      */
     getFunctionality(): Promise<any>;
     /**
-     *  description
      *
-     * @param {object} functionality description
+     *
+     * @param {Functionality} functionality
      * @return {Promise<any>} Returns a promise
      */
-    setFunctionality(functionality: any): Promise<any>;
+    setFunctionality(functionality: Functionality): Promise<any>;
     /**
-     *  description
+     *
      *
      * @return {Promise<any>} Returns a promise
      */
     getProcessParams(): Promise<any>;
     /**
-     *  description
      *
-     * @param {object} processParams description
+     *
+     * @param {ProcessParams} processParams
      * @return {Promise<any>} Returns a promise
      */
-    setProcessParams(processParams: any): Promise<any>;
+    setProcessParams(processParams: ProcessParams): Promise<any>;
     /**
-     *  description
+     *
      *
      * @return {Promise<any>} Returns a promise
      */
     getCustomization(): Promise<any>;
     /**
-     *  description
      *
-     * @param {object} customization description
+     *
+     * @param {Customization} customization
      * @return {Promise<any>} Returns a promise
      */
-    setCustomization(customization: any): Promise<any>;
+    setCustomization(customization: Customization): Promise<any>;
     /**
-     *  description
+     *
      *
      * @return {Promise<any>} Returns a promise
      */
     getRfidScenario(): Promise<any>;
     /**
-     *  description
      *
-     * @param {object} rfidScenario description
+     *
+     * @param {RFIDScenario} rfidScenario
      * @return {Promise<any>} Returns a promise
      */
-    setRfidScenario(rfidScenario: any): Promise<any>;
+    setRfidScenario(rfidScenario: RFIDScenario): Promise<any>;
+    /**
+     *  Use this method to reset configuration
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    resetConfiguration(): Promise<any>;
     /**
      *  Use this method to initialize Document Reader
      *
-     * @param {object} config Object with structure
-     *      "license": "license base64 string(necessary)"
-     *      "customDb": "custom database base64 string(Android only, ignored on iOS)"
-     *      "databasePath": "database path(iOS only, ignored on android)"
-     *      "licenseUpdate": true
-     *      "delayedNNLoad": false
-     *      "blackList": {} // Android only, ignored on iOS
+     * @param {DocReaderConfig} config
      * @return {Promise<any>} Returns a promise
      */
-    initializeReader(config: any): Promise<any>;
+    initializeReader(config: DocReaderConfig): Promise<any>;
     /**
      *  Initializes document reader with license from connected Device7310(Android only, ignored on iOS)
      *
-     * @param {object} config Object with structure
-     *      "customDb": "custom database base64 string(Android only, ignored on iOS)"
-     *      "licenseUpdate": true
-     *      "delayedNNLoad": false
-     *      "blackList": {} // Android only, ignored on iOS
+     * @param {DocReaderConfig} config
      * @return {Promise<any>} Returns a promise
      */
-    initializeReaderWithBleDeviceConfig(config: any): Promise<any>;
+    initializeReaderWithBleDeviceConfig(config: DocReaderConfig): Promise<any>;
     /**
      *  Use this method to deinitialize Document Reader
      *
@@ -5446,7 +5772,7 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      * @param {string} databaseType
      * @return {Promise<any>} Returns a promise
      */
-    prepareDatabase(databaseType: any): Observable<any>;
+    prepareDatabase(databaseType: string): Observable<any>;
     /**
      *  Allows you to remove the added database
      *
@@ -5459,7 +5785,7 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      * @param {string} databaseId
      * @return {Promise<any>} Returns a promise
      */
-    runAutoUpdate(databaseId: any): Observable<any>;
+    runAutoUpdate(databaseId: string): Observable<any>;
     /**
      *  Allows you to cancel database update
      *
@@ -5469,24 +5795,24 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
     /**
      *  checks for database update
      *
-     * @param {string} databaseId id of the database
+     * @param {string} databaseId
      * @return {Promise<any>} Returns a promise
      */
-    checkDatabaseUpdate(databaseId: any): Promise<any>;
+    checkDatabaseUpdate(databaseId: string): Promise<any>;
     /**
      *  Use this method to open the camera preview which will pass frames for recognition and return results in the completion block when they are ready
      *
-     * @param {object} config ScannerConfig
+     * @param {ScannerConfig} config
      * @return {Promise<any>} Returns a promise
      */
-    scan(config: any): Observable<any>;
+    scan(config: ScannerConfig): Observable<any>;
     /**
      *  Use this method to recognize images
      *
-     * @param {object} config RecognizeConfig
+     * @param {RecognizeConfig} config
      * @return {Promise<any>} Returns a promise
      */
-    recognize(config: any): Observable<any>;
+    recognize(config: RecognizeConfig): Observable<any>;
     /**
      *  Use this method to indicate than the processing of the next page is started
      *
@@ -5502,12 +5828,21 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
     /**
      *  Use the method below to open the RFID chip reading controller and start its processing
      *
-     * @param {boolean} requestPACertificates description
-     * @param {boolean} requestTACertificates description
-     * @param {boolean} requestTASignature description
+     * @param {boolean} requestPACertificates
+     * @param {boolean} requestTACertificates
+     * @param {boolean} requestTASignature
      * @return {Promise<any>} Returns a promise
      */
-    startRFIDReader(requestPACertificates: any, requestTACertificates: any, requestTASignature: any): Observable<any>;
+    startRFIDReader(requestPACertificates: boolean, requestTACertificates: boolean, requestTASignature: boolean): Observable<any>;
+    /**
+     *  Use this method to start RFID chip processing
+     *
+     * @param {boolean} requestPACertificates
+     * @param {boolean} requestTACertificates
+     * @param {boolean} requestTASignature
+     * @return {Promise<any>} Returns a promise
+     */
+    readRFID(requestPACertificates: boolean, requestTACertificates: boolean, requestTASignature: boolean): Observable<any>;
     /**
      *  Use the method below to close the RFID chip reading controller and end its processing
      *
@@ -5515,63 +5850,40 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      */
     stopRFIDReader(): Promise<any>;
     /**
-     *  Use this method to start RFID chip processing
-     *
-     * @param {boolean} requestPACertificates description
-     * @param {boolean} requestTACertificates description
-     * @param {boolean} requestTASignature description
-     * @return {Promise<any>} Returns a promise
-     */
-    readRFID(requestPACertificates: any, requestTACertificates: any, requestTASignature: any): Observable<any>;
-    /**
      *  Use this method to send PACertificates to the chip after you`ve got a request for them
      *
-     * @param {PKDCertificate[]} certificates Array of jsonObjects with structure {binaryData: binaryData, resourceType: resourceType, privateKey: privateKey}
-     *  binaryData - base64 string
-     *  resourceType - number
-     *  privateKey(optional) - base64 string
+     * @param {PKDCertificate[]} certificates
      * @return {Promise<any>} Returns a promise
      */
-    providePACertificates(certificates: any): Promise<any>;
+    providePACertificates(certificates: PKDCertificate[] | null): Promise<any>;
     /**
      *  Use this method to send TACertificates to the chip after you`ve got a request for them
      *
-     * @param {PKDCertificate[]} certificates Array of jsonObjects with structure {binaryData: binaryData, resourceType: resourceType, privateKey: privateKey}
-     *  binaryData - base64 string
-     *  resourceType - number
-     *  privateKey(optional) - base64 string
+     * @param {PKDCertificate[]} certificates
      * @return {Promise<any>} Returns a promise
      */
-    provideTACertificates(certificates: any): Promise<any>;
+    provideTACertificates(certificates: PKDCertificate[] | null): Promise<any>;
     /**
      *  Use this method to send TASignature to the chip after you`ve got a request for them
      *
-     * @param {byte[]} signature byte array
+     * @param {string} signature
      * @return {Promise<any>} Returns a promise
      */
-    provideTASignature(signature: any): Promise<any>;
+    provideTASignature(signature: string): Promise<any>;
     /**
      *  The method call sets the given TCCParams to the RFID session. The parameters are required to be set before starting RFID session.
      *
-     * @param {object} params Object with structure
-     *      "serviceUrlTA": "some string"
-     *      "serviceUrlPA": "some string"
-     *      "pfxCertUrl": "some string"
-     *      "pfxCert": "base64 encoded binary"
-     *      "pfxPassPhrase": "some string"
+     * @param {TccParams} params
      * @return {Promise<any>} Returns a promise
      */
-    setTCCParams(params: any): Promise<any>;
+    setTCCParams(params: TccParams): Promise<any>;
     /**
      *  Allows to add a list of PKD certificates during initialization process which will be passed to Core
      *
-     * @param {PKDCertificate[]} certificates Array of jsonObjects with structure {binaryData: binaryData, resourceType: resourceType, privateKey: privateKey}
-     *  binaryData - base64 string
-     *  resourceType - number
-     *  privateKey(optional) - base64 string
+     * @param {PKDCertificate[]} certificates
      * @return {Promise<any>} Returns a promise
      */
-    addPKDCertificates(certificates: any): Promise<any>;
+    addPKDCertificates(certificates: PKDCertificate[]): Promise<any>;
     /**
      *  Use this method to clear PKD certificates
      *
@@ -5591,14 +5903,14 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      */
     startBluetoothService(): Promise<any>;
     /**
-     *  description
      *
-     * @param {object} dictionary description
+     *
+     * @param {Record<string, string>} dictionary
      * @return {Promise<any>} Returns a promise
      */
-    setLocalizationDictionary(dictionary: any): Promise<any>;
+    setLocalizationDictionary(dictionary: Record<string, string>): Promise<any>;
     /**
-     *  description
+     *
      *
      * @return {Promise<any>} Returns a promise
      */
@@ -5616,31 +5928,31 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      */
     getIsRFIDAvailableForUse(): Promise<any>;
     /**
-     *  description
+     *
      *
      * @return {Promise<any>} Returns a promise
      */
     getDocReaderVersion(): Promise<any>;
     /**
-     *  description
+     *
      *
      * @return {Promise<any>} Returns a promise
      */
     getDocReaderDocumentsDatabase(): Promise<any>;
     /**
-     *  description
      *
-     * @param {string} className description
-     * @param {int} value byte array
-     * @return {Promise<any>} Returns a promise
-     */
-    getTranslation(className: any, value: any): Promise<any>;
-    /**
-     *  description
      *
      * @return {Promise<any>} Returns a promise
      */
     finalizePackage(): Promise<any>;
+    /**
+     *
+     *
+     * @param {string} className
+     * @param {number} value
+     * @return {Promise<any>} Returns a promise
+     */
+    getTranslation(className: string, value: number): Promise<any>;
     textFieldValueByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
     textFieldValueByTypeLcid(results: DocumentReaderResults, fieldType: number, lcid: number): Promise<string | undefined>;
     textFieldValueByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
