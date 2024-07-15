@@ -752,6 +752,7 @@ export declare class CustomizationColors {
     rfidProcessingScreenProgressBar?: number;
     rfidProcessingScreenProgressBarBackground?: number;
     rfidProcessingScreenResultLabelText?: number;
+    rfidProcessingScreenLoadingBar?: number;
     static fromJson(jsonObject?: any): CustomizationColors | undefined;
 }
 export declare class CustomizationFonts {
