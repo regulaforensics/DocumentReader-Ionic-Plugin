@@ -709,6 +709,8 @@ export declare class ProcessParams {
     imageOutputMaxWidth?: number;
     processAuth?: number;
     convertCase?: number;
+    logLevel?: string;
+    mrzDetectMode?: number;
     measureSystem?: number;
     forceDocID?: number;
     dateFormat?: string;
@@ -719,6 +721,7 @@ export declare class ProcessParams {
     timeoutFromFirstDetect?: number;
     timeoutFromFirstDocType?: number;
     documentAreaMin?: number;
+    timeoutLiveness?: number;
     documentIDList?: number[];
     barcodeTypes?: number[];
     fieldTypesFilter?: number[];
@@ -749,6 +752,7 @@ export declare class CustomizationColors {
     rfidProcessingScreenProgressBar?: number;
     rfidProcessingScreenProgressBarBackground?: number;
     rfidProcessingScreenResultLabelText?: number;
+    rfidProcessingScreenLoadingBar?: number;
     static fromJson(jsonObject?: any): CustomizationColors | undefined;
 }
 export declare class CustomizationFonts {
@@ -983,6 +987,7 @@ export declare const CustomizationColor: {
     RFID_PROCESSING_SCREEN_PROGRESS_BAR: string;
     RFID_PROCESSING_SCREEN_PROGRESS_BAR_BACKGROUND: string;
     RFID_PROCESSING_SCREEN_RESULT_LABEL_TEXT: string;
+    RFID_PROCESSING_SCREEN_LOADING_BAR: string;
 };
 export declare const eRFID_ErrorCodes: {
     RFID_ERROR_NO_ERROR: number;
@@ -1584,6 +1589,9 @@ export declare const eCheckDiagnose: {
     FIELD_POS_CORRECTOR_HIGHLIGHT_IR: number;
     FIELD_POS_CORRECTOR_GLARES_IN_PHOTO_AREA: number;
     FIELD_POS_CORRECTOR_PHOTO_REPLACED: number;
+    FIELD_POS_CORRECTOR_LANDMARKS_CHECK_ERROR: number;
+    FIELD_POS_CORRECTOR_FACE_PRESENCE_CHECK_ERROR: number;
+    FIELD_POS_CORRECTOR_FACE_ABSENCE_CHECK_ERROR: number;
     OVI_IR_INVISIBLE: number;
     OVI_INSUFFICIENT_AREA: number;
     OVI_COLOR_INVARIABLE: number;
@@ -1655,7 +1663,7 @@ export declare const eCheckDiagnose: {
     ICAO_IDB_SIGNATURE_MUST_BE_PRESENT: number;
     ICAO_IDB_SIGNATURE_MUST_NOT_BE_PRESENT: number;
     ICAO_IDB_CERTIFICATE_MUST_NOT_BE_PRESENT: number;
-    LAST_DIAGNOSE_VALUE: number;
+    INCORRECT_OBJECT_COLOR: number;
 };
 export declare const RFIDDelegate: {
     NULL: number;
@@ -1667,6 +1675,13 @@ export declare const TextProcessing: {
     ocUppercase: number;
     ocLowercase: number;
     ocCapital: number;
+};
+export declare const LogLevel: {
+    FatalError: string;
+    Error: string;
+    Warning: string;
+    Info: string;
+    Debug: string;
 };
 export declare const AnimationImage: {
     UNKNOWN: number;
@@ -3083,6 +3098,14 @@ export declare const eVisualFieldType: {
     FT_DATE_OF_RETIREMENT: number;
     FT_DOCUMENT_STATUS: number;
     FT_SIGNATURE: number;
+    FT_UNIQUE_CERTIFICATE_IDENTIFIER: number;
+    FT_EMAIL: number;
+    FT_DATE_OF_SPECIMEN_COLLECTION: number;
+    FT_TYPE_OF_TESTING: number;
+    FT_RESULT_OF_TESTING: number;
+    FT_METHOD_OF_TESTING: number;
+    FT_DIGITAL_TRAVEL_AUTHORIZATION_NUMBER: number;
+    FT_DATE_OF_FIRST_POSITIVE_TEST_RESULT: number;
 };
 export declare const DocReaderOrientation: {
     ALL: number;
@@ -3279,6 +3302,11 @@ export declare const eRPRM_Lights: {
     RPRM_LIGHT_OVD: number;
     RPRM_LIGHT_WHITE_FULL_OVD: number;
 };
+export declare const eMrzDetectionModes: {
+    DEFAULT: number;
+    RESIZE_BINARIZE_WINDOW: number;
+    BLUR_BEFORE_BINARIZATION: number;
+};
 export declare const Enum: {
     FontStyle: {
         NORMAL: number;
@@ -3317,6 +3345,7 @@ export declare const Enum: {
         RFID_PROCESSING_SCREEN_PROGRESS_BAR: string;
         RFID_PROCESSING_SCREEN_PROGRESS_BAR_BACKGROUND: string;
         RFID_PROCESSING_SCREEN_RESULT_LABEL_TEXT: string;
+        RFID_PROCESSING_SCREEN_LOADING_BAR: string;
     };
     eRFID_ErrorCodes: {
         RFID_ERROR_NO_ERROR: number;
@@ -3918,6 +3947,9 @@ export declare const Enum: {
         FIELD_POS_CORRECTOR_HIGHLIGHT_IR: number;
         FIELD_POS_CORRECTOR_GLARES_IN_PHOTO_AREA: number;
         FIELD_POS_CORRECTOR_PHOTO_REPLACED: number;
+        FIELD_POS_CORRECTOR_LANDMARKS_CHECK_ERROR: number;
+        FIELD_POS_CORRECTOR_FACE_PRESENCE_CHECK_ERROR: number;
+        FIELD_POS_CORRECTOR_FACE_ABSENCE_CHECK_ERROR: number;
         OVI_IR_INVISIBLE: number;
         OVI_INSUFFICIENT_AREA: number;
         OVI_COLOR_INVARIABLE: number;
@@ -3989,7 +4021,7 @@ export declare const Enum: {
         ICAO_IDB_SIGNATURE_MUST_BE_PRESENT: number;
         ICAO_IDB_SIGNATURE_MUST_NOT_BE_PRESENT: number;
         ICAO_IDB_CERTIFICATE_MUST_NOT_BE_PRESENT: number;
-        LAST_DIAGNOSE_VALUE: number;
+        INCORRECT_OBJECT_COLOR: number;
     };
     RFIDDelegate: {
         NULL: number;
@@ -4001,6 +4033,13 @@ export declare const Enum: {
         ocUppercase: number;
         ocLowercase: number;
         ocCapital: number;
+    };
+    LogLevel: {
+        FatalError: string;
+        Error: string;
+        Warning: string;
+        Info: string;
+        Debug: string;
     };
     AnimationImage: {
         UNKNOWN: number;
@@ -5417,6 +5456,14 @@ export declare const Enum: {
         FT_DATE_OF_RETIREMENT: number;
         FT_DOCUMENT_STATUS: number;
         FT_SIGNATURE: number;
+        FT_UNIQUE_CERTIFICATE_IDENTIFIER: number;
+        FT_EMAIL: number;
+        FT_DATE_OF_SPECIMEN_COLLECTION: number;
+        FT_TYPE_OF_TESTING: number;
+        FT_RESULT_OF_TESTING: number;
+        FT_METHOD_OF_TESTING: number;
+        FT_DIGITAL_TRAVEL_AUTHORIZATION_NUMBER: number;
+        FT_DATE_OF_FIRST_POSITIVE_TEST_RESULT: number;
     };
     DocReaderOrientation: {
         ALL: number;
@@ -5613,6 +5660,11 @@ export declare const Enum: {
         RPRM_LIGHT_OVD: number;
         RPRM_LIGHT_WHITE_FULL_OVD: number;
     };
+    eMrzDetectionModes: {
+        DEFAULT: number;
+        RESIZE_BINARIZE_WINDOW: number;
+        BLUR_BEFORE_BINARIZATION: number;
+    };
 };
 /**
  * @name DocumentReader
@@ -5688,6 +5740,32 @@ export declare class DocumentReader extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     setTag(tag: string | null): Promise<any>;
+    /**
+     *
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    getTenant(): Promise<any>;
+    /**
+     *
+     *
+     * @param {string} tenant
+     * @return {Promise<any>} Returns a promise
+     */
+    setTenant(tenant: string | null): Promise<any>;
+    /**
+     *
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    getEnv(): Promise<any>;
+    /**
+     *
+     *
+     * @param {string} env
+     * @return {Promise<any>} Returns a promise
+     */
+    setEnv(env: string | null): Promise<any>;
     /**
      *
      *
