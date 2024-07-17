@@ -698,6 +698,7 @@ export declare class ProcessParams {
     useFaceApi?: boolean;
     useAuthenticityCheck?: boolean;
     checkHologram?: boolean;
+    generateNumericCodes?: boolean;
     barcodeParserType?: number;
     perspectiveAngle?: number;
     minDPI?: number;
