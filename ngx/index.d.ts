@@ -484,7 +484,7 @@ export declare class DocumentReaderValidity {
 export declare class OnlineProcessingConfig {
     mode?: number;
     url?: string;
-    processParam?: ProcessParams;
+    processParams?: ProcessParams;
     imageFormat?: number;
     imageCompressionQuality?: number;
     static fromJson(jsonObject?: any): OnlineProcessingConfig | undefined;
