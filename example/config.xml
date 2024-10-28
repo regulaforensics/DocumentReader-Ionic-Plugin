@@ -19,6 +19,7 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <platform name="android">
+        <preference name="orientation" value="portrait" />
         <resource-file src="src/assets/db.dat" target="app/src/main/assets/Regula/db.dat"/>
         <framework src="com.android.support:appcompat-v7:+" />
         <config-file parent="/*" target="AndroidManifest.xml">
@@ -53,6 +54,7 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <platform name="ios">
+        <preference name="orientation" value="portrait" />
         <resource-file src="src/assets/db.dat" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
