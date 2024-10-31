@@ -228,6 +228,11 @@ function displayResults(results: DocumentReaderResults) {
     if (value != null)
       portraitImage.src = "data:image/png;base64," + value
   })
+
+  DocumentReader.graphicFieldImageByTypeSource(results, Enum.eGraphicFieldType.GF_PORTRAIT, Enum.eRPRM_ResultType.RFID_RESULT_TYPE_RFID_IMAGE_DATA).then((value: string | undefined) => {
+    if (value != null)
+      portraitImage.src = "data:image/png;base64," + value
+  })
 }
 
 function clearResults() {
