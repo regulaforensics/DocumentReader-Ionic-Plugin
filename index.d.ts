@@ -510,6 +510,7 @@ export declare class RecognizeConfig {
     scenario?: string;
     onlineProcessingConfig?: OnlineProcessingConfig;
     oneShotIdentification?: boolean;
+    dtc?: string;
     livePortrait?: string;
     extPortrait?: string;
     image?: string;
@@ -555,6 +556,7 @@ export declare class DocumentReaderResults {
     documentType?: DocumentReaderDocumentType[];
     status?: DocumentReaderResultsStatus;
     vdsncData?: VDSNCData;
+    dtcData?: string;
     transactionInfo?: TransactionInfo;
     static fromJson(jsonObject?: any): DocumentReaderResults | undefined;
 }
@@ -640,6 +642,7 @@ export declare class BackendProcessingConfig {
     url?: string;
     httpHeaders?: Record<string, string>;
     rfidServerSideChipVerification?: boolean;
+    timeoutConnection?: number;
     static fromJson(jsonObject?: any): BackendProcessingConfig | undefined;
 }
 export declare class LivenessParams {
@@ -694,11 +697,15 @@ export declare class ProcessParams {
     shouldReturnPackageForReprocess?: boolean;
     disablePerforationOCR?: boolean;
     respectImageQuality?: boolean;
+    strictImageQuality?: boolean;
     splitNames?: boolean;
     useFaceApi?: boolean;
     useAuthenticityCheck?: boolean;
     checkHologram?: boolean;
     generateNumericCodes?: boolean;
+    strictBarcodeDigitalSignatureCheck?: boolean;
+    selectLongestNames?: boolean;
+    generateDTCVC?: boolean;
     barcodeParserType?: number;
     perspectiveAngle?: number;
     minDPI?: number;
@@ -775,6 +782,8 @@ export declare class Customization {
     cameraFrameBorderWidth?: number;
     cameraFrameLineLength?: number;
     cameraFrameOffsetWidth?: number;
+    nextPageAnimationStartDelay?: number;
+    nextPageAnimationEndDelay?: number;
     cameraFrameShapeType?: number;
     status?: string;
     resultStatus?: string;
@@ -788,6 +797,7 @@ export declare class Customization {
     activityIndicatorColor?: number;
     statusBackgroundColor?: number;
     cameraPreviewBackgroundColor?: number;
+    backgroundMaskColor?: number;
     statusPositionMultiplier?: number;
     resultStatusPositionMultiplier?: number;
     toolbarSize?: number;
@@ -890,6 +900,30 @@ export declare class EIDDataGroups {
     DG21?: boolean;
     static fromJson(jsonObject?: any): EIDDataGroups | undefined;
 }
+export declare class DTCDataGroups {
+    DG1?: boolean;
+    DG2?: boolean;
+    DG3?: boolean;
+    DG4?: boolean;
+    DG5?: boolean;
+    DG6?: boolean;
+    DG7?: boolean;
+    DG8?: boolean;
+    DG9?: boolean;
+    DG10?: boolean;
+    DG11?: boolean;
+    DG12?: boolean;
+    DG13?: boolean;
+    DG14?: boolean;
+    DG15?: boolean;
+    DG16?: boolean;
+    DG17?: boolean;
+    DG18?: boolean;
+    DG22?: boolean;
+    DG23?: boolean;
+    DG24?: boolean;
+    static fromJson(jsonObject?: any): DTCDataGroups | undefined;
+}
 export declare class RFIDScenario {
     paceStaticBinding?: boolean;
     onlineTA?: boolean;
@@ -925,6 +959,8 @@ export declare class RFIDScenario {
     applyAmendments?: boolean;
     autoSettings?: boolean;
     proceedReadingAlways?: boolean;
+    readDTC?: boolean;
+    mrzStrictCheck?: boolean;
     readingBuffer?: number;
     onlineTAToSignDataType?: number;
     defaultReadingBufferSize?: number;
@@ -940,9 +976,11 @@ export declare class RFIDScenario {
     mrz?: string;
     eSignPINDefault?: string;
     eSignPINNewValue?: string;
+    cardAccess?: string;
     eDLDataGroups?: EDLDataGroups;
     ePassportDataGroups?: EPassportDataGroups;
     eIDDataGroups?: EIDDataGroups;
+    dtcDataGroups?: DTCDataGroups;
     static fromJson(jsonObject?: any): RFIDScenario | undefined;
 }
 export declare class PrepareProgress {
@@ -1296,6 +1334,7 @@ export declare const eRPRM_ResultType: {
     RPRM_RESULT_TYPE_STATUS: number;
     RPRM_RESULT_TYPE_PORTRAIT_COMPARISON: number;
     RPRM_RESULT_TYPE_EXT_PORTRAIT: number;
+    RFID_RESULT_TYPE_RFID_DTC_VC: number;
 };
 export declare const FrameShapeType: {
     LINE: number;
@@ -1395,6 +1434,7 @@ export declare const DocumentReaderErrorCodes: {
     FINALIZE_FAILED: number;
     CAMERA_NO_PERMISSION: number;
     CAMERA_NOT_AVAILABLE: number;
+    CANNOT_USE_CAMERA_IN_SCENARIO: number;
     NATIVE_JAVA_EXCEPTION: number;
     BACKEND_ONLINE_PROCESSING: number;
     WRONG_INPUT: number;
@@ -1424,6 +1464,7 @@ export declare const ScenarioIdentifier: {
     SCENARIO_OCR_FREE: string;
     SCENARIO_CREDIT_CARD: string;
     SCENARIO_CAPTURE: string;
+    SCENARIO_DTC: string;
 };
 export declare const eRFID_AccessControl_ProcedureType: {
     ACPT_UNDEFINED: number;
@@ -1535,6 +1576,16 @@ export declare const BarcodeResult: {
     IPDECODE_ERROR_INCORRECT_ERROR_LEVEL: number;
     IPDECODE_ERROR_LOADING_DEV_TABLE: number;
 };
+export declare const eRFID_Application_Type: {
+    ePASSPORT: number;
+    eID: number;
+    eSIGN: number;
+    eDL: number;
+    LDS2_TRAVEL_RECORDS: number;
+    LDS2_VISA_RECORDS: number;
+    LDS2_ADD_BIOMETRICS: number;
+    eDTC_PC: number;
+};
 export declare const eSignManagementAction: {
     smaUndefined: number;
     smaCreatePIN: number;
@@ -1587,12 +1638,15 @@ export declare const eCheckDiagnose: {
     FALSE_LUMINISCENCE_IN_BLANK: number;
     BAD_AREA_IN_AXIAL: number;
     FALSE_IPI_PARAMETERS: number;
+    ENCRYPTED_IPI_NOT_FOUND: number;
+    ENCRYPTED_IPI_DATA_DONT_MATCH: number;
     FIELD_POS_CORRECTOR_HIGHLIGHT_IR: number;
     FIELD_POS_CORRECTOR_GLARES_IN_PHOTO_AREA: number;
     FIELD_POS_CORRECTOR_PHOTO_REPLACED: number;
     FIELD_POS_CORRECTOR_LANDMARKS_CHECK_ERROR: number;
     FIELD_POS_CORRECTOR_FACE_PRESENCE_CHECK_ERROR: number;
     FIELD_POS_CORRECTOR_FACE_ABSENCE_CHECK_ERROR: number;
+    CHD_FIELD_POS_CORRECTOR_INCORRECT_HEAD_POSITION: number;
     OVI_IR_INVISIBLE: number;
     OVI_INSUFFICIENT_AREA: number;
     OVI_COLOR_INVARIABLE: number;
@@ -1627,6 +1681,7 @@ export declare const eCheckDiagnose: {
     BARCODE_SIZE_PARAMS_ERROR: number;
     NOT_ALL_BARCODES_READ: number;
     GLARES_IN_BARCODE_AREA: number;
+    CHD_NO_CERTIFICATE_FOR_DIGITAL_SIGNATURE_CHECK: number;
     PORTRAIT_COMPARISON_PORTRAITS_DIFFER: number;
     PORTRAIT_COMPARISON_NO_SERVICE_REPLY: number;
     PORTRAIT_COMPARISON_SERVICE_ERROR: number;
@@ -1656,6 +1711,7 @@ export declare const eCheckDiagnose: {
     OCR_QUALITY_INVALID_FONT: number;
     OCR_QUALITY_INVALID_BACKGROUND: number;
     LAS_INK_INVALID_LINES_FREQUENCY: number;
+    CHD_DOC_LIVENESS_BLACK_AND_WHITE_COPY_DETECTED: number;
     DOC_LIVENESS_ELECTRONIC_DEVICE_DETECTED: number;
     DOC_LIVENESS_INVALID_BARCODE_BACKGROUND: number;
     ICAO_IDB_BASE_32_ERROR: number;
@@ -2039,6 +2095,8 @@ export declare const eRPRM_SecurityFeatureType: {
     SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_BARCODE_VS_CAMERA: number;
     SECURITY_FEATURE_TYPE_CHECK_DIGITAL_SIGNATURE: number;
     SECURITY_FEATURE_TYPE_CONTACT_CHIP_CLASSIFICATION: number;
+    SECURITY_FEATURE_TYPE_HEAD_POSITION_CHECK: number;
+    SECURITY_FEATURE_TYPE_LIVENESS_BLACK_AND_WHITE_COPY_CHECK: number;
 };
 export declare const OnlineMode: {
     MANUAL: number;
@@ -2403,6 +2461,11 @@ export declare const eRFID_DataFile_Type: {
     DFT_PASSPORT_SOD: number;
     DFT_PASSPORT_CVCA: number;
     DFT_PASSPORT_COM: number;
+    DFT_DTC_DG17: number;
+    DFT_DTC_DG18: number;
+    DFT_DTC_DG22: number;
+    DFT_DTC_DG23: number;
+    DFT_DTC_DG24: number;
     DFT_ID_DG1: number;
     DFT_ID_DG2: number;
     DFT_ID_DG3: number;
@@ -2755,6 +2818,9 @@ export declare const eVisualFieldType: {
     FT_DOCUMENT_DISCRIMINATOR: number;
     FT_DATA_DISCRIMINATOR: number;
     FT_ISO_ISSUER_ID_NUMBER: number;
+    FT_DTC_VERSION: number;
+    FT_DTC_ID: number;
+    FT_DTC_DATE_OF_EXPIRY: number;
     FT_GNIB_NUMBER: number;
     FT_DEPT_NUMBER: number;
     FT_TELEX_CODE: number;
@@ -3107,6 +3173,7 @@ export declare const eVisualFieldType: {
     FT_METHOD_OF_TESTING: number;
     FT_DIGITAL_TRAVEL_AUTHORIZATION_NUMBER: number;
     FT_DATE_OF_FIRST_POSITIVE_TEST_RESULT: number;
+    FT_EF_CARD_ACCESS: number;
 };
 export declare const DocReaderOrientation: {
     ALL: number;
@@ -3654,6 +3721,7 @@ export declare const Enum: {
         RPRM_RESULT_TYPE_STATUS: number;
         RPRM_RESULT_TYPE_PORTRAIT_COMPARISON: number;
         RPRM_RESULT_TYPE_EXT_PORTRAIT: number;
+        RFID_RESULT_TYPE_RFID_DTC_VC: number;
     };
     FrameShapeType: {
         LINE: number;
@@ -3753,6 +3821,7 @@ export declare const Enum: {
         FINALIZE_FAILED: number;
         CAMERA_NO_PERMISSION: number;
         CAMERA_NOT_AVAILABLE: number;
+        CANNOT_USE_CAMERA_IN_SCENARIO: number;
         NATIVE_JAVA_EXCEPTION: number;
         BACKEND_ONLINE_PROCESSING: number;
         WRONG_INPUT: number;
@@ -3782,6 +3851,7 @@ export declare const Enum: {
         SCENARIO_OCR_FREE: string;
         SCENARIO_CREDIT_CARD: string;
         SCENARIO_CAPTURE: string;
+        SCENARIO_DTC: string;
     };
     eRFID_AccessControl_ProcedureType: {
         ACPT_UNDEFINED: number;
@@ -3893,6 +3963,16 @@ export declare const Enum: {
         IPDECODE_ERROR_INCORRECT_ERROR_LEVEL: number;
         IPDECODE_ERROR_LOADING_DEV_TABLE: number;
     };
+    eRFID_Application_Type: {
+        ePASSPORT: number;
+        eID: number;
+        eSIGN: number;
+        eDL: number;
+        LDS2_TRAVEL_RECORDS: number;
+        LDS2_VISA_RECORDS: number;
+        LDS2_ADD_BIOMETRICS: number;
+        eDTC_PC: number;
+    };
     eSignManagementAction: {
         smaUndefined: number;
         smaCreatePIN: number;
@@ -3945,12 +4025,15 @@ export declare const Enum: {
         FALSE_LUMINISCENCE_IN_BLANK: number;
         BAD_AREA_IN_AXIAL: number;
         FALSE_IPI_PARAMETERS: number;
+        ENCRYPTED_IPI_NOT_FOUND: number;
+        ENCRYPTED_IPI_DATA_DONT_MATCH: number;
         FIELD_POS_CORRECTOR_HIGHLIGHT_IR: number;
         FIELD_POS_CORRECTOR_GLARES_IN_PHOTO_AREA: number;
         FIELD_POS_CORRECTOR_PHOTO_REPLACED: number;
         FIELD_POS_CORRECTOR_LANDMARKS_CHECK_ERROR: number;
         FIELD_POS_CORRECTOR_FACE_PRESENCE_CHECK_ERROR: number;
         FIELD_POS_CORRECTOR_FACE_ABSENCE_CHECK_ERROR: number;
+        CHD_FIELD_POS_CORRECTOR_INCORRECT_HEAD_POSITION: number;
         OVI_IR_INVISIBLE: number;
         OVI_INSUFFICIENT_AREA: number;
         OVI_COLOR_INVARIABLE: number;
@@ -3985,6 +4068,7 @@ export declare const Enum: {
         BARCODE_SIZE_PARAMS_ERROR: number;
         NOT_ALL_BARCODES_READ: number;
         GLARES_IN_BARCODE_AREA: number;
+        CHD_NO_CERTIFICATE_FOR_DIGITAL_SIGNATURE_CHECK: number;
         PORTRAIT_COMPARISON_PORTRAITS_DIFFER: number;
         PORTRAIT_COMPARISON_NO_SERVICE_REPLY: number;
         PORTRAIT_COMPARISON_SERVICE_ERROR: number;
@@ -4014,6 +4098,7 @@ export declare const Enum: {
         OCR_QUALITY_INVALID_FONT: number;
         OCR_QUALITY_INVALID_BACKGROUND: number;
         LAS_INK_INVALID_LINES_FREQUENCY: number;
+        CHD_DOC_LIVENESS_BLACK_AND_WHITE_COPY_DETECTED: number;
         DOC_LIVENESS_ELECTRONIC_DEVICE_DETECTED: number;
         DOC_LIVENESS_INVALID_BARCODE_BACKGROUND: number;
         ICAO_IDB_BASE_32_ERROR: number;
@@ -4397,6 +4482,8 @@ export declare const Enum: {
         SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_BARCODE_VS_CAMERA: number;
         SECURITY_FEATURE_TYPE_CHECK_DIGITAL_SIGNATURE: number;
         SECURITY_FEATURE_TYPE_CONTACT_CHIP_CLASSIFICATION: number;
+        SECURITY_FEATURE_TYPE_HEAD_POSITION_CHECK: number;
+        SECURITY_FEATURE_TYPE_LIVENESS_BLACK_AND_WHITE_COPY_CHECK: number;
     };
     OnlineMode: {
         MANUAL: number;
@@ -4761,6 +4848,11 @@ export declare const Enum: {
         DFT_PASSPORT_SOD: number;
         DFT_PASSPORT_CVCA: number;
         DFT_PASSPORT_COM: number;
+        DFT_DTC_DG17: number;
+        DFT_DTC_DG18: number;
+        DFT_DTC_DG22: number;
+        DFT_DTC_DG23: number;
+        DFT_DTC_DG24: number;
         DFT_ID_DG1: number;
         DFT_ID_DG2: number;
         DFT_ID_DG3: number;
@@ -5113,6 +5205,9 @@ export declare const Enum: {
         FT_DOCUMENT_DISCRIMINATOR: number;
         FT_DATA_DISCRIMINATOR: number;
         FT_ISO_ISSUER_ID_NUMBER: number;
+        FT_DTC_VERSION: number;
+        FT_DTC_ID: number;
+        FT_DTC_DATE_OF_EXPIRY: number;
         FT_GNIB_NUMBER: number;
         FT_DEPT_NUMBER: number;
         FT_TELEX_CODE: number;
@@ -5465,6 +5560,7 @@ export declare const Enum: {
         FT_METHOD_OF_TESTING: number;
         FT_DIGITAL_TRAVEL_AUTHORIZATION_NUMBER: number;
         FT_DATE_OF_FIRST_POSITIVE_TEST_RESULT: number;
+        FT_EF_CARD_ACCESS: number;
     };
     DocReaderOrientation: {
         ALL: number;
@@ -5703,18 +5799,6 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     getDocumentReaderStatus(): Promise<any>;
-    /**
-     *  Allows you to check if a mobile authenticator is available for use
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    isAuthenticatorAvailableForUse(): Promise<any>;
-    /**
-     *  Checks if all required bluetooth permissions are granted and requests them if needed(Android only, ignored on iOS)
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    isBlePermissionsGranted(): Promise<any>;
     /**
      *  Use this method to get an RFID session status
      *
@@ -5976,11 +6060,11 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      */
     startNewSession(): Promise<any>;
     /**
-     *  Searches for ble devices(Android only, ignored on iOS)
+     *  Connects to ble device
      *
      * @return {Promise<any>} Returns a promise
      */
-    startBluetoothService(): Promise<any>;
+    connectBluetoothDevice(): Promise<any>;
     /**
      *
      *
@@ -6007,6 +6091,18 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      */
     getIsRFIDAvailableForUse(): Promise<any>;
     /**
+     *  Allows you to check if a mobile authenticator is available for use
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    isAuthenticatorRFIDAvailableForUse(): Promise<any>;
+    /**
+     *  Allows you to check if a mobile authenticator is available for use
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    isAuthenticatorAvailableForUse(): Promise<any>;
+    /**
      *
      *
      * @return {Promise<any>} Returns a promise
@@ -6024,6 +6120,12 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     finalizePackage(): Promise<any>;
+    /**
+     *
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    endBackendTransaction(): Promise<any>;
     /**
      *
      *
