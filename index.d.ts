@@ -335,7 +335,7 @@ export declare class RfidNotificationCompletion {
     static fromJson(jsonObject?: any): RfidNotificationCompletion | undefined;
 }
 export declare class RegulaException {
-    errorCode?: number;
+    code?: number;
     message?: string;
     static fromJson(jsonObject?: any): RegulaException | undefined;
 }
