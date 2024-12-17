@@ -239,6 +239,11 @@ export class HomePage {
         if (value != undefined)
           app.portraitImage.nativeElement.src = "data:image/png;base64," + value
       })
+
+      DocumentReader.graphicFieldImageByTypeSource(results, Enum.eGraphicFieldType.GF_PORTRAIT, Enum.eRPRM_ResultType.RFID_RESULT_TYPE_RFID_IMAGE_DATA).then(value => {
+        if (value != undefined)
+          app.portraitImage.nativeElement.src = "data:image/png;base64," + value
+      })
     }
 
     function clearResults() {
