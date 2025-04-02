@@ -487,6 +487,7 @@ export declare class OnlineProcessingConfig {
     processParams?: ProcessParams;
     imageFormat?: number;
     imageCompressionQuality?: number;
+    requestHeaders?: Record<string, string>;
     static fromJson(jsonObject?: any): OnlineProcessingConfig | undefined;
 }
 export declare class DocReaderConfig {
@@ -535,6 +536,7 @@ export declare class DocReaderVersion {
 export declare class TransactionInfo {
     transactionId?: string;
     tag?: string;
+    sessionLogFolder?: string;
     static fromJson(jsonObject?: any): TransactionInfo | undefined;
 }
 export declare class DocumentReaderResults {
@@ -582,6 +584,7 @@ export declare class Functionality {
     recordScanningProcess?: boolean;
     manualMultipageMode?: boolean;
     singleResult?: boolean;
+    torchTurnedOn?: boolean;
     showCaptureButtonDelayFromDetect?: number;
     showCaptureButtonDelayFromStart?: number;
     rfidTimeout?: number;
@@ -615,6 +618,7 @@ export declare class ImageQA {
     expectedPass?: number[];
     documentPositionIndent?: number;
     brightnessThreshold?: number;
+    occlusionCheck?: boolean;
     static fromJson(jsonObject?: any): ImageQA | undefined;
 }
 export declare class RFIDParams {
@@ -650,6 +654,8 @@ export declare class LivenessParams {
     checkMLI?: boolean;
     checkHolo?: boolean;
     checkED?: boolean;
+    checkBlackAndWhiteCopy?: boolean;
+    checkDynaprint?: boolean;
     static fromJson(jsonObject?: any): LivenessParams | undefined;
 }
 export declare class AuthenticityParams {
@@ -668,6 +674,7 @@ export declare class AuthenticityParams {
     checkPhotoEmbedding?: boolean;
     checkPhotoComparison?: boolean;
     checkLetterScreen?: boolean;
+    checkSecurityText?: boolean;
     static fromJson(jsonObject?: any): AuthenticityParams | undefined;
 }
 export declare class ProcessParams {
@@ -706,6 +713,7 @@ export declare class ProcessParams {
     strictBarcodeDigitalSignatureCheck?: boolean;
     selectLongestNames?: boolean;
     generateDTCVC?: boolean;
+    strictDLCategoryExpiry?: boolean;
     barcodeParserType?: number;
     perspectiveAngle?: number;
     minDPI?: number;
@@ -724,7 +732,6 @@ export declare class ProcessParams {
     dateFormat?: string;
     scenario?: string;
     captureButtonScenario?: string;
-    sessionLogFolder?: string;
     timeout?: number;
     timeoutFromFirstDetect?: number;
     timeoutFromFirstDocType?: number;
@@ -900,29 +907,13 @@ export declare class EIDDataGroups {
     DG21?: boolean;
     static fromJson(jsonObject?: any): EIDDataGroups | undefined;
 }
-export declare class DTCDataGroups {
-    DG1?: boolean;
-    DG2?: boolean;
-    DG3?: boolean;
-    DG4?: boolean;
-    DG5?: boolean;
-    DG6?: boolean;
-    DG7?: boolean;
-    DG8?: boolean;
-    DG9?: boolean;
-    DG10?: boolean;
-    DG11?: boolean;
-    DG12?: boolean;
-    DG13?: boolean;
-    DG14?: boolean;
-    DG15?: boolean;
-    DG16?: boolean;
+export declare class DTCDataGroup {
     DG17?: boolean;
     DG18?: boolean;
     DG22?: boolean;
     DG23?: boolean;
     DG24?: boolean;
-    static fromJson(jsonObject?: any): DTCDataGroups | undefined;
+    static fromJson(jsonObject?: any): DTCDataGroup | undefined;
 }
 export declare class RFIDScenario {
     paceStaticBinding?: boolean;
@@ -961,6 +952,8 @@ export declare class RFIDScenario {
     proceedReadingAlways?: boolean;
     readDTC?: boolean;
     mrzStrictCheck?: boolean;
+    loadCRLFromRemote?: boolean;
+    independentSODStatus?: boolean;
     readingBuffer?: number;
     onlineTAToSignDataType?: number;
     defaultReadingBufferSize?: number;
@@ -980,7 +973,7 @@ export declare class RFIDScenario {
     eDLDataGroups?: EDLDataGroups;
     ePassportDataGroups?: EPassportDataGroups;
     eIDDataGroups?: EIDDataGroups;
-    dtcDataGroups?: DTCDataGroups;
+    dtcDataGroups?: DTCDataGroup;
     static fromJson(jsonObject?: any): RFIDScenario | undefined;
 }
 export declare class PrepareProgress {
@@ -1546,6 +1539,7 @@ export declare const ViewContentMode: {
 };
 export declare const BarcodeResult: {
     NO_ERR: number;
+    INVALID_RESULT: number;
     NULL_PTR_ERR: number;
     BAD_ARG_ERR: number;
     SIZE_ERR: number;
@@ -1711,6 +1705,7 @@ export declare const eCheckDiagnose: {
     OCR_QUALITY_INVALID_FONT: number;
     OCR_QUALITY_INVALID_BACKGROUND: number;
     LAS_INK_INVALID_LINES_FREQUENCY: number;
+    DOC_LIVENESS_DOCUMENT_NOT_LIVE: number;
     CHD_DOC_LIVENESS_BLACK_AND_WHITE_COPY_DETECTED: number;
     DOC_LIVENESS_ELECTRONIC_DEVICE_DETECTED: number;
     DOC_LIVENESS_INVALID_BARCODE_BACKGROUND: number;
@@ -2011,6 +2006,7 @@ export declare const eImageQualityCheckType: {
     IQC_PORTRAIT: number;
     IQC_HANDWRITTEN: number;
     IQC_BRIGHTNESS: number;
+    IQC_OCCLUSION: number;
 };
 export declare const MRZFormat: {
     FORMAT_1X30: string;
@@ -3174,6 +3170,8 @@ export declare const eVisualFieldType: {
     FT_DIGITAL_TRAVEL_AUTHORIZATION_NUMBER: number;
     FT_DATE_OF_FIRST_POSITIVE_TEST_RESULT: number;
     FT_EF_CARD_ACCESS: number;
+    FT_SHORT_FLIGHT_NUMBER: number;
+    FT_AIRLINE_CODE: number;
 };
 export declare const DocReaderOrientation: {
     ALL: number;
@@ -3933,6 +3931,7 @@ export declare const Enum: {
     };
     BarcodeResult: {
         NO_ERR: number;
+        INVALID_RESULT: number;
         NULL_PTR_ERR: number;
         BAD_ARG_ERR: number;
         SIZE_ERR: number;
@@ -4098,6 +4097,7 @@ export declare const Enum: {
         OCR_QUALITY_INVALID_FONT: number;
         OCR_QUALITY_INVALID_BACKGROUND: number;
         LAS_INK_INVALID_LINES_FREQUENCY: number;
+        DOC_LIVENESS_DOCUMENT_NOT_LIVE: number;
         CHD_DOC_LIVENESS_BLACK_AND_WHITE_COPY_DETECTED: number;
         DOC_LIVENESS_ELECTRONIC_DEVICE_DETECTED: number;
         DOC_LIVENESS_INVALID_BARCODE_BACKGROUND: number;
@@ -4398,6 +4398,7 @@ export declare const Enum: {
         IQC_PORTRAIT: number;
         IQC_HANDWRITTEN: number;
         IQC_BRIGHTNESS: number;
+        IQC_OCCLUSION: number;
     };
     MRZFormat: {
         FORMAT_1X30: string;
@@ -5561,6 +5562,8 @@ export declare const Enum: {
         FT_DIGITAL_TRAVEL_AUTHORIZATION_NUMBER: number;
         FT_DATE_OF_FIRST_POSITIVE_TEST_RESULT: number;
         FT_EF_CARD_ACCESS: number;
+        FT_SHORT_FLIGHT_NUMBER: number;
+        FT_AIRLINE_CODE: number;
     };
     DocReaderOrientation: {
         ALL: number;
@@ -6062,9 +6065,10 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
     /**
      *  Connects to ble device
      *
+     * @param {string} btDeviceName
      * @return {Promise<any>} Returns a promise
      */
-    connectBluetoothDevice(): Promise<any>;
+    connectBluetoothDevice(btDeviceName: string): Promise<any>;
     /**
      *
      *
