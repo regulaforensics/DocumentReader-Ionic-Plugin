@@ -656,6 +656,7 @@ export declare class LivenessParams {
     checkED?: boolean;
     checkBlackAndWhiteCopy?: boolean;
     checkDynaprint?: boolean;
+    checkGeometry?: boolean;
     static fromJson(jsonObject?: any): LivenessParams | undefined;
 }
 export declare class AuthenticityParams {
@@ -714,6 +715,7 @@ export declare class ProcessParams {
     selectLongestNames?: boolean;
     generateDTCVC?: boolean;
     strictDLCategoryExpiry?: boolean;
+    generateAlpha2Codes?: boolean;
     barcodeParserType?: number;
     perspectiveAngle?: number;
     minDPI?: number;
@@ -729,6 +731,7 @@ export declare class ProcessParams {
     mrzDetectMode?: number;
     measureSystem?: number;
     forceDocID?: number;
+    pdfPagesLimit?: number;
     dateFormat?: string;
     scenario?: string;
     captureButtonScenario?: string;
@@ -794,6 +797,7 @@ export declare class Customization {
     cameraFrameShapeType?: number;
     status?: string;
     resultStatus?: string;
+    multipageButtonText?: string;
     cameraFrameDefaultColor?: number;
     cameraFrameActiveColor?: number;
     statusTextColor?: number;
@@ -805,6 +809,7 @@ export declare class Customization {
     statusBackgroundColor?: number;
     cameraPreviewBackgroundColor?: number;
     backgroundMaskColor?: number;
+    multipageButtonTextColor?: number;
     statusPositionMultiplier?: number;
     resultStatusPositionMultiplier?: number;
     toolbarSize?: number;
@@ -815,6 +820,9 @@ export declare class Customization {
     cameraFrameLandscapeAspectRatio?: number;
     cameraFramePortraitAspectRatio?: number;
     cameraFrameCornerRadius?: number;
+    activityIndicatorPortraitPositionMultiplier?: number;
+    activityIndicatorLandscapePositionMultiplier?: number;
+    cameraPreviewVerticalPositionMultiplier?: number;
     multipageAnimationFrontImage?: string;
     multipageAnimationBackImage?: string;
     borderBackgroundImage?: string;
@@ -829,6 +837,7 @@ export declare class Customization {
     livenessAnimationImage?: string;
     statusTextFont?: Font;
     resultStatusTextFont?: Font;
+    multipageButtonTextFont?: Font;
     customLabelStatus?: string;
     cameraFrameLineCap?: number;
     uiCustomizationLayer?: Record<string, any>;
@@ -970,6 +979,10 @@ export declare class RFIDScenario {
     eSignPINDefault?: string;
     eSignPINNewValue?: string;
     cardAccess?: string;
+    mrzHash?: string;
+    documentNumber?: string;
+    dateOfBirth?: string;
+    dateOfExpiry?: string;
     eDLDataGroups?: EDLDataGroups;
     ePassportDataGroups?: EPassportDataGroups;
     eIDDataGroups?: EIDDataGroups;
@@ -1458,6 +1471,7 @@ export declare const ScenarioIdentifier: {
     SCENARIO_CREDIT_CARD: string;
     SCENARIO_CAPTURE: string;
     SCENARIO_DTC: string;
+    SCENARIO_RFID: string;
 };
 export declare const eRFID_AccessControl_ProcedureType: {
     ACPT_UNDEFINED: number;
@@ -1520,6 +1534,7 @@ export declare const eRFID_Password_Type: {
     PPT_PUK: number;
     PPT_PIN_ESIGN: number;
     PPT_SAI: number;
+    PPT_MRZ_HASH: number;
 };
 export declare const ViewContentMode: {
     UNKNOWN: number;
@@ -1994,6 +2009,8 @@ export declare const eLDS_ParsingNotificationCodes: {
     NTF_LDS_ICAO_CERTIFICATE_VISUAL_MRZ_COUNTRY_NON_MATCHING: number;
     NTF_LDS_MRZ_COUNTRYCODE_VISUALMRZ_NON_MATCHING: number;
     NTF_LDS_ICAO_CERTIFICATE_MRZ_COUNTRY_NON_MATCHING: number;
+    NTF_LDS_ICAO_CERTIFICATE_ISSUER_COUNTRY_NON_UPPER_CASE: number;
+    NTF_LDS_ICAO_CERTIFICATE_SUBJECT_COUNTRY_NON_UPPER_CASE: number;
 };
 export declare const eImageQualityCheckType: {
     IQC_IMAGE_GLARES: number;
@@ -2093,6 +2110,8 @@ export declare const eRPRM_SecurityFeatureType: {
     SECURITY_FEATURE_TYPE_CONTACT_CHIP_CLASSIFICATION: number;
     SECURITY_FEATURE_TYPE_HEAD_POSITION_CHECK: number;
     SECURITY_FEATURE_TYPE_LIVENESS_BLACK_AND_WHITE_COPY_CHECK: number;
+    SECURITY_FEATURE_TYPE_LIVENESS_DYNAPRINT_CHECK: number;
+    SECURITY_FEATURE_TYPE_LIVENESS_GEOMETRY_CHECK: number;
 };
 export declare const OnlineMode: {
     MANUAL: number;
@@ -3172,6 +3191,9 @@ export declare const eVisualFieldType: {
     FT_EF_CARD_ACCESS: number;
     FT_SHORT_FLIGHT_NUMBER: number;
     FT_AIRLINE_CODE: number;
+    FT_MVC_AGENCY: number;
+    FT_ISSUING_STATE_CODE_ALPHA2: number;
+    FT_NATIONALITY_CODE_ALPHA2: number;
 };
 export declare const DocReaderOrientation: {
     ALL: number;
@@ -3850,6 +3872,7 @@ export declare const Enum: {
         SCENARIO_CREDIT_CARD: string;
         SCENARIO_CAPTURE: string;
         SCENARIO_DTC: string;
+        SCENARIO_RFID: string;
     };
     eRFID_AccessControl_ProcedureType: {
         ACPT_UNDEFINED: number;
@@ -3912,6 +3935,7 @@ export declare const Enum: {
         PPT_PUK: number;
         PPT_PIN_ESIGN: number;
         PPT_SAI: number;
+        PPT_MRZ_HASH: number;
     };
     ViewContentMode: {
         UNKNOWN: number;
@@ -4386,6 +4410,8 @@ export declare const Enum: {
         NTF_LDS_ICAO_CERTIFICATE_VISUAL_MRZ_COUNTRY_NON_MATCHING: number;
         NTF_LDS_MRZ_COUNTRYCODE_VISUALMRZ_NON_MATCHING: number;
         NTF_LDS_ICAO_CERTIFICATE_MRZ_COUNTRY_NON_MATCHING: number;
+        NTF_LDS_ICAO_CERTIFICATE_ISSUER_COUNTRY_NON_UPPER_CASE: number;
+        NTF_LDS_ICAO_CERTIFICATE_SUBJECT_COUNTRY_NON_UPPER_CASE: number;
     };
     eImageQualityCheckType: {
         IQC_IMAGE_GLARES: number;
@@ -4485,6 +4511,8 @@ export declare const Enum: {
         SECURITY_FEATURE_TYPE_CONTACT_CHIP_CLASSIFICATION: number;
         SECURITY_FEATURE_TYPE_HEAD_POSITION_CHECK: number;
         SECURITY_FEATURE_TYPE_LIVENESS_BLACK_AND_WHITE_COPY_CHECK: number;
+        SECURITY_FEATURE_TYPE_LIVENESS_DYNAPRINT_CHECK: number;
+        SECURITY_FEATURE_TYPE_LIVENESS_GEOMETRY_CHECK: number;
     };
     OnlineMode: {
         MANUAL: number;
@@ -5564,6 +5592,9 @@ export declare const Enum: {
         FT_EF_CARD_ACCESS: number;
         FT_SHORT_FLIGHT_NUMBER: number;
         FT_AIRLINE_CODE: number;
+        FT_MVC_AGENCY: number;
+        FT_ISSUING_STATE_CODE_ALPHA2: number;
+        FT_NATIONALITY_CODE_ALPHA2: number;
     };
     DocReaderOrientation: {
         ALL: number;
