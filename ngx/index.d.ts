@@ -6012,6 +6012,13 @@ export declare class DocumentReader extends AwesomeCordovaNativePlugin {
      */
     scan(config: ScannerConfig): Observable<any>;
     /**
+     *  Use this method to open the camera preview which will pass frames for recognition and return results in the completion block when they are ready
+     *
+     * @param {ScannerConfig} config
+     * @return {Promise<any>} Returns a promise
+     */
+    startScanner(config: ScannerConfig): Observable<any>;
+    /**
      *  Use this method to recognize images
      *
      * @param {RecognizeConfig} config
