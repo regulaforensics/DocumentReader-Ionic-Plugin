@@ -1393,6 +1393,10 @@ export declare const eProcessGLCommands: {
     ePC_ProcMgr_ComparePortraits: number;
     ePC_RFID_SetTCCParams: number;
 };
+export declare const eRFIDReadingBufferSize: {
+    EXTENDED_LENGTH: number;
+    SINGLE_LENGTH: number;
+};
 export declare const PKDResourceType: {
     CERTIFICATE_PA: number;
     CERTIFICATE_TA: number;
@@ -3793,6 +3797,10 @@ export declare const Enum: {
         ePC_ProcMgr_CheckDatabase: number;
         ePC_ProcMgr_ComparePortraits: number;
         ePC_RFID_SetTCCParams: number;
+    };
+    eRFIDReadingBufferSize: {
+        EXTENDED_LENGTH: number;
+        SINGLE_LENGTH: number;
     };
     PKDResourceType: {
         CERTIFICATE_PA: number;
