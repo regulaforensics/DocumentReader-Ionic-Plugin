@@ -1394,8 +1394,8 @@ export declare const eProcessGLCommands: {
     ePC_RFID_SetTCCParams: number;
 };
 export declare const eRFIDReadingBufferSize: {
+    STANDARD_LENGTH: number;
     EXTENDED_LENGTH: number;
-    SINGLE_LENGTH: number;
 };
 export declare const PKDResourceType: {
     CERTIFICATE_PA: number;
@@ -3799,8 +3799,8 @@ export declare const Enum: {
         ePC_RFID_SetTCCParams: number;
     };
     eRFIDReadingBufferSize: {
+        STANDARD_LENGTH: number;
         EXTENDED_LENGTH: number;
-        SINGLE_LENGTH: number;
     };
     PKDResourceType: {
         CERTIFICATE_PA: number;
