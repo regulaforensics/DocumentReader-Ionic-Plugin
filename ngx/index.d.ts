@@ -1394,8 +1394,8 @@ export declare const eProcessGLCommands: {
     ePC_RFID_SetTCCParams: number;
 };
 export declare const eRFIDReadingBufferSize: {
+    STANDARD_LENGTH: number;
     EXTENDED_LENGTH: number;
-    SINGLE_LENGTH: number;
 };
 export declare const PKDResourceType: {
     CERTIFICATE_PA: number;
@@ -3799,8 +3799,8 @@ export declare const Enum: {
         ePC_RFID_SetTCCParams: number;
     };
     eRFIDReadingBufferSize: {
+        STANDARD_LENGTH: number;
         EXTENDED_LENGTH: number;
-        SINGLE_LENGTH: number;
     };
     PKDResourceType: {
         CERTIFICATE_PA: number;
@@ -6011,6 +6011,13 @@ export declare class DocumentReader extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     scan(config: ScannerConfig): Observable<any>;
+    /**
+     *  Use this method to open the camera preview which will pass frames for recognition and return results in the completion block when they are ready
+     *
+     * @param {ScannerConfig} config
+     * @return {Promise<any>} Returns a promise
+     */
+    startScanner(config: ScannerConfig): Observable<any>;
     /**
      *  Use this method to recognize images
      *

@@ -255,7 +255,7 @@ export class HomePage {
     function scan() {
       var config = new ScannerConfig()
       config.scenario = selectedScenario
-      DocumentReader.scan(config).subscribe((m: string) =>
+      DocumentReader.startScanner(config).subscribe((m: string) =>
         handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m))))
     }
 
