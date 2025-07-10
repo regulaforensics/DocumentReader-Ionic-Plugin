@@ -6118,6 +6118,24 @@ export declare class DocumentReader extends AwesomeCordovaNativePlugin {
     /**
      *
      *
+     * @return {Promise<any>} Returns a promise
+     */
+    btDeviceRequestFlashing(): Promise<any>;
+    /**
+     *
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    btDeviceRequestFlashingFullIR(): Promise<any>;
+    /**
+     *
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    btDeviceRequestTurnOffAll(): Promise<any>;
+    /**
+     *
+     *
      * @param {Record<string, string>} dictionary
      * @return {Promise<any>} Returns a promise
      */
