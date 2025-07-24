@@ -716,6 +716,7 @@ export declare class ProcessParams {
     generateDTCVC?: boolean;
     strictDLCategoryExpiry?: boolean;
     generateAlpha2Codes?: boolean;
+    disableAuthResolutionFilter?: boolean;
     barcodeParserType?: number;
     perspectiveAngle?: number;
     minDPI?: number;
@@ -835,6 +836,7 @@ export declare class Customization {
     changeFrameButtonExpandImage?: string;
     changeFrameButtonCollapseImage?: string;
     livenessAnimationImage?: string;
+    multipageButtonImage?: string;
     statusTextFont?: Font;
     resultStatusTextFont?: Font;
     multipageButtonTextFont?: Font;
@@ -3198,6 +3200,8 @@ export declare const eVisualFieldType: {
     FT_MVC_AGENCY: number;
     FT_ISSUING_STATE_CODE_ALPHA2: number;
     FT_NATIONALITY_CODE_ALPHA2: number;
+    FT_FIRST_ISSUE_DATE_CHECKDIGIT: number;
+    FT_FIRST_ISSUE_DATE_CHECKSUM: number;
 };
 export declare const DocReaderOrientation: {
     ALL: number;
@@ -5603,6 +5607,8 @@ export declare const Enum: {
         FT_MVC_AGENCY: number;
         FT_ISSUING_STATE_CODE_ALPHA2: number;
         FT_NATIONALITY_CODE_ALPHA2: number;
+        FT_FIRST_ISSUE_DATE_CHECKDIGIT: number;
+        FT_FIRST_ISSUE_DATE_CHECKSUM: number;
     };
     DocReaderOrientation: {
         ALL: number;
@@ -5898,6 +5904,19 @@ export declare class DocumentReader extends AwesomeCordovaNativePlugin {
      *
      * @return {Promise<any>} Returns a promise
      */
+    getLocale(): Promise<any>;
+    /**
+     *
+     *
+     * @param {string} locale
+     * @return {Promise<any>} Returns a promise
+     */
+    setLocale(locale: string | null): Promise<any>;
+    /**
+     *
+     *
+     * @return {Promise<any>} Returns a promise
+     */
     getFunctionality(): Promise<any>;
     /**
      *
@@ -6115,6 +6134,24 @@ export declare class DocumentReader extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     connectBluetoothDevice(btDeviceName: string): Promise<any>;
+    /**
+     *
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    btDeviceRequestFlashing(): Promise<any>;
+    /**
+     *
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    btDeviceRequestFlashingFullIR(): Promise<any>;
+    /**
+     *
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    btDeviceRequestTurnOffAll(): Promise<any>;
     /**
      *
      *

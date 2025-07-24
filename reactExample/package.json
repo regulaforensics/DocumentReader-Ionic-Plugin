@@ -12,9 +12,9 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@regulaforensics/ionic-native-document-reader": "8.1.127",
-    "@regulaforensics/cordova-plugin-document-reader-api": "8.1.149",
-    "@regulaforensics/cordova-plugin-document-reader-core-fullauthrfid": "8.1.456",
+    "@regulaforensics/ionic-native-document-reader": "8.2.160",
+    "@regulaforensics/cordova-plugin-document-reader-api": "8.2.182",
+    "@regulaforensics/cordova-plugin-document-reader-core-fullauthrfid": "8.2.597",
     "@awesome-cordova-plugins/camera": "6.6.0",
     "@awesome-cordova-plugins/file": "6.6.0",
     "@capacitor/android": "5.6.0",
