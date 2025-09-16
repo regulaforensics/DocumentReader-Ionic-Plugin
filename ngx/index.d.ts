@@ -597,6 +597,7 @@ export declare class Functionality {
     btDeviceName?: string;
     zoomFactor?: number;
     exposure?: number;
+    videoRecordingSizeDownscaleFactor?: number;
     excludedCamera2Models?: string[];
     cameraSize?: CameraSize;
     videoSessionPreset?: number;
@@ -628,7 +629,7 @@ export declare class RFIDParams {
 export declare class FaceApiSearchParams {
     limit?: number;
     threshold?: number;
-    groupIds?: number[];
+    groupIds?: string[];
     static fromJson(jsonObject?: any): FaceApiSearchParams | undefined;
 }
 export declare class FaceApiParams {
@@ -717,6 +718,7 @@ export declare class ProcessParams {
     strictDLCategoryExpiry?: boolean;
     generateAlpha2Codes?: boolean;
     disableAuthResolutionFilter?: boolean;
+    strictSecurityChecks?: boolean;
     barcodeParserType?: number;
     perspectiveAngle?: number;
     minDPI?: number;
@@ -1691,6 +1693,7 @@ export declare const eCheckDiagnose: {
     TEXT_COLOR_SHOULD_BE_GREEN: number;
     TEXT_COLOR_SHOULD_BE_RED: number;
     TEXT_SHOULD_BE_BLACK: number;
+    SECURITY_TEXT_IS_ABSENT: number;
     BARCODE_WAS_READ_WITH_ERRORS: number;
     BARCODE_DATA_FORMAT_ERROR: number;
     BARCODE_SIZE_PARAMS_ERROR: number;
@@ -4098,6 +4101,7 @@ export declare const Enum: {
         TEXT_COLOR_SHOULD_BE_GREEN: number;
         TEXT_COLOR_SHOULD_BE_RED: number;
         TEXT_SHOULD_BE_BLACK: number;
+        SECURITY_TEXT_IS_ABSENT: number;
         BARCODE_WAS_READ_WITH_ERRORS: number;
         BARCODE_DATA_FORMAT_ERROR: number;
         BARCODE_SIZE_PARAMS_ERROR: number;
