@@ -721,6 +721,7 @@ export declare class ProcessParams {
     generateAlpha2Codes?: boolean;
     disableAuthResolutionFilter?: boolean;
     strictSecurityChecks?: boolean;
+    returnTransliteratedFields?: boolean;
     barcodeParserType?: number;
     perspectiveAngle?: number;
     minDPI?: number;
