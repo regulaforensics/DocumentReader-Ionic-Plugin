@@ -1010,18 +1010,6 @@ export declare class PrepareProgress {
     progress?: number;
     static fromJson(jsonObject?: any): PrepareProgress | undefined;
 }
-export declare class FilterObjectType {
-    list?: any[];
-    isInclude?: boolean;
-    static fromJson(jsonObject?: any): FilterObjectType | undefined;
-}
-export declare class FilterObject {
-    docIDsFilter?: FilterObjectType;
-    docFormatsFilter?: FilterObjectType;
-    docCategoriesFilter?: FilterObjectType;
-    docCountriesFilter?: FilterObjectType;
-    static fromJson(jsonObject?: any): FilterObject | undefined;
-}
 export declare const FontStyle: {
     NORMAL: number;
     BOLD: number;
@@ -1180,15 +1168,6 @@ export declare const eRFID_ErrorCodes: {
     RFID_ERROR_LAYER34_SAM_ERROR: number;
     RFID_ERROR_LAYER34_SAM_COLLISION: number;
     RFID_ERROR_LAYER34_SAM_ACKNOWLEDGE: number;
-};
-export declare const LivenessCheckType: {
-    OVI: string;
-    MLI: string;
-    HOLO: string;
-    ED: string;
-    BLACK_AND_WHITE_COPY: string;
-    DYNAPRINT: string;
-    GEOMETRY: string;
 };
 export declare const eLDS_ParsingErrorCodes: {
     ERR_LDS_OK: number;
@@ -1396,9 +1375,6 @@ export declare const LineCap: {
     BUTT: number;
     ROUND: number;
     SQUARE: number;
-};
-export declare const FilterCheckType: {
-    CHECK_AUTH: string;
 };
 export declare const eRPRM_FieldVerificationResult: {
     RCF_DISABLED: number;
@@ -2175,23 +2151,6 @@ export declare const OnlineMode: {
 export declare const eRFID_SDK_ProfilerType: {
     SPT_DOC_9303_EDITION_2006: number;
     SPT_DOC_9303_LDS_PKI_MAINTENANCE: number;
-};
-export declare const AuthenticityCheckType: {
-    USE_LIVENESS: string;
-    UV_LUMINISCENCE: string;
-    IR_B900: string;
-    IMAGE_PATTERNS: string;
-    FIBERS: string;
-    EXT_MRZ: string;
-    EXT_OCR: string;
-    AXIAL: string;
-    BARCODE_FORMAT: string;
-    IR_VISIBILITY: string;
-    IPI: string;
-    PHOTO_EMBEDDING: string;
-    PHOTO_COMPARISON: string;
-    LETTER_SCREEN: string;
-    SECURITY_TEXT: string;
 };
 export declare const diDocType: {
     dtNotDefined: number;
@@ -3633,15 +3592,6 @@ export declare const Enum: {
         RFID_ERROR_LAYER34_SAM_COLLISION: number;
         RFID_ERROR_LAYER34_SAM_ACKNOWLEDGE: number;
     };
-    LivenessCheckType: {
-        OVI: string;
-        MLI: string;
-        HOLO: string;
-        ED: string;
-        BLACK_AND_WHITE_COPY: string;
-        DYNAPRINT: string;
-        GEOMETRY: string;
-    };
     eLDS_ParsingErrorCodes: {
         ERR_LDS_OK: number;
         ERR_LDS_ASN_INCORRECT_DATA: number;
@@ -3848,9 +3798,6 @@ export declare const Enum: {
         BUTT: number;
         ROUND: number;
         SQUARE: number;
-    };
-    FilterCheckType: {
-        CHECK_AUTH: string;
     };
     eRPRM_FieldVerificationResult: {
         RCF_DISABLED: number;
@@ -4627,23 +4574,6 @@ export declare const Enum: {
     eRFID_SDK_ProfilerType: {
         SPT_DOC_9303_EDITION_2006: number;
         SPT_DOC_9303_LDS_PKI_MAINTENANCE: number;
-    };
-    AuthenticityCheckType: {
-        USE_LIVENESS: string;
-        UV_LUMINISCENCE: string;
-        IR_B900: string;
-        IMAGE_PATTERNS: string;
-        FIBERS: string;
-        EXT_MRZ: string;
-        EXT_OCR: string;
-        AXIAL: string;
-        BARCODE_FORMAT: string;
-        IR_VISIBILITY: string;
-        IPI: string;
-        PHOTO_EMBEDDING: string;
-        PHOTO_COMPARISON: string;
-        LETTER_SCREEN: string;
-        SECURITY_TEXT: string;
     };
     diDocType: {
         dtNotDefined: number;
@@ -6336,69 +6266,6 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     getTranslation(className: string, value: number): Promise<any>;
-    /**
-     *
-     *
-     * @param {string} checkType
-     * @param {FilterObject} filter
-     * @return {Promise<any>} Returns a promise
-     */
-    processParamsSetCheckFilter(checkType: string, filter: FilterObject): Promise<any>;
-    /**
-     *
-     *
-     * @param {string} checkType
-     * @return {Promise<any>} Returns a promise
-     */
-    processParamsRemoveCheckFilter(checkType: string): Promise<any>;
-    /**
-     *
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    processParamsClearCheckFilter(): Promise<any>;
-    /**
-     *
-     *
-     * @param {string} checkType
-     * @param {FilterObject} filter
-     * @return {Promise<any>} Returns a promise
-     */
-    authenticityParamsSetCheckFilter(checkType: string, filter: FilterObject): Promise<any>;
-    /**
-     *
-     *
-     * @param {string} checkType
-     * @return {Promise<any>} Returns a promise
-     */
-    authenticityParamsRemoveCheckFilter(checkType: string): Promise<any>;
-    /**
-     *
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    authenticityParamsClearCheckFilter(): Promise<any>;
-    /**
-     *
-     *
-     * @param {string} checkType
-     * @param {FilterObject} filter
-     * @return {Promise<any>} Returns a promise
-     */
-    livenessParamsSetCheckFilter(checkType: string, filter: FilterObject): Promise<any>;
-    /**
-     *
-     *
-     * @param {string} checkType
-     * @return {Promise<any>} Returns a promise
-     */
-    livenessParamsRemoveCheckFilter(checkType: string): Promise<any>;
-    /**
-     *
-     *
-     * @return {Promise<any>} Returns a promise
-     */
-    livenessParamsClearCheckFilter(): Promise<any>;
     textFieldValueByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
     textFieldValueByTypeLcid(results: DocumentReaderResults, fieldType: number, lcid: number): Promise<string | undefined>;
     textFieldValueByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
