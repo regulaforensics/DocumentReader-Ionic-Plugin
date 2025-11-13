@@ -495,6 +495,7 @@ export declare class DocReaderConfig {
     customDb?: string;
     databasePath?: string;
     licenseUpdate?: boolean;
+    licenseUpdateTimeout?: number;
     delayedNNLoad?: boolean;
     blackList?: Record<string, string>;
     static fromJson(jsonObject?: any): DocReaderConfig | undefined;
@@ -585,6 +586,7 @@ export declare class Functionality {
     manualMultipageMode?: boolean;
     singleResult?: boolean;
     torchTurnedOn?: boolean;
+    preventScreenRecording?: boolean;
     showCaptureButtonDelayFromDetect?: number;
     showCaptureButtonDelayFromStart?: number;
     rfidTimeout?: number;
@@ -719,6 +721,7 @@ export declare class ProcessParams {
     generateAlpha2Codes?: boolean;
     disableAuthResolutionFilter?: boolean;
     strictSecurityChecks?: boolean;
+    returnTransliteratedFields?: boolean;
     barcodeParserType?: number;
     perspectiveAngle?: number;
     minDPI?: number;
@@ -774,16 +777,24 @@ export declare class CustomizationColors {
     rfidProcessingScreenProgressBarBackground?: number;
     rfidProcessingScreenResultLabelText?: number;
     rfidProcessingScreenLoadingBar?: number;
+    rfidEnableNfcTitleText?: number;
+    rfidEnableNfcDescriptionText?: number;
+    rfidEnableNfcButtonText?: number;
+    rfidEnableNfcButtonBackground?: number;
     static fromJson(jsonObject?: any): CustomizationColors | undefined;
 }
 export declare class CustomizationFonts {
     rfidProcessingScreenHintLabel?: Font;
     rfidProcessingScreenProgressLabel?: Font;
     rfidProcessingScreenResultLabel?: Font;
+    rfidEnableNfcTitleText?: Font;
+    rfidEnableNfcDescriptionText?: Font;
+    rfidEnableNfcButtonText?: Font;
     static fromJson(jsonObject?: any): CustomizationFonts | undefined;
 }
 export declare class CustomizationImages {
     rfidProcessingScreenFailureImage?: string;
+    rfidEnableNfcImage?: string;
     static fromJson(jsonObject?: any): CustomizationImages | undefined;
 }
 export declare class Customization {
@@ -1037,6 +1048,10 @@ export declare const CustomizationColor: {
     RFID_PROCESSING_SCREEN_PROGRESS_BAR_BACKGROUND: string;
     RFID_PROCESSING_SCREEN_RESULT_LABEL_TEXT: string;
     RFID_PROCESSING_SCREEN_LOADING_BAR: string;
+    RFID_ENABLE_NFC_TITLE_TEXT: string;
+    RFID_ENABLE_NFC_DESCRIPTION_TEXT: string;
+    RFID_ENABLE_NFC_BUTTON_TEXT: string;
+    RFID_ENABLE_NFC_BUTTON_BACKGROUND: string;
 };
 export declare const eRFID_ErrorCodes: {
     RFID_ERROR_NO_ERROR: number;
@@ -1430,6 +1445,7 @@ export declare const DocumentReaderErrorCodes: {
     SAVE_DB: number;
     DOWNLOAD_DB_INCORRECT_CHECKSUM: number;
     DB_DOWNLOAD: number;
+    RFID_ERROR: number;
     LICENSE_ABSENT_OR_CORRUPTED: number;
     LICENSE_INVALID_DATE: number;
     LICENSE_INVALID_VERSION: number;
@@ -1452,6 +1468,8 @@ export declare const DocumentReaderErrorCodes: {
     NATIVE_JAVA_EXCEPTION: number;
     BACKEND_ONLINE_PROCESSING: number;
     WRONG_INPUT: number;
+    RESULT_UNAVAILABLE: number;
+    RESULT_WRONG_OUTPUT: number;
     STATE_EXCEPTION: number;
     BLE_EXCEPTION: number;
     FEATURE_BLUETOOTH_LE_NOT_SUPPORTED: number;
@@ -1664,6 +1682,8 @@ export declare const eCheckDiagnose: {
     FIELD_POS_CORRECTOR_FACE_PRESENCE_CHECK_ERROR: number;
     FIELD_POS_CORRECTOR_FACE_ABSENCE_CHECK_ERROR: number;
     CHD_FIELD_POS_CORRECTOR_INCORRECT_HEAD_POSITION: number;
+    CHD_FIELD_POS_CORRECTOR_AGE_CHECK_ERROR: number;
+    CHD_FIELD_POS_CORRECTOR_SEX_CHECK_ERROR: number;
     OVI_IR_INVISIBLE: number;
     OVI_INSUFFICIENT_AREA: number;
     OVI_COLOR_INVARIABLE: number;
@@ -2121,6 +2141,8 @@ export declare const eRPRM_SecurityFeatureType: {
     SECURITY_FEATURE_TYPE_LIVENESS_BLACK_AND_WHITE_COPY_CHECK: number;
     SECURITY_FEATURE_TYPE_LIVENESS_DYNAPRINT_CHECK: number;
     SECURITY_FEATURE_TYPE_LIVENESS_GEOMETRY_CHECK: number;
+    SECURITY_FEATURE_TYPE_AGE_CHECK: number;
+    SECURITY_FEATURE_TYPE_SEX_CHECK: number;
 };
 export declare const OnlineMode: {
     MANUAL: number;
@@ -2390,6 +2412,9 @@ export declare const CustomizationFont: {
     RFID_PROCESSING_SCREEN_HINT_LABEL: string;
     RFID_PROCESSING_SCREEN_PROGRESS_LABEL: string;
     RFID_PROCESSING_SCREEN_RESULT_LABEL: string;
+    RFID_ENABLE_NFC_TITLE_TEXT: string;
+    RFID_ENABLE_NFC_DESCRIPTION_TEXT: string;
+    RFID_ENABLE_NFC_BUTTON_TEXT: string;
 };
 export declare const ImageFormat: {
     PNG: number;
@@ -3383,6 +3408,7 @@ export declare const LCID: {
 };
 export declare const CustomizationImage: {
     RFID_PROCESSING_SCREEN_FAILURE_IMAGE: string;
+    RFID_ENABLE_NFC_IMAGE: string;
 };
 export declare const DocReaderFrame: {
     MAX: string;
@@ -3445,6 +3471,10 @@ export declare const Enum: {
         RFID_PROCESSING_SCREEN_PROGRESS_BAR_BACKGROUND: string;
         RFID_PROCESSING_SCREEN_RESULT_LABEL_TEXT: string;
         RFID_PROCESSING_SCREEN_LOADING_BAR: string;
+        RFID_ENABLE_NFC_TITLE_TEXT: string;
+        RFID_ENABLE_NFC_DESCRIPTION_TEXT: string;
+        RFID_ENABLE_NFC_BUTTON_TEXT: string;
+        RFID_ENABLE_NFC_BUTTON_BACKGROUND: string;
     };
     eRFID_ErrorCodes: {
         RFID_ERROR_NO_ERROR: number;
@@ -3838,6 +3868,7 @@ export declare const Enum: {
         SAVE_DB: number;
         DOWNLOAD_DB_INCORRECT_CHECKSUM: number;
         DB_DOWNLOAD: number;
+        RFID_ERROR: number;
         LICENSE_ABSENT_OR_CORRUPTED: number;
         LICENSE_INVALID_DATE: number;
         LICENSE_INVALID_VERSION: number;
@@ -3860,6 +3891,8 @@ export declare const Enum: {
         NATIVE_JAVA_EXCEPTION: number;
         BACKEND_ONLINE_PROCESSING: number;
         WRONG_INPUT: number;
+        RESULT_UNAVAILABLE: number;
+        RESULT_WRONG_OUTPUT: number;
         STATE_EXCEPTION: number;
         BLE_EXCEPTION: number;
         FEATURE_BLUETOOTH_LE_NOT_SUPPORTED: number;
@@ -4072,6 +4105,8 @@ export declare const Enum: {
         FIELD_POS_CORRECTOR_FACE_PRESENCE_CHECK_ERROR: number;
         FIELD_POS_CORRECTOR_FACE_ABSENCE_CHECK_ERROR: number;
         CHD_FIELD_POS_CORRECTOR_INCORRECT_HEAD_POSITION: number;
+        CHD_FIELD_POS_CORRECTOR_AGE_CHECK_ERROR: number;
+        CHD_FIELD_POS_CORRECTOR_SEX_CHECK_ERROR: number;
         OVI_IR_INVISIBLE: number;
         OVI_INSUFFICIENT_AREA: number;
         OVI_COLOR_INVARIABLE: number;
@@ -4529,6 +4564,8 @@ export declare const Enum: {
         SECURITY_FEATURE_TYPE_LIVENESS_BLACK_AND_WHITE_COPY_CHECK: number;
         SECURITY_FEATURE_TYPE_LIVENESS_DYNAPRINT_CHECK: number;
         SECURITY_FEATURE_TYPE_LIVENESS_GEOMETRY_CHECK: number;
+        SECURITY_FEATURE_TYPE_AGE_CHECK: number;
+        SECURITY_FEATURE_TYPE_SEX_CHECK: number;
     };
     OnlineMode: {
         MANUAL: number;
@@ -4798,6 +4835,9 @@ export declare const Enum: {
         RFID_PROCESSING_SCREEN_HINT_LABEL: string;
         RFID_PROCESSING_SCREEN_PROGRESS_LABEL: string;
         RFID_PROCESSING_SCREEN_RESULT_LABEL: string;
+        RFID_ENABLE_NFC_TITLE_TEXT: string;
+        RFID_ENABLE_NFC_DESCRIPTION_TEXT: string;
+        RFID_ENABLE_NFC_BUTTON_TEXT: string;
     };
     ImageFormat: {
         PNG: number;
@@ -5791,6 +5831,7 @@ export declare const Enum: {
     };
     CustomizationImage: {
         RFID_PROCESSING_SCREEN_FAILURE_IMAGE: string;
+        RFID_ENABLE_NFC_IMAGE: string;
     };
     DocReaderFrame: {
         MAX: string;
