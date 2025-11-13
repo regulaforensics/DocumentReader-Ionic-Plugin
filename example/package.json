@@ -13,9 +13,9 @@
   },
   "private": true,
   "dependencies": {
-    "@regulaforensics/ionic-native-document-reader": "8.4.273-rc",
-    "@regulaforensics/cordova-plugin-document-reader-api": "8.4.299-rc",
-    "@regulaforensics/cordova-plugin-document-reader-core-fullauthrfid": "8.4.1146-rc",
+    "@regulaforensics/ionic-native-document-reader": "8.4.275-rc",
+    "@regulaforensics/cordova-plugin-document-reader-api": "8.4.301-rc",
+    "@regulaforensics/cordova-plugin-document-reader-core-fullauthrfid": "8.4.1160-rc",
     "cordova-plugin-camera": "7.0.0",
     "@awesome-cordova-plugins/camera": "6.6.0",
     "@awesome-cordova-plugins/core": "6.6.0",
