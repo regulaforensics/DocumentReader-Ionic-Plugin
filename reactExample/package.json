@@ -12,7 +12,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@regulaforensics/ionic-native-document-reader": "8.5.283-nightly",
+    "@regulaforensics/ionic-native-document-reader": "8.4.3-nightly",
     "@regulaforensics/cordova-plugin-document-reader-api": "8.5.310-nightly",
     "@regulaforensics/cordova-plugin-document-reader-core-fullauthrfid": "8.5.1194-nightly",
     "@awesome-cordova-plugins/camera": "6.6.0",
