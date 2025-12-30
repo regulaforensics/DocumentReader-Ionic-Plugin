@@ -380,6 +380,15 @@ export declare class TAChallenge {
     idPICC?: string;
     static fromJson(jsonObject?: any): TAChallenge | undefined;
 }
+export declare class DetailsAge {
+    threshold?: number;
+    overThreshold?: number;
+    over18?: number;
+    over21?: number;
+    over25?: number;
+    over65?: number;
+    static fromJson(jsonObject?: any): DetailsAge | undefined;
+}
 export declare class DocumentReaderResultsStatus {
     overallStatus?: number;
     optical?: number;
@@ -388,6 +397,10 @@ export declare class DocumentReaderResultsStatus {
     detailsRFID?: DetailsRFID;
     portrait?: number;
     stopList?: number;
+    mDL?: number;
+    age?: number;
+    captureProcessIntegrity?: number;
+    detailsAge?: DetailsAge;
     static fromJson(jsonObject?: any): DocumentReaderResultsStatus | undefined;
 }
 export declare class DetailsOptical {
@@ -423,6 +436,27 @@ export declare class VDSNCData {
     certificateChain?: CertificateChain[];
     notifications?: number[];
     static fromJson(jsonObject?: any): VDSNCData | undefined;
+}
+export declare class DocFeature {
+    type?: number;
+    data?: BytesData;
+    static fromJson(jsonObject?: any): DocFeature | undefined;
+}
+export declare class VDSData {
+    type?: number;
+    docType?: number;
+    featureRef?: number;
+    version?: number;
+    issuingCountry?: string;
+    docIssueDate?: string;
+    signature?: BytesData;
+    signatureDate?: string;
+    signer?: string;
+    certificate?: string;
+    certificateChain?: CertificateChain[];
+    docFeatures?: DocFeature[];
+    notifications?: number[];
+    static fromJson(jsonObject?: any): VDSData | undefined;
 }
 export declare class BytesData {
     data?: string;
@@ -559,6 +593,7 @@ export declare class DocumentReaderResults {
     documentType?: DocumentReaderDocumentType[];
     status?: DocumentReaderResultsStatus;
     vdsncData?: VDSNCData;
+    vdsData?: VDSData;
     dtcData?: string;
     transactionInfo?: TransactionInfo;
     static fromJson(jsonObject?: any): DocumentReaderResults | undefined;
@@ -587,6 +622,7 @@ export declare class Functionality {
     singleResult?: boolean;
     torchTurnedOn?: boolean;
     preventScreenRecording?: boolean;
+    homeIndicatorAutoHide?: boolean;
     showCaptureButtonDelayFromDetect?: number;
     showCaptureButtonDelayFromStart?: number;
     rfidTimeout?: number;
@@ -595,6 +631,7 @@ export declare class Functionality {
     captureMode?: number;
     cameraMode?: number;
     cameraPositionIOS?: number;
+    mdlTimeout?: number;
     cameraFrame?: string;
     btDeviceName?: string;
     zoomFactor?: number;
@@ -722,6 +759,7 @@ export declare class ProcessParams {
     disableAuthResolutionFilter?: boolean;
     strictSecurityChecks?: boolean;
     returnTransliteratedFields?: boolean;
+    checkCaptureProcessIntegrity?: boolean;
     barcodeParserType?: number;
     perspectiveAngle?: number;
     minDPI?: number;
@@ -753,6 +791,7 @@ export declare class ProcessParams {
     documentGroupFilter?: number[];
     lcidIgnoreFilter?: number[];
     lcidFilter?: number[];
+    fieldTypesIgnoreFilter?: number[];
     mrzFormatsFilter?: string[];
     imageQA?: ImageQA;
     rfidParams?: RFIDParams;
@@ -837,6 +876,7 @@ export declare class Customization {
     activityIndicatorPortraitPositionMultiplier?: number;
     activityIndicatorLandscapePositionMultiplier?: number;
     cameraPreviewVerticalPositionMultiplier?: number;
+    multipageButtonPositionMultiplier?: number;
     multipageAnimationFrontImage?: string;
     multipageAnimationBackImage?: string;
     borderBackgroundImage?: string;
@@ -1009,6 +1049,79 @@ export declare class PrepareProgress {
     totalBytes?: number;
     progress?: number;
     static fromJson(jsonObject?: any): PrepareProgress | undefined;
+}
+export declare class DeviceEngagement {
+    deviceRetrievalMethods?: DeviceRetrievalMethod[];
+    static fromJson(jsonObject?: any): DeviceEngagement | undefined;
+}
+export declare class DeviceRetrievalMethod {
+    type?: number;
+    version?: number;
+    cmdMaxLength?: number;
+    respMaxLength?: number;
+    clientModeSupport?: boolean;
+    clientModeUUID?: string;
+    serverModeSupport?: boolean;
+    serverModeUUID?: string;
+    static fromJson(jsonObject?: any): DeviceRetrievalMethod | undefined;
+}
+export declare class DataRetrieval {
+    deviceRetrieval?: number;
+    docRequestPreset?: number;
+    intentToRetain?: boolean;
+    requests?: any[];
+    static fromJson(jsonObject?: any): DataRetrieval | undefined;
+}
+export declare class DocumentRequestMDL {
+    docType?: string;
+    namespaces?: NameSpaceMDL[];
+    static fromJson(jsonObject?: any): DocumentRequestMDL | undefined;
+}
+export declare class NameSpaceMDL {
+    name?: string;
+    map?: Record<string, number>;
+    static fromJson(jsonObject?: any): NameSpaceMDL | undefined;
+}
+export declare class DocumentRequest18013MDL {
+    docType?: string;
+    namespaces?: NameSpaceMDL[];
+    familyName?: number;
+    givenName?: number;
+    birthDate?: number;
+    issueDate?: number;
+    expiryDate?: number;
+    issuingCountry?: number;
+    issuingAuthority?: number;
+    documentNumber?: number;
+    portrait?: number;
+    drivingPrivileges?: number;
+    unDistinguishingSign?: number;
+    administrativeNumber?: number;
+    sex?: number;
+    height?: number;
+    weight?: number;
+    eyeColour?: number;
+    hairColour?: number;
+    birthPlace?: number;
+    residentAddress?: number;
+    portraitCaptureDate?: number;
+    ageInYears?: number;
+    ageBirthYear?: number;
+    ageOver18?: number;
+    issuingJurisdiction?: number;
+    nationality?: number;
+    residentCity?: number;
+    residentState?: number;
+    residentPostalCode?: number;
+    residentCountry?: number;
+    biometricTemplateFace?: number;
+    biometricTemplateIris?: number;
+    biometricTemplateFinger?: number;
+    biometricTemplateSignatureSign?: number;
+    familyNameNationalCharacter?: number;
+    givenNameNationalCharacter?: number;
+    signatureUsualMark?: number;
+    static fromJson(jsonObject?: any): DocumentRequest18013MDL | undefined;
 }
 export declare const FontStyle: {
     NORMAL: number;
@@ -1353,17 +1466,24 @@ export declare const eRPRM_ResultType: {
     RFID_RESULT_TYPE_RFID_IMAGE_DATA: number;
     RFID_RESULT_TYPE_RFID_BINARY_DATA: number;
     RFID_RESULT_TYPE_RFID_ORIGINAL_GRAPHICS: number;
+    RFID_RESULT_TYPE_RFID_DTC_VC: number;
+    RPRM_RESULT_TYPE_MDL_PARSED_RESPONSE: number;
+    RPRM_RESULT_TYPE_VDS_NC: number;
+    RPRM_RESULT_TYPE_VDS: number;
     RPRM_RESULT_TYPE_BARCODE_POSITION: number;
     RPRM_RESULT_TYPE_MRZ_POSITION: number;
     RPRM_RESULT_TYPE_LIVE_PORTRAIT: number;
     RPRM_RESULT_TYPE_STATUS: number;
     RPRM_RESULT_TYPE_PORTRAIT_COMPARISON: number;
     RPRM_RESULT_TYPE_EXT_PORTRAIT: number;
-    RFID_RESULT_TYPE_RFID_DTC_VC: number;
 };
 export declare const FrameShapeType: {
     LINE: number;
     CORNER: number;
+};
+export declare const eMDLDeviceRetrieval: {
+    NFC: number;
+    BLE: number;
 };
 export declare const eRFID_BaudRate: {
     rfbr_106: number;
@@ -1425,6 +1545,9 @@ export declare const PKDResourceType: {
     DEFL: number;
     DEVL: number;
     BL: number;
+    LDIF_TA: number;
+    ML_TA: number;
+    CBOR: number;
     getType(value: string): any;
 };
 export declare const eRFID_AuthenticationProcedureType: {
@@ -1440,11 +1563,10 @@ export declare const DocumentReaderErrorCodes: {
     NO_RESULT: number;
     REMOVE_DATABASE: number;
     FETCHING_DATABASE: number;
-    DB_ID_NOT_FOUND: number;
     DB_DESCRIPTION_NOT_FOUND: number;
     SAVE_DB: number;
     DOWNLOAD_DB_INCORRECT_CHECKSUM: number;
-    DB_DOWNLOAD: number;
+    DOWNLOAD_DB: number;
     RFID_ERROR: number;
     LICENSE_ABSENT_OR_CORRUPTED: number;
     LICENSE_INVALID_DATE: number;
@@ -1458,13 +1580,14 @@ export declare const DocumentReaderErrorCodes: {
     LICENSE_NO_DATABASE: number;
     LICENSE_DATABASE_INCORRECT: number;
     INVALID_TCC_PARAMS: number;
-    RFID_IN_PROGRESS: number;
+    ALREADY_IN_PROGRESS: number;
     START_BACKEND_PROCESSING: number;
     ADD_DATA_TO_PACKAGE: number;
     FINALIZE_FAILED: number;
     CAMERA_NO_PERMISSION: number;
     CAMERA_NOT_AVAILABLE: number;
     CANNOT_USE_CAMERA_IN_SCENARIO: number;
+    BLUETOOTH_NO_PERMISSION: number;
     NATIVE_JAVA_EXCEPTION: number;
     BACKEND_ONLINE_PROCESSING: number;
     WRONG_INPUT: number;
@@ -1475,6 +1598,7 @@ export declare const DocumentReaderErrorCodes: {
     FEATURE_BLUETOOTH_LE_NOT_SUPPORTED: number;
     APP_BACKGROUND: number;
     ONLINE_PROCESSING_WRONG_INPUT: number;
+    MDL_EXCEPTION: number;
 };
 export declare const ScenarioIdentifier: {
     SCENARIO_MRZ: string;
@@ -1631,6 +1755,10 @@ export declare const eSignManagementAction: {
     smaTerminateKeys: number;
     smaSignData: number;
 };
+export declare const eMDLDeviceEngagement: {
+    QR: number;
+    NFC: number;
+};
 export declare const eCheckDiagnose: {
     UNKNOWN: number;
     PASS: number;
@@ -1760,6 +1888,10 @@ export declare const eCheckDiagnose: {
     ICAO_IDB_SIGNATURE_MUST_NOT_BE_PRESENT: number;
     ICAO_IDB_CERTIFICATE_MUST_NOT_BE_PRESENT: number;
     INCORRECT_OBJECT_COLOR: number;
+};
+export declare const eMDLIntentToRetain: {
+    FALSE: number;
+    TRUE: number;
 };
 export declare const RFIDDelegate: {
     NULL: number;
@@ -3230,6 +3362,9 @@ export declare const eVisualFieldType: {
     FT_NATIONALITY_CODE_ALPHA2: number;
     FT_FIRST_ISSUE_DATE_CHECKDIGIT: number;
     FT_FIRST_ISSUE_DATE_CHECKSUM: number;
+    FT_COMMERCIAL_INDICATOR: number;
+    FT_NON_DOMICILED_INDICATOR: number;
+    FT_JURISDICTION_SPECIFIC_DATA: number;
 };
 export declare const DocReaderOrientation: {
     ALL: number;
@@ -3415,6 +3550,13 @@ export declare const DocReaderFrame: {
     SCENARIO_DEFAULT: string;
     NONE: string;
     DOCUMENT: string;
+};
+export declare const eMDLDocRequestPreset: {
+    ALL: number;
+    AGE: number;
+    STANDARD_ID: number;
+    TRAVEL: number;
+    DRIVERS_LICENSE: number;
 };
 export declare const eRPRM_Lights: {
     NONE: number;
@@ -3776,17 +3918,24 @@ export declare const Enum: {
         RFID_RESULT_TYPE_RFID_IMAGE_DATA: number;
         RFID_RESULT_TYPE_RFID_BINARY_DATA: number;
         RFID_RESULT_TYPE_RFID_ORIGINAL_GRAPHICS: number;
+        RFID_RESULT_TYPE_RFID_DTC_VC: number;
+        RPRM_RESULT_TYPE_MDL_PARSED_RESPONSE: number;
+        RPRM_RESULT_TYPE_VDS_NC: number;
+        RPRM_RESULT_TYPE_VDS: number;
         RPRM_RESULT_TYPE_BARCODE_POSITION: number;
         RPRM_RESULT_TYPE_MRZ_POSITION: number;
         RPRM_RESULT_TYPE_LIVE_PORTRAIT: number;
         RPRM_RESULT_TYPE_STATUS: number;
         RPRM_RESULT_TYPE_PORTRAIT_COMPARISON: number;
         RPRM_RESULT_TYPE_EXT_PORTRAIT: number;
-        RFID_RESULT_TYPE_RFID_DTC_VC: number;
     };
     FrameShapeType: {
         LINE: number;
         CORNER: number;
+    };
+    eMDLDeviceRetrieval: {
+        NFC: number;
+        BLE: number;
     };
     eRFID_BaudRate: {
         rfbr_106: number;
@@ -3848,6 +3997,9 @@ export declare const Enum: {
         DEFL: number;
         DEVL: number;
         BL: number;
+        LDIF_TA: number;
+        ML_TA: number;
+        CBOR: number;
         getType(value: string): any;
     };
     eRFID_AuthenticationProcedureType: {
@@ -3863,11 +4015,10 @@ export declare const Enum: {
         NO_RESULT: number;
         REMOVE_DATABASE: number;
         FETCHING_DATABASE: number;
-        DB_ID_NOT_FOUND: number;
         DB_DESCRIPTION_NOT_FOUND: number;
         SAVE_DB: number;
         DOWNLOAD_DB_INCORRECT_CHECKSUM: number;
-        DB_DOWNLOAD: number;
+        DOWNLOAD_DB: number;
         RFID_ERROR: number;
         LICENSE_ABSENT_OR_CORRUPTED: number;
         LICENSE_INVALID_DATE: number;
@@ -3881,13 +4032,14 @@ export declare const Enum: {
         LICENSE_NO_DATABASE: number;
         LICENSE_DATABASE_INCORRECT: number;
         INVALID_TCC_PARAMS: number;
-        RFID_IN_PROGRESS: number;
+        ALREADY_IN_PROGRESS: number;
         START_BACKEND_PROCESSING: number;
         ADD_DATA_TO_PACKAGE: number;
         FINALIZE_FAILED: number;
         CAMERA_NO_PERMISSION: number;
         CAMERA_NOT_AVAILABLE: number;
         CANNOT_USE_CAMERA_IN_SCENARIO: number;
+        BLUETOOTH_NO_PERMISSION: number;
         NATIVE_JAVA_EXCEPTION: number;
         BACKEND_ONLINE_PROCESSING: number;
         WRONG_INPUT: number;
@@ -3898,6 +4050,7 @@ export declare const Enum: {
         FEATURE_BLUETOOTH_LE_NOT_SUPPORTED: number;
         APP_BACKGROUND: number;
         ONLINE_PROCESSING_WRONG_INPUT: number;
+        MDL_EXCEPTION: number;
     };
     ScenarioIdentifier: {
         SCENARIO_MRZ: string;
@@ -4054,6 +4207,10 @@ export declare const Enum: {
         smaTerminateKeys: number;
         smaSignData: number;
     };
+    eMDLDeviceEngagement: {
+        QR: number;
+        NFC: number;
+    };
     eCheckDiagnose: {
         UNKNOWN: number;
         PASS: number;
@@ -4183,6 +4340,10 @@ export declare const Enum: {
         ICAO_IDB_SIGNATURE_MUST_NOT_BE_PRESENT: number;
         ICAO_IDB_CERTIFICATE_MUST_NOT_BE_PRESENT: number;
         INCORRECT_OBJECT_COLOR: number;
+    };
+    eMDLIntentToRetain: {
+        FALSE: number;
+        TRUE: number;
     };
     RFIDDelegate: {
         NULL: number;
@@ -5653,6 +5814,9 @@ export declare const Enum: {
         FT_NATIONALITY_CODE_ALPHA2: number;
         FT_FIRST_ISSUE_DATE_CHECKDIGIT: number;
         FT_FIRST_ISSUE_DATE_CHECKSUM: number;
+        FT_COMMERCIAL_INDICATOR: number;
+        FT_NON_DOMICILED_INDICATOR: number;
+        FT_JURISDICTION_SPECIFIC_DATA: number;
     };
     DocReaderOrientation: {
         ALL: number;
@@ -5838,6 +6002,13 @@ export declare const Enum: {
         SCENARIO_DEFAULT: string;
         NONE: string;
         DOCUMENT: string;
+    };
+    eMDLDocRequestPreset: {
+        ALL: number;
+        AGE: number;
+        STANDARD_ID: number;
+        TRAVEL: number;
+        DRIVERS_LICENSE: number;
     };
     eRPRM_Lights: {
         NONE: number;
@@ -6266,6 +6437,57 @@ export declare class DocumentReader extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     getTranslation(className: string, value: number): Promise<any>;
+    /**
+     *
+     *
+     * @param {number} type
+     * @param {DataRetrieval} dataRetrieval
+     * @return {Promise<any>} Returns a promise
+     */
+    startReadMDl(type: number, dataRetrieval: DataRetrieval): Promise<any>;
+    /**
+     *
+     *
+     * @param {number} type
+     * @return {Promise<any>} Returns a promise
+     */
+    startEngageDevice(type: number): Promise<any>;
+    /**
+     *
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    engageDeviceNFC(): Promise<any>;
+    /**
+     *
+     *
+     * @param {string} data
+     * @return {Promise<any>} Returns a promise
+     */
+    engageDeviceData(data: string): Promise<any>;
+    /**
+     *
+     *
+     * @param {DeviceEngagement} deviceEngagement
+     * @param {DataRetrieval} dataRetrieval
+     * @return {Promise<any>} Returns a promise
+     */
+    startRetrieveData(deviceEngagement: DeviceEngagement, dataRetrieval: DataRetrieval): Promise<any>;
+    /**
+     *
+     *
+     * @param {DataRetrieval} dataRetrieval
+     * @return {Promise<any>} Returns a promise
+     */
+    retrieveDataNFC(dataRetrieval: DataRetrieval): Promise<any>;
+    /**
+     *
+     *
+     * @param {DeviceEngagement} deviceEngagement
+     * @param {DataRetrieval} dataRetrieval
+     * @return {Promise<any>} Returns a promise
+     */
+    retrieveDataBLE(deviceEngagement: DeviceEngagement, dataRetrieval: DataRetrieval): Promise<any>;
     textFieldValueByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
     textFieldValueByTypeLcid(results: DocumentReaderResults, fieldType: number, lcid: number): Promise<string | undefined>;
     textFieldValueByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
