@@ -1054,6 +1054,11 @@ export declare class DeviceEngagement {
     deviceRetrievalMethods?: DeviceRetrievalMethod[];
     static fromJson(jsonObject?: any): DeviceEngagement | undefined;
 }
+export declare class DeviceEngagementCompletion {
+    deviceEngagement?: DeviceEngagement;
+    error?: RegulaException;
+    static fromJson(jsonObject?: any): DeviceEngagementCompletion | undefined;
+}
 export declare class DeviceRetrievalMethod {
     type?: number;
     version?: number;
@@ -1068,7 +1073,7 @@ export declare class DeviceRetrievalMethod {
 export declare class DataRetrieval {
     deviceRetrieval?: number;
     docRequestPreset?: number;
-    intentToRetain?: boolean;
+    intentToRetain?: number;
     requests?: any[];
     static fromJson(jsonObject?: any): DataRetrieval | undefined;
 }
