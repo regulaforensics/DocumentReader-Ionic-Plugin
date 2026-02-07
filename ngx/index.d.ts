@@ -761,7 +761,7 @@ export declare class ProcessParams {
     strictSecurityChecks?: boolean;
     returnTransliteratedFields?: boolean;
     checkCaptureProcessIntegrity?: boolean;
-    bsiTr03135Results?: boolean;
+    bsiTr03135?: Bsi;
     barcodeParserType?: number;
     perspectiveAngle?: number;
     minDPI?: number;
@@ -808,6 +808,10 @@ export declare class Font {
     size?: number;
     style?: number;
     static fromJson(jsonObject?: any): Font | undefined;
+}
+export declare class Bsi {
+    generateResult?: boolean;
+    static fromJson(jsonObject?: any): Bsi | undefined;
 }
 export declare class CustomizationColors {
     rfidProcessingScreenBackground?: number;
