@@ -587,6 +587,7 @@ export declare class DocumentReaderResults {
     mrzPosition?: ElementPosition[];
     imageQuality?: ImageQualityGroup[];
     rawResult?: string;
+    bsiTr03135Results?: string;
     rfidSessionData?: RFIDSessionData;
     authenticityResult?: DocumentReaderAuthenticityResult;
     barcodeResult?: DocumentReaderBarcodeResult;
@@ -760,6 +761,7 @@ export declare class ProcessParams {
     strictSecurityChecks?: boolean;
     returnTransliteratedFields?: boolean;
     checkCaptureProcessIntegrity?: boolean;
+    bsiTr03135?: Bsi;
     barcodeParserType?: number;
     perspectiveAngle?: number;
     minDPI?: number;
@@ -806,6 +808,10 @@ export declare class Font {
     size?: number;
     style?: number;
     static fromJson(jsonObject?: any): Font | undefined;
+}
+export declare class Bsi {
+    generateResult?: boolean;
+    static fromJson(jsonObject?: any): Bsi | undefined;
 }
 export declare class CustomizationColors {
     rfidProcessingScreenBackground?: number;
@@ -1054,6 +1060,11 @@ export declare class DeviceEngagement {
     deviceRetrievalMethods?: DeviceRetrievalMethod[];
     static fromJson(jsonObject?: any): DeviceEngagement | undefined;
 }
+export declare class DeviceEngagementCompletion {
+    deviceEngagement?: DeviceEngagement;
+    error?: RegulaException;
+    static fromJson(jsonObject?: any): DeviceEngagementCompletion | undefined;
+}
 export declare class DeviceRetrievalMethod {
     type?: number;
     version?: number;
@@ -1068,7 +1079,7 @@ export declare class DeviceRetrievalMethod {
 export declare class DataRetrieval {
     deviceRetrieval?: number;
     docRequestPreset?: number;
-    intentToRetain?: boolean;
+    intentToRetain?: number;
     requests?: any[];
     static fromJson(jsonObject?: any): DataRetrieval | undefined;
 }
@@ -1122,6 +1133,12 @@ export declare class DocumentRequest18013MDL {
     givenNameNationalCharacter?: number;
     signatureUsualMark?: number;
     static fromJson(jsonObject?: any): DocumentRequest18013MDL | undefined;
+}
+export declare class FinalizeConfig {
+    rawImages?: boolean;
+    video?: boolean;
+    rfidSession?: boolean;
+    static fromJson(jsonObject?: any): FinalizeConfig | undefined;
 }
 export declare const FontStyle: {
     NORMAL: number;
@@ -1476,6 +1493,7 @@ export declare const eRPRM_ResultType: {
     RPRM_RESULT_TYPE_STATUS: number;
     RPRM_RESULT_TYPE_PORTRAIT_COMPARISON: number;
     RPRM_RESULT_TYPE_EXT_PORTRAIT: number;
+    RPRM_RESULT_TYPE_BSI_XML_V2: number;
 };
 export declare const FrameShapeType: {
     LINE: number;
@@ -1881,6 +1899,7 @@ export declare const eCheckDiagnose: {
     CHD_DOC_LIVENESS_BLACK_AND_WHITE_COPY_DETECTED: number;
     DOC_LIVENESS_ELECTRONIC_DEVICE_DETECTED: number;
     DOC_LIVENESS_INVALID_BARCODE_BACKGROUND: number;
+    DOC_LIVENESS_VIRTUAL_CAMERA_DETECTED: number;
     ICAO_IDB_BASE_32_ERROR: number;
     ICAO_IDB_ZIPPED_ERROR: number;
     ICAO_IDB_MESSAGE_ZONE_EMPTY: number;
@@ -2275,6 +2294,10 @@ export declare const eRPRM_SecurityFeatureType: {
     SECURITY_FEATURE_TYPE_LIVENESS_GEOMETRY_CHECK: number;
     SECURITY_FEATURE_TYPE_AGE_CHECK: number;
     SECURITY_FEATURE_TYPE_SEX_CHECK: number;
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_RFIDVSGHOST: number;
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_BARCODEVSGHOST: number;
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_GHOSTVSLIVE: number;
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSGHOST: number;
 };
 export declare const OnlineMode: {
     MANUAL: number;
@@ -3928,6 +3951,7 @@ export declare const Enum: {
         RPRM_RESULT_TYPE_STATUS: number;
         RPRM_RESULT_TYPE_PORTRAIT_COMPARISON: number;
         RPRM_RESULT_TYPE_EXT_PORTRAIT: number;
+        RPRM_RESULT_TYPE_BSI_XML_V2: number;
     };
     FrameShapeType: {
         LINE: number;
@@ -4333,6 +4357,7 @@ export declare const Enum: {
         CHD_DOC_LIVENESS_BLACK_AND_WHITE_COPY_DETECTED: number;
         DOC_LIVENESS_ELECTRONIC_DEVICE_DETECTED: number;
         DOC_LIVENESS_INVALID_BARCODE_BACKGROUND: number;
+        DOC_LIVENESS_VIRTUAL_CAMERA_DETECTED: number;
         ICAO_IDB_BASE_32_ERROR: number;
         ICAO_IDB_ZIPPED_ERROR: number;
         ICAO_IDB_MESSAGE_ZONE_EMPTY: number;
@@ -4727,6 +4752,10 @@ export declare const Enum: {
         SECURITY_FEATURE_TYPE_LIVENESS_GEOMETRY_CHECK: number;
         SECURITY_FEATURE_TYPE_AGE_CHECK: number;
         SECURITY_FEATURE_TYPE_SEX_CHECK: number;
+        SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_RFIDVSGHOST: number;
+        SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_BARCODEVSGHOST: number;
+        SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_GHOSTVSLIVE: number;
+        SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSGHOST: number;
     };
     OnlineMode: {
         MANUAL: number;
@@ -6488,6 +6517,13 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     retrieveDataBLE(deviceEngagement: DeviceEngagement, dataRetrieval: DataRetrieval): Promise<any>;
+    /**
+     *
+     *
+     * @param {FinalizeConfig} config
+     * @return {Promise<any>} Returns a promise
+     */
+    finalizePackageWithFinalizeConfig(config: FinalizeConfig): Promise<any>;
     textFieldValueByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
     textFieldValueByTypeLcid(results: DocumentReaderResults, fieldType: number, lcid: number): Promise<string | undefined>;
     textFieldValueByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
