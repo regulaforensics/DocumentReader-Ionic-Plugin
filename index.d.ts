@@ -690,6 +690,10 @@ export declare class BackendProcessingConfig {
     timeoutConnection?: number;
     static fromJson(jsonObject?: any): BackendProcessingConfig | undefined;
 }
+export declare class Bsi {
+    generateResult?: boolean;
+    static fromJson(jsonObject?: any): Bsi | undefined;
+}
 export declare class LivenessParams {
     checkOVI?: boolean;
     checkMLI?: boolean;
@@ -761,7 +765,6 @@ export declare class ProcessParams {
     strictSecurityChecks?: boolean;
     returnTransliteratedFields?: boolean;
     checkCaptureProcessIntegrity?: boolean;
-    bsiTr03135?: Bsi;
     barcodeParserType?: number;
     perspectiveAngle?: number;
     minDPI?: number;
@@ -799,6 +802,7 @@ export declare class ProcessParams {
     rfidParams?: RFIDParams;
     faceApiParams?: FaceApiParams;
     backendProcessingConfig?: BackendProcessingConfig;
+    bsiTr03135?: Bsi;
     authenticityParams?: AuthenticityParams;
     customParams?: Record<string, any>;
     static fromJson(jsonObject?: any): ProcessParams | undefined;
@@ -808,10 +812,6 @@ export declare class Font {
     size?: number;
     style?: number;
     static fromJson(jsonObject?: any): Font | undefined;
-}
-export declare class Bsi {
-    generateResult?: boolean;
-    static fromJson(jsonObject?: any): Bsi | undefined;
 }
 export declare class CustomizationColors {
     rfidProcessingScreenBackground?: number;
@@ -1139,6 +1139,12 @@ export declare class FinalizeConfig {
     video?: boolean;
     rfidSession?: boolean;
     static fromJson(jsonObject?: any): FinalizeConfig | undefined;
+}
+export declare class FinalizeCompletion {
+    action?: number;
+    info?: TransactionInfo;
+    error?: RegulaException;
+    static fromJson(jsonObject?: any): FinalizeCompletion | undefined;
 }
 export declare const FontStyle: {
     NORMAL: number;
@@ -6455,6 +6461,13 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
     /**
      *
      *
+     * @param {FinalizeConfig} config
+     * @return {Promise<any>} Returns a promise
+     */
+    finalizePackageWithFinalizeConfig(config: FinalizeConfig): Promise<any>;
+    /**
+     *
+     *
      * @return {Promise<any>} Returns a promise
      */
     endBackendTransaction(): Promise<any>;
@@ -6517,13 +6530,6 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     retrieveDataBLE(deviceEngagement: DeviceEngagement, dataRetrieval: DataRetrieval): Promise<any>;
-    /**
-     *
-     *
-     * @param {FinalizeConfig} config
-     * @return {Promise<any>} Returns a promise
-     */
-    finalizePackageWithFinalizeConfig(config: FinalizeConfig): Promise<any>;
     textFieldValueByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
     textFieldValueByTypeLcid(results: DocumentReaderResults, fieldType: number, lcid: number): Promise<string | undefined>;
     textFieldValueByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
