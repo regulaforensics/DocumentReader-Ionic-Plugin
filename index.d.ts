@@ -1188,6 +1188,16 @@ export declare const CustomizationColor: {
     RFID_ENABLE_NFC_DESCRIPTION_TEXT: string;
     RFID_ENABLE_NFC_BUTTON_TEXT: string;
     RFID_ENABLE_NFC_BUTTON_BACKGROUND: string;
+    MDL_PROCESSING_SCREEN_BACKGROUND: string;
+    MDL_PROCESSING_SCREEN_HINT_LABEL_TEXT: string;
+    MDL_PROCESSING_SCREEN_HINT_LABEL_BACKGROUND: string;
+    MDL_PROCESSING_SCREEN_PROGRESS_LABEL_TEXT: string;
+    MDL_PROCESSING_SCREEN_RESULT_LABEL_TEXT: string;
+    MDL_PROCESSING_SCREEN_LOADING_BAR: string;
+    MDL_ENABLE_NFC_TITLE_TEXT: string;
+    MDL_ENABLE_NFC_DESCRIPTION_TEXT: string;
+    MDL_ENABLE_NFC_BUTTON_TEXT: string;
+    MDL_ENABLE_NFC_BUTTON_BACKGROUND: string;
 };
 export declare const eRFID_ErrorCodes: {
     RFID_ERROR_NO_ERROR: number;
@@ -2576,6 +2586,12 @@ export declare const CustomizationFont: {
     RFID_ENABLE_NFC_TITLE_TEXT: string;
     RFID_ENABLE_NFC_DESCRIPTION_TEXT: string;
     RFID_ENABLE_NFC_BUTTON_TEXT: string;
+    MDL_PROCESSING_SCREEN_HINT_LABEL: string;
+    MDL_PROCESSING_SCREEN_PROGRESS_LABEL: string;
+    MDL_PROCESSING_SCREEN_RESULT_LABEL: string;
+    MDL_ENABLE_NFC_TITLE_TEXT: string;
+    MDL_ENABLE_NFC_DESCRIPTION_TEXT: string;
+    MDL_ENABLE_NFC_BUTTON_TEXT: string;
 };
 export declare const ImageFormat: {
     PNG: number;
@@ -3573,6 +3589,8 @@ export declare const LCID: {
 export declare const CustomizationImage: {
     RFID_PROCESSING_SCREEN_FAILURE_IMAGE: string;
     RFID_ENABLE_NFC_IMAGE: string;
+    MDL_PROCESSING_SCREEN_FAILURE_IMAGE: string;
+    MDL_ENABLE_NFC_IMAGE: string;
 };
 export declare const DocReaderFrame: {
     MAX: string;
@@ -3646,6 +3664,16 @@ export declare const Enum: {
         RFID_ENABLE_NFC_DESCRIPTION_TEXT: string;
         RFID_ENABLE_NFC_BUTTON_TEXT: string;
         RFID_ENABLE_NFC_BUTTON_BACKGROUND: string;
+        MDL_PROCESSING_SCREEN_BACKGROUND: string;
+        MDL_PROCESSING_SCREEN_HINT_LABEL_TEXT: string;
+        MDL_PROCESSING_SCREEN_HINT_LABEL_BACKGROUND: string;
+        MDL_PROCESSING_SCREEN_PROGRESS_LABEL_TEXT: string;
+        MDL_PROCESSING_SCREEN_RESULT_LABEL_TEXT: string;
+        MDL_PROCESSING_SCREEN_LOADING_BAR: string;
+        MDL_ENABLE_NFC_TITLE_TEXT: string;
+        MDL_ENABLE_NFC_DESCRIPTION_TEXT: string;
+        MDL_ENABLE_NFC_BUTTON_TEXT: string;
+        MDL_ENABLE_NFC_BUTTON_BACKGROUND: string;
     };
     eRFID_ErrorCodes: {
         RFID_ERROR_NO_ERROR: number;
@@ -5034,6 +5062,12 @@ export declare const Enum: {
         RFID_ENABLE_NFC_TITLE_TEXT: string;
         RFID_ENABLE_NFC_DESCRIPTION_TEXT: string;
         RFID_ENABLE_NFC_BUTTON_TEXT: string;
+        MDL_PROCESSING_SCREEN_HINT_LABEL: string;
+        MDL_PROCESSING_SCREEN_PROGRESS_LABEL: string;
+        MDL_PROCESSING_SCREEN_RESULT_LABEL: string;
+        MDL_ENABLE_NFC_TITLE_TEXT: string;
+        MDL_ENABLE_NFC_DESCRIPTION_TEXT: string;
+        MDL_ENABLE_NFC_BUTTON_TEXT: string;
     };
     ImageFormat: {
         PNG: number;
@@ -6031,6 +6065,8 @@ export declare const Enum: {
     CustomizationImage: {
         RFID_PROCESSING_SCREEN_FAILURE_IMAGE: string;
         RFID_ENABLE_NFC_IMAGE: string;
+        MDL_PROCESSING_SCREEN_FAILURE_IMAGE: string;
+        MDL_ENABLE_NFC_IMAGE: string;
     };
     DocReaderFrame: {
         MAX: string;
