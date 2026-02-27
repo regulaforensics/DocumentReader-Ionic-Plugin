@@ -690,6 +690,10 @@ export declare class BackendProcessingConfig {
     timeoutConnection?: number;
     static fromJson(jsonObject?: any): BackendProcessingConfig | undefined;
 }
+export declare class Bsi {
+    generateResult?: boolean;
+    static fromJson(jsonObject?: any): Bsi | undefined;
+}
 export declare class LivenessParams {
     checkOVI?: boolean;
     checkMLI?: boolean;
@@ -761,7 +765,6 @@ export declare class ProcessParams {
     strictSecurityChecks?: boolean;
     returnTransliteratedFields?: boolean;
     checkCaptureProcessIntegrity?: boolean;
-    bsiTr03135?: Bsi;
     barcodeParserType?: number;
     perspectiveAngle?: number;
     minDPI?: number;
@@ -799,6 +802,7 @@ export declare class ProcessParams {
     rfidParams?: RFIDParams;
     faceApiParams?: FaceApiParams;
     backendProcessingConfig?: BackendProcessingConfig;
+    bsiTr03135?: Bsi;
     authenticityParams?: AuthenticityParams;
     customParams?: Record<string, any>;
     static fromJson(jsonObject?: any): ProcessParams | undefined;
@@ -808,10 +812,6 @@ export declare class Font {
     size?: number;
     style?: number;
     static fromJson(jsonObject?: any): Font | undefined;
-}
-export declare class Bsi {
-    generateResult?: boolean;
-    static fromJson(jsonObject?: any): Bsi | undefined;
 }
 export declare class CustomizationColors {
     rfidProcessingScreenBackground?: number;
@@ -1140,6 +1140,12 @@ export declare class FinalizeConfig {
     rfidSession?: boolean;
     static fromJson(jsonObject?: any): FinalizeConfig | undefined;
 }
+export declare class FinalizeCompletion {
+    action?: number;
+    info?: TransactionInfo;
+    error?: RegulaException;
+    static fromJson(jsonObject?: any): FinalizeCompletion | undefined;
+}
 export declare const FontStyle: {
     NORMAL: number;
     BOLD: number;
@@ -1182,6 +1188,16 @@ export declare const CustomizationColor: {
     RFID_ENABLE_NFC_DESCRIPTION_TEXT: string;
     RFID_ENABLE_NFC_BUTTON_TEXT: string;
     RFID_ENABLE_NFC_BUTTON_BACKGROUND: string;
+    MDL_PROCESSING_SCREEN_BACKGROUND: string;
+    MDL_PROCESSING_SCREEN_HINT_LABEL_TEXT: string;
+    MDL_PROCESSING_SCREEN_HINT_LABEL_BACKGROUND: string;
+    MDL_PROCESSING_SCREEN_PROGRESS_LABEL_TEXT: string;
+    MDL_PROCESSING_SCREEN_RESULT_LABEL_TEXT: string;
+    MDL_PROCESSING_SCREEN_LOADING_BAR: string;
+    MDL_ENABLE_NFC_TITLE_TEXT: string;
+    MDL_ENABLE_NFC_DESCRIPTION_TEXT: string;
+    MDL_ENABLE_NFC_BUTTON_TEXT: string;
+    MDL_ENABLE_NFC_BUTTON_BACKGROUND: string;
 };
 export declare const eRFID_ErrorCodes: {
     RFID_ERROR_NO_ERROR: number;
@@ -2570,6 +2586,12 @@ export declare const CustomizationFont: {
     RFID_ENABLE_NFC_TITLE_TEXT: string;
     RFID_ENABLE_NFC_DESCRIPTION_TEXT: string;
     RFID_ENABLE_NFC_BUTTON_TEXT: string;
+    MDL_PROCESSING_SCREEN_HINT_LABEL: string;
+    MDL_PROCESSING_SCREEN_PROGRESS_LABEL: string;
+    MDL_PROCESSING_SCREEN_RESULT_LABEL: string;
+    MDL_ENABLE_NFC_TITLE_TEXT: string;
+    MDL_ENABLE_NFC_DESCRIPTION_TEXT: string;
+    MDL_ENABLE_NFC_BUTTON_TEXT: string;
 };
 export declare const ImageFormat: {
     PNG: number;
@@ -3567,6 +3589,8 @@ export declare const LCID: {
 export declare const CustomizationImage: {
     RFID_PROCESSING_SCREEN_FAILURE_IMAGE: string;
     RFID_ENABLE_NFC_IMAGE: string;
+    MDL_PROCESSING_SCREEN_FAILURE_IMAGE: string;
+    MDL_ENABLE_NFC_IMAGE: string;
 };
 export declare const DocReaderFrame: {
     MAX: string;
@@ -3640,6 +3664,16 @@ export declare const Enum: {
         RFID_ENABLE_NFC_DESCRIPTION_TEXT: string;
         RFID_ENABLE_NFC_BUTTON_TEXT: string;
         RFID_ENABLE_NFC_BUTTON_BACKGROUND: string;
+        MDL_PROCESSING_SCREEN_BACKGROUND: string;
+        MDL_PROCESSING_SCREEN_HINT_LABEL_TEXT: string;
+        MDL_PROCESSING_SCREEN_HINT_LABEL_BACKGROUND: string;
+        MDL_PROCESSING_SCREEN_PROGRESS_LABEL_TEXT: string;
+        MDL_PROCESSING_SCREEN_RESULT_LABEL_TEXT: string;
+        MDL_PROCESSING_SCREEN_LOADING_BAR: string;
+        MDL_ENABLE_NFC_TITLE_TEXT: string;
+        MDL_ENABLE_NFC_DESCRIPTION_TEXT: string;
+        MDL_ENABLE_NFC_BUTTON_TEXT: string;
+        MDL_ENABLE_NFC_BUTTON_BACKGROUND: string;
     };
     eRFID_ErrorCodes: {
         RFID_ERROR_NO_ERROR: number;
@@ -5028,6 +5062,12 @@ export declare const Enum: {
         RFID_ENABLE_NFC_TITLE_TEXT: string;
         RFID_ENABLE_NFC_DESCRIPTION_TEXT: string;
         RFID_ENABLE_NFC_BUTTON_TEXT: string;
+        MDL_PROCESSING_SCREEN_HINT_LABEL: string;
+        MDL_PROCESSING_SCREEN_PROGRESS_LABEL: string;
+        MDL_PROCESSING_SCREEN_RESULT_LABEL: string;
+        MDL_ENABLE_NFC_TITLE_TEXT: string;
+        MDL_ENABLE_NFC_DESCRIPTION_TEXT: string;
+        MDL_ENABLE_NFC_BUTTON_TEXT: string;
     };
     ImageFormat: {
         PNG: number;
@@ -6025,6 +6065,8 @@ export declare const Enum: {
     CustomizationImage: {
         RFID_PROCESSING_SCREEN_FAILURE_IMAGE: string;
         RFID_ENABLE_NFC_IMAGE: string;
+        MDL_PROCESSING_SCREEN_FAILURE_IMAGE: string;
+        MDL_ENABLE_NFC_IMAGE: string;
     };
     DocReaderFrame: {
         MAX: string;
@@ -6455,6 +6497,13 @@ export declare class DocumentReader extends AwesomeCordovaNativePlugin {
     /**
      *
      *
+     * @param {FinalizeConfig} config
+     * @return {Promise<any>} Returns a promise
+     */
+    finalizePackageWithFinalizeConfig(config: FinalizeConfig): Promise<any>;
+    /**
+     *
+     *
      * @return {Promise<any>} Returns a promise
      */
     endBackendTransaction(): Promise<any>;
@@ -6517,13 +6566,6 @@ export declare class DocumentReader extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     retrieveDataBLE(deviceEngagement: DeviceEngagement, dataRetrieval: DataRetrieval): Promise<any>;
-    /**
-     *
-     *
-     * @param {FinalizeConfig} config
-     * @return {Promise<any>} Returns a promise
-     */
-    finalizePackageWithFinalizeConfig(config: FinalizeConfig): Promise<any>;
     textFieldValueByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
     textFieldValueByTypeLcid(results: DocumentReaderResults, fieldType: number, lcid: number): Promise<string | undefined>;
     textFieldValueByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
