@@ -962,6 +962,9 @@ export declare class Customization {
     colors?: CustomizationColors;
     fonts?: CustomizationFonts;
     images?: CustomizationImages;
+    timings?: CustomizationTimings;
+    contentModes?: CustomizationContentModes;
+    matrices?: CustomizationMatrices;
     static fromJson(jsonObject?: any): Customization | undefined;
 }
 export declare class EDLDataGroups {
