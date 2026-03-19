@@ -687,8 +687,13 @@ export declare class BackendProcessingConfig {
     url?: string;
     httpHeaders?: Record<string, string>;
     rfidServerSideChipVerification?: boolean;
+    mdlVerification?: boolean;
     timeoutConnection?: number;
     static fromJson(jsonObject?: any): BackendProcessingConfig | undefined;
+}
+export declare class Bsi {
+    generateResult?: boolean;
+    static fromJson(jsonObject?: any): Bsi | undefined;
 }
 export declare class LivenessParams {
     checkOVI?: boolean;
@@ -761,7 +766,9 @@ export declare class ProcessParams {
     strictSecurityChecks?: boolean;
     returnTransliteratedFields?: boolean;
     checkCaptureProcessIntegrity?: boolean;
-    bsiTr03135?: Bsi;
+    strictExpiryDate?: boolean;
+    debugSaveBinarySession?: boolean;
+    checkVDS?: boolean;
     barcodeParserType?: number;
     perspectiveAngle?: number;
     minDPI?: number;
@@ -799,6 +806,7 @@ export declare class ProcessParams {
     rfidParams?: RFIDParams;
     faceApiParams?: FaceApiParams;
     backendProcessingConfig?: BackendProcessingConfig;
+    bsiTr03135?: Bsi;
     authenticityParams?: AuthenticityParams;
     customParams?: Record<string, any>;
     static fromJson(jsonObject?: any): ProcessParams | undefined;
@@ -808,10 +816,6 @@ export declare class Font {
     size?: number;
     style?: number;
     static fromJson(jsonObject?: any): Font | undefined;
-}
-export declare class Bsi {
-    generateResult?: boolean;
-    static fromJson(jsonObject?: any): Bsi | undefined;
 }
 export declare class CustomizationColors {
     rfidProcessingScreenBackground?: number;
@@ -826,6 +830,10 @@ export declare class CustomizationColors {
     rfidEnableNfcDescriptionText?: number;
     rfidEnableNfcButtonText?: number;
     rfidEnableNfcButtonBackground?: number;
+    nextPageIdCardFront?: number;
+    nextPageIdCardBack?: number;
+    nextPagePassportShift?: number;
+    nextPagePassportFlip?: number;
     static fromJson(jsonObject?: any): CustomizationColors | undefined;
 }
 export declare class CustomizationFonts {
@@ -838,9 +846,48 @@ export declare class CustomizationFonts {
     static fromJson(jsonObject?: any): CustomizationFonts | undefined;
 }
 export declare class CustomizationImages {
+    helpAnimation?: string;
+    livenessAnimation?: string;
+    borderBackground?: string;
+    torchButtonOn?: string;
+    torchButtonOff?: string;
+    captureButton?: string;
+    switchButton?: string;
+    closeButton?: string;
+    multipageButton?: string;
     rfidProcessingScreenFailureImage?: string;
     rfidEnableNfcImage?: string;
+    rfidDisableNfcImage?: string;
+    mdlProcessingScreenFailureImage?: string;
+    mdlEnableNfcImage?: string;
+    mdlDisableNfcImage?: string;
+    nextPageIdCardFront?: string;
+    nextPageIdCardBack?: string;
+    nextPagePassportShift?: string;
+    nextPagePassportFlipStart?: string;
+    nextPagePassportFlipClean?: string;
+    nextPagePassportFlipTop?: string;
+    nextPagePassportFlipBottom?: string;
     static fromJson(jsonObject?: any): CustomizationImages | undefined;
+}
+export declare class CustomizationTimings {
+    nextPageIdCardStartDelay?: number;
+    nextPageIdCardEndDelay?: number;
+    nextPagePassportShiftStartDelay?: number;
+    nextPagePassportShiftEndDelay?: number;
+    nextPagePassportFlipStartDelay?: number;
+    nextPagePassportFlipEndDelay?: number;
+    static fromJson(jsonObject?: any): CustomizationTimings | undefined;
+}
+export declare class CustomizationContentModes {
+    nextPageIdCardFront?: number;
+    nextPageIdCardBack?: number;
+    static fromJson(jsonObject?: any): CustomizationContentModes | undefined;
+}
+export declare class CustomizationMatrices {
+    nextPageIdCardFront?: number[];
+    nextPageIdCardBack?: number[];
+    static fromJson(jsonObject?: any): CustomizationMatrices | undefined;
 }
 export declare class Customization {
     showStatusMessages?: boolean;
@@ -1138,7 +1185,14 @@ export declare class FinalizeConfig {
     rawImages?: boolean;
     video?: boolean;
     rfidSession?: boolean;
+    mdlSession?: boolean;
     static fromJson(jsonObject?: any): FinalizeConfig | undefined;
+}
+export declare class FinalizeCompletion {
+    action?: number;
+    info?: TransactionInfo;
+    error?: RegulaException;
+    static fromJson(jsonObject?: any): FinalizeCompletion | undefined;
 }
 export declare const FontStyle: {
     NORMAL: number;
@@ -1182,6 +1236,20 @@ export declare const CustomizationColor: {
     RFID_ENABLE_NFC_DESCRIPTION_TEXT: string;
     RFID_ENABLE_NFC_BUTTON_TEXT: string;
     RFID_ENABLE_NFC_BUTTON_BACKGROUND: string;
+    MDL_PROCESSING_SCREEN_BACKGROUND: string;
+    MDL_PROCESSING_SCREEN_HINT_LABEL_TEXT: string;
+    MDL_PROCESSING_SCREEN_HINT_LABEL_BACKGROUND: string;
+    MDL_PROCESSING_SCREEN_PROGRESS_LABEL_TEXT: string;
+    MDL_PROCESSING_SCREEN_RESULT_LABEL_TEXT: string;
+    MDL_PROCESSING_SCREEN_LOADING_BAR: string;
+    MDL_ENABLE_NFC_TITLE_TEXT: string;
+    MDL_ENABLE_NFC_DESCRIPTION_TEXT: string;
+    MDL_ENABLE_NFC_BUTTON_TEXT: string;
+    MDL_ENABLE_NFC_BUTTON_BACKGROUND: string;
+    NEXT_PAGE_ID_CARD_FRONT: string;
+    NEXT_PAGE_ID_CARD_BACK: string;
+    NEXT_PAGE_PASSPORT_SHIFT: string;
+    NEXT_PAGE_PASSPORT_FLIP: string;
 };
 export declare const eRFID_ErrorCodes: {
     RFID_ERROR_NO_ERROR: number;
@@ -1688,6 +1756,9 @@ export declare const eRFID_NotificationCodes: {
     RFID_NOTIFICATION_AUXILIARY_DATA_VALIDATION: number;
     RFID_NOTIFICATION_RI_SECTOR_ID: number;
     RFID_NOTIFICATION_BIOMETRICS_EMPTY_PLACEHOLDER: number;
+    RFID_NOTIFICATION_SESSION_FILE_DATA_UPDATED: number;
+    RFID_NOTIFICATION_TCC_TA_RESOURCES: number;
+    RFID_NOTIFICATION_TCC_TA_SIGNATURE: number;
 };
 export declare const CameraPosition: {
     UNSPECIFIED: number;
@@ -1772,6 +1843,10 @@ export declare const eSignManagementAction: {
     smaGenerateKeys: number;
     smaTerminateKeys: number;
     smaSignData: number;
+};
+export declare const CustomizationMatrix: {
+    NEXT_PAGE_ID_CARD_FRONT: string;
+    NEXT_PAGE_ID_CARD_BACK: string;
 };
 export declare const eMDLDeviceEngagement: {
     QR: number;
@@ -1911,6 +1986,10 @@ export declare const eCheckDiagnose: {
 export declare const eMDLIntentToRetain: {
     FALSE: number;
     TRUE: number;
+};
+export declare const CustomizationContentMode: {
+    NEXT_PAGE_ID_CARD_FRONT: string;
+    NEXT_PAGE_ID_CARD_BACK: string;
 };
 export declare const RFIDDelegate: {
     NULL: number;
@@ -2570,6 +2649,12 @@ export declare const CustomizationFont: {
     RFID_ENABLE_NFC_TITLE_TEXT: string;
     RFID_ENABLE_NFC_DESCRIPTION_TEXT: string;
     RFID_ENABLE_NFC_BUTTON_TEXT: string;
+    MDL_PROCESSING_SCREEN_HINT_LABEL: string;
+    MDL_PROCESSING_SCREEN_PROGRESS_LABEL: string;
+    MDL_PROCESSING_SCREEN_RESULT_LABEL: string;
+    MDL_ENABLE_NFC_TITLE_TEXT: string;
+    MDL_ENABLE_NFC_DESCRIPTION_TEXT: string;
+    MDL_ENABLE_NFC_BUTTON_TEXT: string;
 };
 export declare const ImageFormat: {
     PNG: number;
@@ -3385,9 +3470,11 @@ export declare const eVisualFieldType: {
     FT_NATIONALITY_CODE_ALPHA2: number;
     FT_FIRST_ISSUE_DATE_CHECKDIGIT: number;
     FT_FIRST_ISSUE_DATE_CHECKSUM: number;
+    FT_EXPIRY_TIMESTAMP: number;
     FT_COMMERCIAL_INDICATOR: number;
     FT_NON_DOMICILED_INDICATOR: number;
     FT_JURISDICTION_SPECIFIC_DATA: number;
+    FT_DATA_DATE_OF_EXPIRY: number;
 };
 export declare const DocReaderOrientation: {
     ALL: number;
@@ -3564,9 +3651,37 @@ export declare const LCID: {
     ORIYA: number;
     URDU_DETECTION: number;
 };
+export declare const CustomizationTiming: {
+    NEXT_PAGE_ID_CARD_START_DELAY: string;
+    NEXT_PAGE_ID_CARD_END_DELAY: string;
+    NEXT_PAGE_PASSPORT_SHIFT_START_DELAY: string;
+    NEXT_PAGE_PASSPORT_SHIFT_END_DELAY: string;
+    NEXT_PAGE_PASSPORT_FLIP_START_DELAY: string;
+    NEXT_PAGE_PASSPORT_FLIP_END_DELAY: string;
+};
 export declare const CustomizationImage: {
+    HELP_ANIMATION: string;
+    LIVENESS_ANIMATION: string;
+    BORDER_BACKGROUND: string;
+    TORCH_BUTTON_ON: string;
+    TORCH_BUTTON_OFF: string;
+    CAPTURE_BUTTON: string;
+    SWITCH_BUTTON: string;
+    CLOSE_BUTTON: string;
+    MULTIPAGE_BUTTON: string;
     RFID_PROCESSING_SCREEN_FAILURE_IMAGE: string;
     RFID_ENABLE_NFC_IMAGE: string;
+    RFID_DISABLE_NFC_IMAGE: string;
+    MDL_PROCESSING_SCREEN_FAILURE_IMAGE: string;
+    MDL_ENABLE_NFC_IMAGE: string;
+    MDL_DISABLE_NFC_IMAGE: string;
+    NEXT_PAGE_ID_CARD_FRONT: string;
+    NEXT_PAGE_ID_CARD_BACK: string;
+    NEXT_PAGE_PASSPORT_SHIFT: string;
+    NEXT_PAGE_PASSPORT_FLIP_START: string;
+    NEXT_PAGE_PASSPORT_FLIP_CLEAN: string;
+    NEXT_PAGE_PASSPORT_FLIP_TOP: string;
+    NEXT_PAGE_PASSPORT_FLIP_BOTTOM: string;
 };
 export declare const DocReaderFrame: {
     MAX: string;
@@ -3640,6 +3755,20 @@ export declare const Enum: {
         RFID_ENABLE_NFC_DESCRIPTION_TEXT: string;
         RFID_ENABLE_NFC_BUTTON_TEXT: string;
         RFID_ENABLE_NFC_BUTTON_BACKGROUND: string;
+        MDL_PROCESSING_SCREEN_BACKGROUND: string;
+        MDL_PROCESSING_SCREEN_HINT_LABEL_TEXT: string;
+        MDL_PROCESSING_SCREEN_HINT_LABEL_BACKGROUND: string;
+        MDL_PROCESSING_SCREEN_PROGRESS_LABEL_TEXT: string;
+        MDL_PROCESSING_SCREEN_RESULT_LABEL_TEXT: string;
+        MDL_PROCESSING_SCREEN_LOADING_BAR: string;
+        MDL_ENABLE_NFC_TITLE_TEXT: string;
+        MDL_ENABLE_NFC_DESCRIPTION_TEXT: string;
+        MDL_ENABLE_NFC_BUTTON_TEXT: string;
+        MDL_ENABLE_NFC_BUTTON_BACKGROUND: string;
+        NEXT_PAGE_ID_CARD_FRONT: string;
+        NEXT_PAGE_ID_CARD_BACK: string;
+        NEXT_PAGE_PASSPORT_SHIFT: string;
+        NEXT_PAGE_PASSPORT_FLIP: string;
     };
     eRFID_ErrorCodes: {
         RFID_ERROR_NO_ERROR: number;
@@ -4146,6 +4275,9 @@ export declare const Enum: {
         RFID_NOTIFICATION_AUXILIARY_DATA_VALIDATION: number;
         RFID_NOTIFICATION_RI_SECTOR_ID: number;
         RFID_NOTIFICATION_BIOMETRICS_EMPTY_PLACEHOLDER: number;
+        RFID_NOTIFICATION_SESSION_FILE_DATA_UPDATED: number;
+        RFID_NOTIFICATION_TCC_TA_RESOURCES: number;
+        RFID_NOTIFICATION_TCC_TA_SIGNATURE: number;
     };
     CameraPosition: {
         UNSPECIFIED: number;
@@ -4230,6 +4362,10 @@ export declare const Enum: {
         smaGenerateKeys: number;
         smaTerminateKeys: number;
         smaSignData: number;
+    };
+    CustomizationMatrix: {
+        NEXT_PAGE_ID_CARD_FRONT: string;
+        NEXT_PAGE_ID_CARD_BACK: string;
     };
     eMDLDeviceEngagement: {
         QR: number;
@@ -4369,6 +4505,10 @@ export declare const Enum: {
     eMDLIntentToRetain: {
         FALSE: number;
         TRUE: number;
+    };
+    CustomizationContentMode: {
+        NEXT_PAGE_ID_CARD_FRONT: string;
+        NEXT_PAGE_ID_CARD_BACK: string;
     };
     RFIDDelegate: {
         NULL: number;
@@ -5028,6 +5168,12 @@ export declare const Enum: {
         RFID_ENABLE_NFC_TITLE_TEXT: string;
         RFID_ENABLE_NFC_DESCRIPTION_TEXT: string;
         RFID_ENABLE_NFC_BUTTON_TEXT: string;
+        MDL_PROCESSING_SCREEN_HINT_LABEL: string;
+        MDL_PROCESSING_SCREEN_PROGRESS_LABEL: string;
+        MDL_PROCESSING_SCREEN_RESULT_LABEL: string;
+        MDL_ENABLE_NFC_TITLE_TEXT: string;
+        MDL_ENABLE_NFC_DESCRIPTION_TEXT: string;
+        MDL_ENABLE_NFC_BUTTON_TEXT: string;
     };
     ImageFormat: {
         PNG: number;
@@ -5843,9 +5989,11 @@ export declare const Enum: {
         FT_NATIONALITY_CODE_ALPHA2: number;
         FT_FIRST_ISSUE_DATE_CHECKDIGIT: number;
         FT_FIRST_ISSUE_DATE_CHECKSUM: number;
+        FT_EXPIRY_TIMESTAMP: number;
         FT_COMMERCIAL_INDICATOR: number;
         FT_NON_DOMICILED_INDICATOR: number;
         FT_JURISDICTION_SPECIFIC_DATA: number;
+        FT_DATA_DATE_OF_EXPIRY: number;
     };
     DocReaderOrientation: {
         ALL: number;
@@ -6022,9 +6170,37 @@ export declare const Enum: {
         ORIYA: number;
         URDU_DETECTION: number;
     };
+    CustomizationTiming: {
+        NEXT_PAGE_ID_CARD_START_DELAY: string;
+        NEXT_PAGE_ID_CARD_END_DELAY: string;
+        NEXT_PAGE_PASSPORT_SHIFT_START_DELAY: string;
+        NEXT_PAGE_PASSPORT_SHIFT_END_DELAY: string;
+        NEXT_PAGE_PASSPORT_FLIP_START_DELAY: string;
+        NEXT_PAGE_PASSPORT_FLIP_END_DELAY: string;
+    };
     CustomizationImage: {
+        HELP_ANIMATION: string;
+        LIVENESS_ANIMATION: string;
+        BORDER_BACKGROUND: string;
+        TORCH_BUTTON_ON: string;
+        TORCH_BUTTON_OFF: string;
+        CAPTURE_BUTTON: string;
+        SWITCH_BUTTON: string;
+        CLOSE_BUTTON: string;
+        MULTIPAGE_BUTTON: string;
         RFID_PROCESSING_SCREEN_FAILURE_IMAGE: string;
         RFID_ENABLE_NFC_IMAGE: string;
+        RFID_DISABLE_NFC_IMAGE: string;
+        MDL_PROCESSING_SCREEN_FAILURE_IMAGE: string;
+        MDL_ENABLE_NFC_IMAGE: string;
+        MDL_DISABLE_NFC_IMAGE: string;
+        NEXT_PAGE_ID_CARD_FRONT: string;
+        NEXT_PAGE_ID_CARD_BACK: string;
+        NEXT_PAGE_PASSPORT_SHIFT: string;
+        NEXT_PAGE_PASSPORT_FLIP_START: string;
+        NEXT_PAGE_PASSPORT_FLIP_CLEAN: string;
+        NEXT_PAGE_PASSPORT_FLIP_TOP: string;
+        NEXT_PAGE_PASSPORT_FLIP_BOTTOM: string;
     };
     DocReaderFrame: {
         MAX: string;
@@ -6455,6 +6631,13 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
     /**
      *
      *
+     * @param {FinalizeConfig} config
+     * @return {Promise<any>} Returns a promise
+     */
+    finalizePackageWithFinalizeConfig(config: FinalizeConfig): Promise<any>;
+    /**
+     *
+     *
      * @return {Promise<any>} Returns a promise
      */
     endBackendTransaction(): Promise<any>;
@@ -6517,13 +6700,6 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     retrieveDataBLE(deviceEngagement: DeviceEngagement, dataRetrieval: DataRetrieval): Promise<any>;
-    /**
-     *
-     *
-     * @param {FinalizeConfig} config
-     * @return {Promise<any>} Returns a promise
-     */
-    finalizePackageWithFinalizeConfig(config: FinalizeConfig): Promise<any>;
     textFieldValueByType(results: DocumentReaderResults, fieldType: number): Promise<string | undefined>;
     textFieldValueByTypeLcid(results: DocumentReaderResults, fieldType: number, lcid: number): Promise<string | undefined>;
     textFieldValueByTypeSource(results: DocumentReaderResults, fieldType: number, source: number): Promise<string | undefined>;
