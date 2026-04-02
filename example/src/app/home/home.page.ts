@@ -157,12 +157,12 @@ export class HomePage {
 
     function customRFID() {
       showRfidUI()
-      DocumentReader.readRFID(false, false, false).subscribe((m: string) => handleRfidCompletion(m))
+      DocumentReader.readRFID(null).subscribe((m: string) => handleRfidCompletion(m))
     }
 
     function usualRFID() {
       isReadingRfid = true
-      DocumentReader.startRFIDReader(false, false, false).subscribe((m: string) => handleRfidCompletion(m))
+      DocumentReader.startRFIDReader(null).subscribe((m: string) => handleRfidCompletion(m))
     }
 
     function handleRfidCompletion(raw: string) {
