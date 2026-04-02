@@ -1197,6 +1197,27 @@ export declare class FinalizeCompletion {
     error?: RegulaException;
     static fromJson(jsonObject?: any): FinalizeCompletion | undefined;
 }
+export declare class PACEProtocol {
+    version?: string;
+    stdDomainParams?: string;
+    keyAlgorithm?: string;
+    static fromJson(jsonObject?: any): PACEProtocol | undefined;
+}
+export declare class CAProtocol {
+    version?: string;
+    scheme?: string;
+    keyAlgorithm?: string;
+    chipIndividual?: boolean;
+    static fromJson(jsonObject?: any): CAProtocol | undefined;
+}
+export declare class RFIDConfig {
+    onRequestPACertificates?: boolean;
+    onRequestTACertificates?: boolean;
+    onRequestTASignature?: boolean;
+    onRequestPACEProtocol?: boolean;
+    onRequestCAProtocol?: boolean;
+    static fromJson(jsonObject?: any): RFIDConfig | undefined;
+}
 export declare const FontStyle: {
     NORMAL: number;
     BOLD: number;
@@ -6483,21 +6504,17 @@ export declare class DocumentReader extends AwesomeCordovaNativePlugin {
     /**
      *  Use the method below to open the RFID chip reading controller and start its processing
      *
-     * @param {boolean} requestPACertificates
-     * @param {boolean} requestTACertificates
-     * @param {boolean} requestTASignature
+     * @param {RFIDConfig} config
      * @return {Promise<any>} Returns a promise
      */
-    startRFIDReader(requestPACertificates: boolean, requestTACertificates: boolean, requestTASignature: boolean): Observable<any>;
+    startRFIDReader(config: RFIDConfig): Observable<any>;
     /**
      *  Use this method to start RFID chip processing
      *
-     * @param {boolean} requestPACertificates
-     * @param {boolean} requestTACertificates
-     * @param {boolean} requestTASignature
+     * @param {RFIDConfig} config
      * @return {Promise<any>} Returns a promise
      */
-    readRFID(requestPACertificates: boolean, requestTACertificates: boolean, requestTASignature: boolean): Observable<any>;
+    readRFID(config: RFIDConfig): Observable<any>;
     /**
      *  Use the method below to close the RFID chip reading controller and end its processing
      *
@@ -6525,6 +6542,20 @@ export declare class DocumentReader extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     provideTASignature(signature: string): Promise<any>;
+    /**
+     *
+     *
+     * @param {PACEProtocol} protocol
+     * @return {Promise<any>} Returns a promise
+     */
+    selectPACEProtocol(protocol: PACEProtocol): Promise<any>;
+    /**
+     *
+     *
+     * @param {CAProtocol} protocol
+     * @return {Promise<any>} Returns a promise
+     */
+    selectCAProtocol(protocol: CAProtocol): Promise<any>;
     /**
      *  The method call sets the given TCCParams to the RFID session. The parameters are required to be set before starting RFID session.
      *
