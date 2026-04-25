@@ -1197,6 +1197,27 @@ export declare class FinalizeCompletion {
     error?: RegulaException;
     static fromJson(jsonObject?: any): FinalizeCompletion | undefined;
 }
+export declare class PACEProtocol {
+    version?: string;
+    stdDomainParams?: string;
+    keyAlgorithm?: string;
+    static fromJson(jsonObject?: any): PACEProtocol | undefined;
+}
+export declare class CAProtocol {
+    version?: string;
+    scheme?: string;
+    keyAlgorithm?: string;
+    chipIndividual?: boolean;
+    static fromJson(jsonObject?: any): CAProtocol | undefined;
+}
+export declare class RFIDConfig {
+    onRequestPACertificates?: boolean;
+    onRequestTACertificates?: boolean;
+    onRequestTASignature?: boolean;
+    onRequestPACEProtocol?: boolean;
+    onRequestCAProtocol?: boolean;
+    static fromJson(jsonObject?: any): RFIDConfig | undefined;
+}
 export declare const FontStyle: {
     NORMAL: number;
     BOLD: number;
@@ -2273,6 +2294,8 @@ export declare const eLDS_ParsingNotificationCodes: {
     NTF_LDS_ICAO_CERTIFICATE_MRZ_COUNTRY_NON_MATCHING: number;
     NTF_LDS_ICAO_CERTIFICATE_ISSUER_COUNTRY_NON_UPPER_CASE: number;
     NTF_LDS_ICAO_CERTIFICATE_SUBJECT_COUNTRY_NON_UPPER_CASE: number;
+    NTFLDS_SI_STORAGE_CS_NONCONSISTANT: number;
+    NTFLDS_SI_STORAGE_CS_PACE_CAM_KEY_MISSING: number;
 };
 export declare const eImageQualityCheckType: {
     IQC_IMAGE_GLARES: number;
@@ -2819,6 +2842,13 @@ export declare const eRFID_DataFile_Type: {
     DFT_VDS: number;
     DFT_VDSNC: number;
     DFT_USERDEFINED: number;
+    DFT_POST_CA_RESPONSE: number;
+    DFT_POST_CA_PUBLIC_KEY: number;
+    DFT_POST_CA_INFO: number;
+    DFT_POST_CA_DPARAMS: number;
+    DFT_POST_CA_CHECK_PK: number;
+    DFT_POST_CA_CHECK_SK: number;
+    DFT_ID_DG22: number;
 };
 export declare const eVisualFieldType: {
     FT_DOCUMENT_CLASS_CODE: number;
@@ -3478,6 +3508,7 @@ export declare const eVisualFieldType: {
     FT_NON_DOMICILED_INDICATOR: number;
     FT_JURISDICTION_SPECIFIC_DATA: number;
     FT_DATA_DATE_OF_EXPIRY: number;
+    FT_CONSUL: number;
 };
 export declare const DocReaderOrientation: {
     ALL: number;
@@ -4792,6 +4823,8 @@ export declare const Enum: {
         NTF_LDS_ICAO_CERTIFICATE_MRZ_COUNTRY_NON_MATCHING: number;
         NTF_LDS_ICAO_CERTIFICATE_ISSUER_COUNTRY_NON_UPPER_CASE: number;
         NTF_LDS_ICAO_CERTIFICATE_SUBJECT_COUNTRY_NON_UPPER_CASE: number;
+        NTFLDS_SI_STORAGE_CS_NONCONSISTANT: number;
+        NTFLDS_SI_STORAGE_CS_PACE_CAM_KEY_MISSING: number;
     };
     eImageQualityCheckType: {
         IQC_IMAGE_GLARES: number;
@@ -5338,6 +5371,13 @@ export declare const Enum: {
         DFT_VDS: number;
         DFT_VDSNC: number;
         DFT_USERDEFINED: number;
+        DFT_POST_CA_RESPONSE: number;
+        DFT_POST_CA_PUBLIC_KEY: number;
+        DFT_POST_CA_INFO: number;
+        DFT_POST_CA_DPARAMS: number;
+        DFT_POST_CA_CHECK_PK: number;
+        DFT_POST_CA_CHECK_SK: number;
+        DFT_ID_DG22: number;
     };
     eVisualFieldType: {
         FT_DOCUMENT_CLASS_CODE: number;
@@ -5997,6 +6037,7 @@ export declare const Enum: {
         FT_NON_DOMICILED_INDICATOR: number;
         FT_JURISDICTION_SPECIFIC_DATA: number;
         FT_DATA_DATE_OF_EXPIRY: number;
+        FT_CONSUL: number;
     };
     DocReaderOrientation: {
         ALL: number;
@@ -6483,21 +6524,17 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
     /**
      *  Use the method below to open the RFID chip reading controller and start its processing
      *
-     * @param {boolean} requestPACertificates
-     * @param {boolean} requestTACertificates
-     * @param {boolean} requestTASignature
+     * @param {RFIDConfig | null} config
      * @return {Promise<any>} Returns a promise
      */
-    startRFIDReader(requestPACertificates: boolean, requestTACertificates: boolean, requestTASignature: boolean): Observable<any>;
+    startRFIDReader(config: RFIDConfig | null): Observable<any>;
     /**
      *  Use this method to start RFID chip processing
      *
-     * @param {boolean} requestPACertificates
-     * @param {boolean} requestTACertificates
-     * @param {boolean} requestTASignature
+     * @param {RFIDConfig | null} config
      * @return {Promise<any>} Returns a promise
      */
-    readRFID(requestPACertificates: boolean, requestTACertificates: boolean, requestTASignature: boolean): Observable<any>;
+    readRFID(config: RFIDConfig | null): Observable<any>;
     /**
      *  Use the method below to close the RFID chip reading controller and end its processing
      *
@@ -6525,6 +6562,20 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     provideTASignature(signature: string): Promise<any>;
+    /**
+     *
+     *
+     * @param {PACEProtocol} protocol
+     * @return {Promise<any>} Returns a promise
+     */
+    selectPACEProtocol(protocol: PACEProtocol): Promise<any>;
+    /**
+     *
+     *
+     * @param {CAProtocol} protocol
+     * @return {Promise<any>} Returns a promise
+     */
+    selectCAProtocol(protocol: CAProtocol): Promise<any>;
     /**
      *  The method call sets the given TCCParams to the RFID session. The parameters are required to be set before starting RFID session.
      *
