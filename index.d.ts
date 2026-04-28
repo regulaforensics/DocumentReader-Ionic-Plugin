@@ -2294,6 +2294,8 @@ export declare const eLDS_ParsingNotificationCodes: {
     NTF_LDS_ICAO_CERTIFICATE_MRZ_COUNTRY_NON_MATCHING: number;
     NTF_LDS_ICAO_CERTIFICATE_ISSUER_COUNTRY_NON_UPPER_CASE: number;
     NTF_LDS_ICAO_CERTIFICATE_SUBJECT_COUNTRY_NON_UPPER_CASE: number;
+    NTFLDS_SI_STORAGE_CS_NONCONSISTANT: number;
+    NTFLDS_SI_STORAGE_CS_PACE_CAM_KEY_MISSING: number;
 };
 export declare const eImageQualityCheckType: {
     IQC_IMAGE_GLARES: number;
@@ -2840,6 +2842,13 @@ export declare const eRFID_DataFile_Type: {
     DFT_VDS: number;
     DFT_VDSNC: number;
     DFT_USERDEFINED: number;
+    DFT_POST_CA_RESPONSE: number;
+    DFT_POST_CA_PUBLIC_KEY: number;
+    DFT_POST_CA_INFO: number;
+    DFT_POST_CA_DPARAMS: number;
+    DFT_POST_CA_CHECK_PK: number;
+    DFT_POST_CA_CHECK_SK: number;
+    DFT_ID_DG22: number;
 };
 export declare const eVisualFieldType: {
     FT_DOCUMENT_CLASS_CODE: number;
@@ -3499,6 +3508,7 @@ export declare const eVisualFieldType: {
     FT_NON_DOMICILED_INDICATOR: number;
     FT_JURISDICTION_SPECIFIC_DATA: number;
     FT_DATA_DATE_OF_EXPIRY: number;
+    FT_CONSUL: number;
 };
 export declare const DocReaderOrientation: {
     ALL: number;
@@ -4813,6 +4823,8 @@ export declare const Enum: {
         NTF_LDS_ICAO_CERTIFICATE_MRZ_COUNTRY_NON_MATCHING: number;
         NTF_LDS_ICAO_CERTIFICATE_ISSUER_COUNTRY_NON_UPPER_CASE: number;
         NTF_LDS_ICAO_CERTIFICATE_SUBJECT_COUNTRY_NON_UPPER_CASE: number;
+        NTFLDS_SI_STORAGE_CS_NONCONSISTANT: number;
+        NTFLDS_SI_STORAGE_CS_PACE_CAM_KEY_MISSING: number;
     };
     eImageQualityCheckType: {
         IQC_IMAGE_GLARES: number;
@@ -5359,6 +5371,13 @@ export declare const Enum: {
         DFT_VDS: number;
         DFT_VDSNC: number;
         DFT_USERDEFINED: number;
+        DFT_POST_CA_RESPONSE: number;
+        DFT_POST_CA_PUBLIC_KEY: number;
+        DFT_POST_CA_INFO: number;
+        DFT_POST_CA_DPARAMS: number;
+        DFT_POST_CA_CHECK_PK: number;
+        DFT_POST_CA_CHECK_SK: number;
+        DFT_ID_DG22: number;
     };
     eVisualFieldType: {
         FT_DOCUMENT_CLASS_CODE: number;
@@ -6018,6 +6037,7 @@ export declare const Enum: {
         FT_NON_DOMICILED_INDICATOR: number;
         FT_JURISDICTION_SPECIFIC_DATA: number;
         FT_DATA_DATE_OF_EXPIRY: number;
+        FT_CONSUL: number;
     };
     DocReaderOrientation: {
         ALL: number;
