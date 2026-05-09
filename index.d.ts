@@ -552,6 +552,7 @@ export declare class RecognizeConfig {
     image?: string;
     data?: string;
     images?: string[];
+    dataList?: string[];
     imageInputData?: ImageInputData[];
     static fromJson(jsonObject?: any): RecognizeConfig | undefined;
 }
@@ -624,6 +625,7 @@ export declare class Functionality {
     torchTurnedOn?: boolean;
     preventScreenRecording?: boolean;
     homeIndicatorAutoHide?: boolean;
+    hideStatusBar?: boolean;
     showCaptureButtonDelayFromDetect?: number;
     showCaptureButtonDelayFromStart?: number;
     rfidTimeout?: number;
@@ -703,6 +705,7 @@ export declare class LivenessParams {
     checkBlackAndWhiteCopy?: boolean;
     checkDynaprint?: boolean;
     checkGeometry?: boolean;
+    checkBarcodeBackground?: boolean;
     static fromJson(jsonObject?: any): LivenessParams | undefined;
 }
 export declare class AuthenticityParams {
@@ -746,7 +749,6 @@ export declare class ProcessParams {
     updateOCRValidityByGlare?: boolean;
     noGraphics?: boolean;
     multiDocOnImage?: boolean;
-    forceReadMrzBeforeLocate?: boolean;
     parseBarcodes?: boolean;
     shouldReturnPackageForReprocess?: boolean;
     disablePerforationOCR?: boolean;
@@ -769,6 +771,7 @@ export declare class ProcessParams {
     strictExpiryDate?: boolean;
     debugSaveBinarySession?: boolean;
     checkVDS?: boolean;
+    strictAgeCheck?: boolean;
     barcodeParserType?: number;
     perspectiveAngle?: number;
     minDPI?: number;
