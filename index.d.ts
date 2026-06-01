@@ -552,6 +552,7 @@ export declare class RecognizeConfig {
     image?: string;
     data?: string;
     images?: string[];
+    dataList?: string[];
     imageInputData?: ImageInputData[];
     static fromJson(jsonObject?: any): RecognizeConfig | undefined;
 }
@@ -624,6 +625,7 @@ export declare class Functionality {
     torchTurnedOn?: boolean;
     preventScreenRecording?: boolean;
     homeIndicatorAutoHide?: boolean;
+    hideStatusBar?: boolean;
     showCaptureButtonDelayFromDetect?: number;
     showCaptureButtonDelayFromStart?: number;
     rfidTimeout?: number;
@@ -703,6 +705,7 @@ export declare class LivenessParams {
     checkBlackAndWhiteCopy?: boolean;
     checkDynaprint?: boolean;
     checkGeometry?: boolean;
+    checkBarcodeBackground?: boolean;
     static fromJson(jsonObject?: any): LivenessParams | undefined;
 }
 export declare class AuthenticityParams {
@@ -746,7 +749,6 @@ export declare class ProcessParams {
     updateOCRValidityByGlare?: boolean;
     noGraphics?: boolean;
     multiDocOnImage?: boolean;
-    forceReadMrzBeforeLocate?: boolean;
     parseBarcodes?: boolean;
     shouldReturnPackageForReprocess?: boolean;
     disablePerforationOCR?: boolean;
@@ -769,6 +771,7 @@ export declare class ProcessParams {
     strictExpiryDate?: boolean;
     debugSaveBinarySession?: boolean;
     checkVDS?: boolean;
+    strictAgeCheck?: boolean;
     barcodeParserType?: number;
     perspectiveAngle?: number;
     minDPI?: number;
@@ -1518,6 +1521,8 @@ export declare const eLDS_ParsingErrorCodes: {
     ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_SIG_ALGORITHM: number;
     ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_CERTIFICATE: number;
     ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_SIG_VALUE: number;
+    ERR_LDS_PACE_CAM_DATA_USAGE_INCORRECT: number;
+    ERR_LDS_PACE_IM_MAPPING_DATA_INCORRECT: number;
 };
 export declare const eRFID_CertificateType: {
     CT_UNDEFINED: number;
@@ -1531,6 +1536,7 @@ export declare const eRFID_CertificateType: {
     CT_LDS2: number;
     CT_BCS: number;
     CT_BCSNC: number;
+    CT_MDLS: number;
 };
 export declare const RGLMeasureSystem: {
     METRIC: number;
@@ -2296,6 +2302,11 @@ export declare const eLDS_ParsingNotificationCodes: {
     NTF_LDS_ICAO_CERTIFICATE_SUBJECT_COUNTRY_NON_UPPER_CASE: number;
     NTFLDS_SI_STORAGE_CS_NONCONSISTANT: number;
     NTFLDS_SI_STORAGE_CS_PACE_CAM_KEY_MISSING: number;
+    NTFLDS_ASN_CERTIFICATE_NONMATCHINGDSROLE: number;
+    NTFLDS_MDL_CERTIFICATE_CHAIN_SOP_NONMATCHING: number;
+    NTFLDS_MDL_CERTIFICATE_UNSUPPORTEDPUBLICKEYALGORITHM: number;
+    NTFLDS_MDL_CERTIFICATE_UNSUPPORTEDSIGNATUREALGORITHM: number;
+    NTFLDS_MDL_CERTIFICATE_UNSUPPORTEDPUBLICKEYPARAMS: number;
 };
 export declare const eImageQualityCheckType: {
     IQC_IMAGE_GLARES: number;
@@ -4047,6 +4058,8 @@ export declare const Enum: {
         ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_SIG_ALGORITHM: number;
         ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_CERTIFICATE: number;
         ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_SIG_VALUE: number;
+        ERR_LDS_PACE_CAM_DATA_USAGE_INCORRECT: number;
+        ERR_LDS_PACE_IM_MAPPING_DATA_INCORRECT: number;
     };
     eRFID_CertificateType: {
         CT_UNDEFINED: number;
@@ -4060,6 +4073,7 @@ export declare const Enum: {
         CT_LDS2: number;
         CT_BCS: number;
         CT_BCSNC: number;
+        CT_MDLS: number;
     };
     RGLMeasureSystem: {
         METRIC: number;
@@ -4825,6 +4839,11 @@ export declare const Enum: {
         NTF_LDS_ICAO_CERTIFICATE_SUBJECT_COUNTRY_NON_UPPER_CASE: number;
         NTFLDS_SI_STORAGE_CS_NONCONSISTANT: number;
         NTFLDS_SI_STORAGE_CS_PACE_CAM_KEY_MISSING: number;
+        NTFLDS_ASN_CERTIFICATE_NONMATCHINGDSROLE: number;
+        NTFLDS_MDL_CERTIFICATE_CHAIN_SOP_NONMATCHING: number;
+        NTFLDS_MDL_CERTIFICATE_UNSUPPORTEDPUBLICKEYALGORITHM: number;
+        NTFLDS_MDL_CERTIFICATE_UNSUPPORTEDSIGNATUREALGORITHM: number;
+        NTFLDS_MDL_CERTIFICATE_UNSUPPORTEDPUBLICKEYPARAMS: number;
     };
     eImageQualityCheckType: {
         IQC_IMAGE_GLARES: number;
