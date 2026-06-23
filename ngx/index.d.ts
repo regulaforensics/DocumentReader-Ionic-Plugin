@@ -552,6 +552,7 @@ export declare class RecognizeConfig {
     image?: string;
     data?: string;
     images?: string[];
+    dataList?: string[];
     imageInputData?: ImageInputData[];
     static fromJson(jsonObject?: any): RecognizeConfig | undefined;
 }
@@ -624,6 +625,7 @@ export declare class Functionality {
     torchTurnedOn?: boolean;
     preventScreenRecording?: boolean;
     homeIndicatorAutoHide?: boolean;
+    hideStatusBar?: boolean;
     showCaptureButtonDelayFromDetect?: number;
     showCaptureButtonDelayFromStart?: number;
     rfidTimeout?: number;
@@ -703,6 +705,7 @@ export declare class LivenessParams {
     checkBlackAndWhiteCopy?: boolean;
     checkDynaprint?: boolean;
     checkGeometry?: boolean;
+    checkBarcodeBackground?: boolean;
     static fromJson(jsonObject?: any): LivenessParams | undefined;
 }
 export declare class AuthenticityParams {
@@ -746,7 +749,6 @@ export declare class ProcessParams {
     updateOCRValidityByGlare?: boolean;
     noGraphics?: boolean;
     multiDocOnImage?: boolean;
-    forceReadMrzBeforeLocate?: boolean;
     parseBarcodes?: boolean;
     shouldReturnPackageForReprocess?: boolean;
     disablePerforationOCR?: boolean;
@@ -769,6 +771,7 @@ export declare class ProcessParams {
     strictExpiryDate?: boolean;
     debugSaveBinarySession?: boolean;
     checkVDS?: boolean;
+    strictAgeCheck?: boolean;
     barcodeParserType?: number;
     perspectiveAngle?: number;
     minDPI?: number;
@@ -890,6 +893,7 @@ export declare class CustomizationMatrices {
     static fromJson(jsonObject?: any): CustomizationMatrices | undefined;
 }
 export declare class Customization {
+    theme?: number;
     showStatusMessages?: boolean;
     showResultStatusMessages?: boolean;
     showHelpAnimation?: boolean;
@@ -1518,6 +1522,8 @@ export declare const eLDS_ParsingErrorCodes: {
     ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_SIG_ALGORITHM: number;
     ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_CERTIFICATE: number;
     ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_SIG_VALUE: number;
+    ERR_LDS_PACE_CAM_DATA_USAGE_INCORRECT: number;
+    ERR_LDS_PACE_IM_MAPPING_DATA_INCORRECT: number;
 };
 export declare const eRFID_CertificateType: {
     CT_UNDEFINED: number;
@@ -1531,6 +1537,7 @@ export declare const eRFID_CertificateType: {
     CT_LDS2: number;
     CT_BCS: number;
     CT_BCSNC: number;
+    CT_MDLS: number;
 };
 export declare const RGLMeasureSystem: {
     METRIC: number;
@@ -1594,6 +1601,10 @@ export declare const FrameShapeType: {
 export declare const eMDLDeviceRetrieval: {
     NFC: number;
     BLE: number;
+};
+export declare const CustomizationTheme: {
+    CLEAR: number;
+    LIQUID_GLASS: number;
 };
 export declare const eRFID_BaudRate: {
     rfbr_106: number;
@@ -2294,6 +2305,13 @@ export declare const eLDS_ParsingNotificationCodes: {
     NTF_LDS_ICAO_CERTIFICATE_MRZ_COUNTRY_NON_MATCHING: number;
     NTF_LDS_ICAO_CERTIFICATE_ISSUER_COUNTRY_NON_UPPER_CASE: number;
     NTF_LDS_ICAO_CERTIFICATE_SUBJECT_COUNTRY_NON_UPPER_CASE: number;
+    NTFLDS_SI_STORAGE_CS_NONCONSISTANT: number;
+    NTFLDS_SI_STORAGE_CS_PACE_CAM_KEY_MISSING: number;
+    NTFLDS_ASN_CERTIFICATE_NONMATCHINGDSROLE: number;
+    NTFLDS_MDL_CERTIFICATE_CHAIN_SOP_NONMATCHING: number;
+    NTFLDS_MDL_CERTIFICATE_UNSUPPORTEDPUBLICKEYALGORITHM: number;
+    NTFLDS_MDL_CERTIFICATE_UNSUPPORTEDSIGNATUREALGORITHM: number;
+    NTFLDS_MDL_CERTIFICATE_UNSUPPORTEDPUBLICKEYPARAMS: number;
 };
 export declare const eImageQualityCheckType: {
     IQC_IMAGE_GLARES: number;
@@ -2840,6 +2858,13 @@ export declare const eRFID_DataFile_Type: {
     DFT_VDS: number;
     DFT_VDSNC: number;
     DFT_USERDEFINED: number;
+    DFT_POST_CA_RESPONSE: number;
+    DFT_POST_CA_PUBLIC_KEY: number;
+    DFT_POST_CA_INFO: number;
+    DFT_POST_CA_DPARAMS: number;
+    DFT_POST_CA_CHECK_PK: number;
+    DFT_POST_CA_CHECK_SK: number;
+    DFT_ID_DG22: number;
 };
 export declare const eVisualFieldType: {
     FT_DOCUMENT_CLASS_CODE: number;
@@ -3499,6 +3524,8 @@ export declare const eVisualFieldType: {
     FT_NON_DOMICILED_INDICATOR: number;
     FT_JURISDICTION_SPECIFIC_DATA: number;
     FT_DATA_DATE_OF_EXPIRY: number;
+    FT_CONSUL: number;
+    FT_CANTON_REFERENCE: number;
 };
 export declare const DocReaderOrientation: {
     ALL: number;
@@ -4037,6 +4064,8 @@ export declare const Enum: {
         ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_SIG_ALGORITHM: number;
         ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_CERTIFICATE: number;
         ERR_LDS_VDS_NC_MISSING_OR_INCORRECT_SIG_VALUE: number;
+        ERR_LDS_PACE_CAM_DATA_USAGE_INCORRECT: number;
+        ERR_LDS_PACE_IM_MAPPING_DATA_INCORRECT: number;
     };
     eRFID_CertificateType: {
         CT_UNDEFINED: number;
@@ -4050,6 +4079,7 @@ export declare const Enum: {
         CT_LDS2: number;
         CT_BCS: number;
         CT_BCSNC: number;
+        CT_MDLS: number;
     };
     RGLMeasureSystem: {
         METRIC: number;
@@ -4113,6 +4143,10 @@ export declare const Enum: {
     eMDLDeviceRetrieval: {
         NFC: number;
         BLE: number;
+    };
+    CustomizationTheme: {
+        CLEAR: number;
+        LIQUID_GLASS: number;
     };
     eRFID_BaudRate: {
         rfbr_106: number;
@@ -4813,6 +4847,13 @@ export declare const Enum: {
         NTF_LDS_ICAO_CERTIFICATE_MRZ_COUNTRY_NON_MATCHING: number;
         NTF_LDS_ICAO_CERTIFICATE_ISSUER_COUNTRY_NON_UPPER_CASE: number;
         NTF_LDS_ICAO_CERTIFICATE_SUBJECT_COUNTRY_NON_UPPER_CASE: number;
+        NTFLDS_SI_STORAGE_CS_NONCONSISTANT: number;
+        NTFLDS_SI_STORAGE_CS_PACE_CAM_KEY_MISSING: number;
+        NTFLDS_ASN_CERTIFICATE_NONMATCHINGDSROLE: number;
+        NTFLDS_MDL_CERTIFICATE_CHAIN_SOP_NONMATCHING: number;
+        NTFLDS_MDL_CERTIFICATE_UNSUPPORTEDPUBLICKEYALGORITHM: number;
+        NTFLDS_MDL_CERTIFICATE_UNSUPPORTEDSIGNATUREALGORITHM: number;
+        NTFLDS_MDL_CERTIFICATE_UNSUPPORTEDPUBLICKEYPARAMS: number;
     };
     eImageQualityCheckType: {
         IQC_IMAGE_GLARES: number;
@@ -5359,6 +5400,13 @@ export declare const Enum: {
         DFT_VDS: number;
         DFT_VDSNC: number;
         DFT_USERDEFINED: number;
+        DFT_POST_CA_RESPONSE: number;
+        DFT_POST_CA_PUBLIC_KEY: number;
+        DFT_POST_CA_INFO: number;
+        DFT_POST_CA_DPARAMS: number;
+        DFT_POST_CA_CHECK_PK: number;
+        DFT_POST_CA_CHECK_SK: number;
+        DFT_ID_DG22: number;
     };
     eVisualFieldType: {
         FT_DOCUMENT_CLASS_CODE: number;
@@ -6018,6 +6066,8 @@ export declare const Enum: {
         FT_NON_DOMICILED_INDICATOR: number;
         FT_JURISDICTION_SPECIFIC_DATA: number;
         FT_DATA_DATE_OF_EXPIRY: number;
+        FT_CONSUL: number;
+        FT_CANTON_REFERENCE: number;
     };
     DocReaderOrientation: {
         ALL: number;
@@ -6504,17 +6554,17 @@ export declare class DocumentReader extends AwesomeCordovaNativePlugin {
     /**
      *  Use the method below to open the RFID chip reading controller and start its processing
      *
-     * @param {RFIDConfig} config
+     * @param {RFIDConfig | null} config
      * @return {Promise<any>} Returns a promise
      */
-    startRFIDReader(config: RFIDConfig): Observable<any>;
+    startRFIDReader(config: RFIDConfig | null): Observable<any>;
     /**
      *  Use this method to start RFID chip processing
      *
-     * @param {RFIDConfig} config
+     * @param {RFIDConfig | null} config
      * @return {Promise<any>} Returns a promise
      */
-    readRFID(config: RFIDConfig): Observable<any>;
+    readRFID(config: RFIDConfig | null): Observable<any>;
     /**
      *  Use the method below to close the RFID chip reading controller and end its processing
      *
