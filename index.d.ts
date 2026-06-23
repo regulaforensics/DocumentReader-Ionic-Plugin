@@ -893,6 +893,7 @@ export declare class CustomizationMatrices {
     static fromJson(jsonObject?: any): CustomizationMatrices | undefined;
 }
 export declare class Customization {
+    theme?: number;
     showStatusMessages?: boolean;
     showResultStatusMessages?: boolean;
     showHelpAnimation?: boolean;
@@ -1600,6 +1601,10 @@ export declare const FrameShapeType: {
 export declare const eMDLDeviceRetrieval: {
     NFC: number;
     BLE: number;
+};
+export declare const CustomizationTheme: {
+    CLEAR: number;
+    LIQUID_GLASS: number;
 };
 export declare const eRFID_BaudRate: {
     rfbr_106: number;
@@ -3520,6 +3525,7 @@ export declare const eVisualFieldType: {
     FT_JURISDICTION_SPECIFIC_DATA: number;
     FT_DATA_DATE_OF_EXPIRY: number;
     FT_CONSUL: number;
+    FT_CANTON_REFERENCE: number;
 };
 export declare const DocReaderOrientation: {
     ALL: number;
@@ -4137,6 +4143,10 @@ export declare const Enum: {
     eMDLDeviceRetrieval: {
         NFC: number;
         BLE: number;
+    };
+    CustomizationTheme: {
+        CLEAR: number;
+        LIQUID_GLASS: number;
     };
     eRFID_BaudRate: {
         rfbr_106: number;
@@ -6057,6 +6067,7 @@ export declare const Enum: {
         FT_JURISDICTION_SPECIFIC_DATA: number;
         FT_DATA_DATE_OF_EXPIRY: number;
         FT_CONSUL: number;
+        FT_CANTON_REFERENCE: number;
     };
     DocReaderOrientation: {
         ALL: number;
