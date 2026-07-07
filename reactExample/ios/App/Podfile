@@ -1,4 +1,5 @@
-source "https://github.com/CocoaPods/Specs.git"
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/regulaforensics/podspecs.git'
 
 require_relative '../../node_modules/@capacitor/ios/scripts/pods_helpers'
 
