@@ -12,8 +12,8 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@regulaforensics/ionic-native-document-reader": "9.7.619-rc",
-    "@regulaforensics/cordova-plugin-document-reader-api": "9.7.682-rc",
+    "@regulaforensics/ionic-native-document-reader": "9.6.620-rc",
+    "@regulaforensics/cordova-plugin-document-reader-api": "9.6.683-rc",
     "@regulaforensics/cordova-plugin-document-reader-core-fullauthrfid": "9.7.2925-rc",
     "@awesome-cordova-plugins/camera": "6.6.0",
     "@awesome-cordova-plugins/file": "6.6.0",
