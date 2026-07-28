@@ -683,6 +683,7 @@ export declare class FaceApiParams {
     proxy?: string;
     proxyPassword?: string;
     proxyType?: number;
+    livenessTransactionId?: string;
     static fromJson(jsonObject?: any): FaceApiParams | undefined;
 }
 export declare class BackendProcessingConfig {
@@ -708,6 +709,10 @@ export declare class LivenessParams {
     checkBarcodeBackground?: boolean;
     static fromJson(jsonObject?: any): LivenessParams | undefined;
 }
+export declare class AuthenticityPropertiesParams {
+    checkHoldersSignature?: boolean;
+    static fromJson(jsonObject?: any): AuthenticityPropertiesParams | undefined;
+}
 export declare class AuthenticityParams {
     useLivenessCheck?: boolean;
     livenessParams?: LivenessParams;
@@ -725,6 +730,8 @@ export declare class AuthenticityParams {
     checkPhotoComparison?: boolean;
     checkLetterScreen?: boolean;
     checkSecurityText?: boolean;
+    checkProperties?: boolean;
+    propertiesParams?: AuthenticityPropertiesParams;
     static fromJson(jsonObject?: any): AuthenticityParams | undefined;
 }
 export declare class ProcessParams {
@@ -1250,6 +1257,8 @@ export declare const eRPRM_Authenticity: {
     OVI: number;
     LIVENESS: number;
     OCR: number;
+    ENCRYPTED_IPI: number;
+    AUTHENTICITY_PROPERTY: number;
 };
 export declare const CustomizationColor: {
     RFID_PROCESSING_SCREEN_BACKGROUND: string;
@@ -2009,7 +2018,6 @@ export declare const eCheckDiagnose: {
     CHD_DOC_LIVENESS_BLACK_AND_WHITE_COPY_DETECTED: number;
     DOC_LIVENESS_ELECTRONIC_DEVICE_DETECTED: number;
     DOC_LIVENESS_INVALID_BARCODE_BACKGROUND: number;
-    DOC_LIVENESS_VIRTUAL_CAMERA_DETECTED: number;
     ICAO_IDB_BASE_32_ERROR: number;
     ICAO_IDB_ZIPPED_ERROR: number;
     ICAO_IDB_MESSAGE_ZONE_EMPTY: number;
@@ -2017,6 +2025,10 @@ export declare const eCheckDiagnose: {
     ICAO_IDB_SIGNATURE_MUST_NOT_BE_PRESENT: number;
     ICAO_IDB_CERTIFICATE_MUST_NOT_BE_PRESENT: number;
     INCORRECT_OBJECT_COLOR: number;
+    DOC_LIVENESS_VIRTUAL_CAMERA_DETECTED: number;
+    CHD_PROPERTY_NO_SIGNATURE: number;
+    CHD_PROPERTY_TEXT_AS_SIGNATURE: number;
+    CHD_PROPERTY_FINGERPRINT_AS_SIGNATURE: number;
 };
 export declare const eMDLIntentToRetain: {
     FALSE: number;
@@ -2419,6 +2431,7 @@ export declare const eRPRM_SecurityFeatureType: {
     SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_BARCODEVSGHOST: number;
     SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_GHOSTVSLIVE: number;
     SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSGHOST: number;
+    SECURITY_FEATURE_TYPE_SIGNATURE_PRESENCE: number;
 };
 export declare const OnlineMode: {
     MANUAL: number;
@@ -3525,7 +3538,9 @@ export declare const eVisualFieldType: {
     FT_JURISDICTION_SPECIFIC_DATA: number;
     FT_DATA_DATE_OF_EXPIRY: number;
     FT_CONSUL: number;
-    FT_CANTON_REFERENCE: number;
+    FT_DLCLASSCODE_B3_FROM: number;
+    FT_DLCLASSCODE_B3_TO: number;
+    FT_DLCLASSCODE_B3_NOTES: number;
 };
 export declare const DocReaderOrientation: {
     ALL: number;
@@ -3792,6 +3807,8 @@ export declare const Enum: {
         OVI: number;
         LIVENESS: number;
         OCR: number;
+        ENCRYPTED_IPI: number;
+        AUTHENTICITY_PROPERTY: number;
     };
     CustomizationColor: {
         RFID_PROCESSING_SCREEN_BACKGROUND: string;
@@ -4551,7 +4568,6 @@ export declare const Enum: {
         CHD_DOC_LIVENESS_BLACK_AND_WHITE_COPY_DETECTED: number;
         DOC_LIVENESS_ELECTRONIC_DEVICE_DETECTED: number;
         DOC_LIVENESS_INVALID_BARCODE_BACKGROUND: number;
-        DOC_LIVENESS_VIRTUAL_CAMERA_DETECTED: number;
         ICAO_IDB_BASE_32_ERROR: number;
         ICAO_IDB_ZIPPED_ERROR: number;
         ICAO_IDB_MESSAGE_ZONE_EMPTY: number;
@@ -4559,6 +4575,10 @@ export declare const Enum: {
         ICAO_IDB_SIGNATURE_MUST_NOT_BE_PRESENT: number;
         ICAO_IDB_CERTIFICATE_MUST_NOT_BE_PRESENT: number;
         INCORRECT_OBJECT_COLOR: number;
+        DOC_LIVENESS_VIRTUAL_CAMERA_DETECTED: number;
+        CHD_PROPERTY_NO_SIGNATURE: number;
+        CHD_PROPERTY_TEXT_AS_SIGNATURE: number;
+        CHD_PROPERTY_FINGERPRINT_AS_SIGNATURE: number;
     };
     eMDLIntentToRetain: {
         FALSE: number;
@@ -4961,6 +4981,7 @@ export declare const Enum: {
         SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_BARCODEVSGHOST: number;
         SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_GHOSTVSLIVE: number;
         SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSGHOST: number;
+        SECURITY_FEATURE_TYPE_SIGNATURE_PRESENCE: number;
     };
     OnlineMode: {
         MANUAL: number;
@@ -6067,7 +6088,9 @@ export declare const Enum: {
         FT_JURISDICTION_SPECIFIC_DATA: number;
         FT_DATA_DATE_OF_EXPIRY: number;
         FT_CONSUL: number;
-        FT_CANTON_REFERENCE: number;
+        FT_DLCLASSCODE_B3_FROM: number;
+        FT_DLCLASSCODE_B3_TO: number;
+        FT_DLCLASSCODE_B3_NOTES: number;
     };
     DocReaderOrientation: {
         ALL: number;

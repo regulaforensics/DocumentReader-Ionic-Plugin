@@ -8,7 +8,6 @@
 ```bash
 $ cd example
 $ npm install
-$ npx jetify
 $ ionic cordova prepare
 ```
 
