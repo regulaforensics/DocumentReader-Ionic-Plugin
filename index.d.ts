@@ -1888,7 +1888,7 @@ export declare const BarcodeResult: {
 };
 export declare const eRFID_Application_Type: {
     AT_UNSPECIFIED: number;
-    AT_ROOT_FILES: any;
+    AT_ROOT_FILES: number;
     ePASSPORT: number;
     eID: number;
     eSIGN: number;
@@ -4455,7 +4455,7 @@ export declare const Enum: {
     };
     eRFID_Application_Type: {
         AT_UNSPECIFIED: number;
-        AT_ROOT_FILES: any;
+        AT_ROOT_FILES: number;
         ePASSPORT: number;
         eID: number;
         eSIGN: number;
