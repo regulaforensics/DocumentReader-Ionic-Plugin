@@ -650,12 +650,17 @@ export declare class GlaresCheckParams {
     maxGlaringPart?: number;
     static fromJson(jsonObject?: any): GlaresCheckParams | undefined;
 }
+export declare class OcclusionCheckParams {
+    maxOcclusionPart?: number;
+    static fromJson(jsonObject?: any): OcclusionCheckParams | undefined;
+}
 export declare class ImageQA {
     dpiThreshold?: number;
     angleThreshold?: number;
     focusCheck?: boolean;
     glaresCheck?: boolean;
     glaresCheckParams?: GlaresCheckParams;
+    occlusionCheckParams?: OcclusionCheckParams;
     colornessCheck?: boolean;
     screenCapture?: boolean;
     expectedPass?: number[];
@@ -1085,6 +1090,7 @@ export declare class RFIDScenario {
     mrzStrictCheck?: boolean;
     loadCRLFromRemote?: boolean;
     independentSODStatus?: boolean;
+    readUser?: boolean;
     readingBuffer?: number;
     onlineTAToSignDataType?: number;
     defaultReadingBufferSize?: number;
@@ -1105,6 +1111,7 @@ export declare class RFIDScenario {
     documentNumber?: string;
     dateOfBirth?: string;
     dateOfExpiry?: string;
+    defaultUserPIN?: string;
     eDLDataGroups?: EDLDataGroups;
     ePassportDataGroups?: EPassportDataGroups;
     eIDDataGroups?: EIDDataGroups;
@@ -1603,6 +1610,10 @@ export declare const eRPRM_ResultType: {
     RPRM_RESULT_TYPE_EXT_PORTRAIT: number;
     RPRM_RESULT_TYPE_BSI_XML_V2: number;
 };
+export declare const CameraTypes: {
+    FRONT: string;
+    BACK: string;
+};
 export declare const FrameShapeType: {
     LINE: number;
     CORNER: number;
@@ -1620,6 +1631,9 @@ export declare const eRFID_BaudRate: {
     rfbr_212: number;
     rfbr_424: number;
     rfbr_848: number;
+    rfbr_1695: number;
+    rfbr_3390: number;
+    rfbr_6780: number;
 };
 export declare const LineCap: {
     BUTT: number;
@@ -1642,7 +1656,6 @@ export declare const DocReaderAction: {
     PROCESS_WHITE_FLASHLIGHT: number;
     TIMEOUT: number;
     PROCESSING_ON_SERVICE: number;
-    NOTIFICATION: number;
     PROCESS_WHITE_UV_IMAGES: number;
     PROCESS_IR_FRAME: number;
 };
@@ -1663,8 +1676,8 @@ export declare const eProcessGLCommands: {
     ePC_RFID_SetTCCParams: number;
 };
 export declare const eRFIDReadingBufferSize: {
-    STANDARD_LENGTH: number;
     EXTENDED_LENGTH: number;
+    STANDARD_LENGTH: number;
 };
 export declare const PKDResourceType: {
     CERTIFICATE_PA: number;
@@ -1685,6 +1698,12 @@ export declare const eRFID_AuthenticationProcedureType: {
     aptStandard: number;
     aptAdvanced: number;
     aptGeneral: number;
+};
+export declare const eRFID_AccessControl: {
+    acDefault: number;
+    acChipAccess_BAC: number;
+    acChipAccess_PACE: number;
+    acLocal_PIN: number;
 };
 export declare const DocumentReaderErrorCodes: {
     INITIALIZATION_CORE_ABSENT: number;
@@ -1818,6 +1837,7 @@ export declare const eRFID_Password_Type: {
     PPT_PIN_ESIGN: number;
     PPT_SAI: number;
     PPT_MRZ_HASH: number;
+    PPT_PIN_LOCAL: number;
 };
 export declare const ViewContentMode: {
     UNKNOWN: number;
@@ -1869,6 +1889,8 @@ export declare const BarcodeResult: {
     IPDECODE_ERROR_LOADING_DEV_TABLE: number;
 };
 export declare const eRFID_Application_Type: {
+    AT_UNSPECIFIED: number;
+    AT_ROOT_FILES: number;
     ePASSPORT: number;
     eID: number;
     eSIGN: number;
@@ -1877,6 +1899,8 @@ export declare const eRFID_Application_Type: {
     LDS2_VISA_RECORDS: number;
     LDS2_ADD_BIOMETRICS: number;
     eDTC_PC: number;
+    AT_APPLET_ROOT: number;
+    AT_USER_DEFINED: number;
 };
 export declare const eSignManagementAction: {
     smaUndefined: number;
@@ -4153,6 +4177,10 @@ export declare const Enum: {
         RPRM_RESULT_TYPE_EXT_PORTRAIT: number;
         RPRM_RESULT_TYPE_BSI_XML_V2: number;
     };
+    CameraTypes: {
+        FRONT: string;
+        BACK: string;
+    };
     FrameShapeType: {
         LINE: number;
         CORNER: number;
@@ -4170,6 +4198,9 @@ export declare const Enum: {
         rfbr_212: number;
         rfbr_424: number;
         rfbr_848: number;
+        rfbr_1695: number;
+        rfbr_3390: number;
+        rfbr_6780: number;
     };
     LineCap: {
         BUTT: number;
@@ -4192,7 +4223,6 @@ export declare const Enum: {
         PROCESS_WHITE_FLASHLIGHT: number;
         TIMEOUT: number;
         PROCESSING_ON_SERVICE: number;
-        NOTIFICATION: number;
         PROCESS_WHITE_UV_IMAGES: number;
         PROCESS_IR_FRAME: number;
     };
@@ -4213,8 +4243,8 @@ export declare const Enum: {
         ePC_RFID_SetTCCParams: number;
     };
     eRFIDReadingBufferSize: {
-        STANDARD_LENGTH: number;
         EXTENDED_LENGTH: number;
+        STANDARD_LENGTH: number;
     };
     PKDResourceType: {
         CERTIFICATE_PA: number;
@@ -4235,6 +4265,12 @@ export declare const Enum: {
         aptStandard: number;
         aptAdvanced: number;
         aptGeneral: number;
+    };
+    eRFID_AccessControl: {
+        acDefault: number;
+        acChipAccess_BAC: number;
+        acChipAccess_PACE: number;
+        acLocal_PIN: number;
     };
     DocumentReaderErrorCodes: {
         INITIALIZATION_CORE_ABSENT: number;
@@ -4368,6 +4404,7 @@ export declare const Enum: {
         PPT_PIN_ESIGN: number;
         PPT_SAI: number;
         PPT_MRZ_HASH: number;
+        PPT_PIN_LOCAL: number;
     };
     ViewContentMode: {
         UNKNOWN: number;
@@ -4419,6 +4456,8 @@ export declare const Enum: {
         IPDECODE_ERROR_LOADING_DEV_TABLE: number;
     };
     eRFID_Application_Type: {
+        AT_UNSPECIFIED: number;
+        AT_ROOT_FILES: number;
         ePASSPORT: number;
         eID: number;
         eSIGN: number;
@@ -4427,6 +4466,8 @@ export declare const Enum: {
         LDS2_VISA_RECORDS: number;
         LDS2_ADD_BIOMETRICS: number;
         eDTC_PC: number;
+        AT_APPLET_ROOT: number;
+        AT_USER_DEFINED: number;
     };
     eSignManagementAction: {
         smaUndefined: number;
