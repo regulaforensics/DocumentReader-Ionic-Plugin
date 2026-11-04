@@ -1230,12 +1230,12 @@ export declare class CAProtocol {
     static fromJson(jsonObject?: any): CAProtocol | undefined;
 }
 export declare class RFIDConfig {
-    onRequestPACertificates?: boolean;
-    onRequestTACertificates?: boolean;
-    onRequestTASignature?: boolean;
-    onRequestAAChallenge?: boolean;
-    onRequestPACEProtocol?: boolean;
-    onRequestCAProtocol?: boolean;
+    paCertificates?: boolean;
+    taCertificates?: boolean;
+    taSignature?: boolean;
+    aaChallenge?: boolean;
+    paceProtocol?: boolean;
+    caProtocol?: boolean;
     static fromJson(jsonObject?: any): RFIDConfig | undefined;
 }
 export declare const FontStyle: {
