@@ -716,7 +716,6 @@ export declare class LivenessParams {
 }
 export declare class AuthenticityPropertiesParams {
     checkHoldersSignature?: boolean;
-    checkDocumentDamage?: boolean;
     static fromJson(jsonObject?: any): AuthenticityPropertiesParams | undefined;
 }
 export declare class AuthenticityParams {
@@ -1230,12 +1229,11 @@ export declare class CAProtocol {
     static fromJson(jsonObject?: any): CAProtocol | undefined;
 }
 export declare class RFIDConfig {
-    paCertificates?: boolean;
-    taCertificates?: boolean;
-    taSignature?: boolean;
-    aaChallenge?: boolean;
-    paceProtocol?: boolean;
-    caProtocol?: boolean;
+    onRequestPACertificates?: boolean;
+    onRequestTACertificates?: boolean;
+    onRequestTASignature?: boolean;
+    onRequestPACEProtocol?: boolean;
+    onRequestCAProtocol?: boolean;
     static fromJson(jsonObject?: any): RFIDConfig | undefined;
 }
 export declare const FontStyle: {
@@ -2055,8 +2053,6 @@ export declare const eCheckDiagnose: {
     CHD_PROPERTY_NO_SIGNATURE: number;
     CHD_PROPERTY_TEXT_AS_SIGNATURE: number;
     CHD_PROPERTY_FINGERPRINT_AS_SIGNATURE: number;
-    CHD_PROPERTY_DOCUMENT_DAMAGED: number;
-    CHD_PROPERTY_DOCUMENT_CANCELLED: number;
 };
 export declare const eMDLIntentToRetain: {
     FALSE: number;
@@ -2460,7 +2456,6 @@ export declare const eRPRM_SecurityFeatureType: {
     SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_GHOSTVSLIVE: number;
     SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSGHOST: number;
     SECURITY_FEATURE_TYPE_SIGNATURE_PRESENCE: number;
-    SECURITY_FEATURE_TYPE_DAMAGE_CHECK: number;
 };
 export declare const OnlineMode: {
     MANUAL: number;
@@ -3570,8 +3565,6 @@ export declare const eVisualFieldType: {
     FT_DLCLASSCODE_B3_FROM: number;
     FT_DLCLASSCODE_B3_TO: number;
     FT_DLCLASSCODE_B3_NOTES: number;
-    FT_ADDRESS_POST_OFFICE: number;
-    FT_ADDRESS_LOT: number;
 };
 export declare const DocReaderOrientation: {
     ALL: number;
@@ -4627,8 +4620,6 @@ export declare const Enum: {
         CHD_PROPERTY_NO_SIGNATURE: number;
         CHD_PROPERTY_TEXT_AS_SIGNATURE: number;
         CHD_PROPERTY_FINGERPRINT_AS_SIGNATURE: number;
-        CHD_PROPERTY_DOCUMENT_DAMAGED: number;
-        CHD_PROPERTY_DOCUMENT_CANCELLED: number;
     };
     eMDLIntentToRetain: {
         FALSE: number;
@@ -5032,7 +5023,6 @@ export declare const Enum: {
         SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_GHOSTVSLIVE: number;
         SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSGHOST: number;
         SECURITY_FEATURE_TYPE_SIGNATURE_PRESENCE: number;
-        SECURITY_FEATURE_TYPE_DAMAGE_CHECK: number;
     };
     OnlineMode: {
         MANUAL: number;
@@ -6142,8 +6132,6 @@ export declare const Enum: {
         FT_DLCLASSCODE_B3_FROM: number;
         FT_DLCLASSCODE_B3_TO: number;
         FT_DLCLASSCODE_B3_NOTES: number;
-        FT_ADDRESS_POST_OFFICE: number;
-        FT_ADDRESS_LOT: number;
     };
     DocReaderOrientation: {
         ALL: number;
@@ -6668,13 +6656,6 @@ export declare class DocumentReaderOriginal extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     provideTASignature(signature: string): Promise<any>;
-    /**
-     *  Use this method to send AAChallenge to the chip after you`ve got a request for them
-     *
-     * @param {string} challenge
-     * @return {Promise<any>} Returns a promise
-     */
-    provideAAChallenge(challenge: string): Promise<any>;
     /**
      *
      *
