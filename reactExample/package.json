@@ -1,5 +1,5 @@
 {
-  "name": "DocumentReader",
+  "name": "Document",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -12,7 +12,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@regulaforensics/ionic-native-document-reader": "9.11.854-rc",
+    "@regulaforensics/ionic-native-document-reader": "9.11.855-rc",
     "@regulaforensics/cordova-plugin-document-reader-api": "9.11.945-rc",
     "@regulaforensics/cordova-plugin-document-reader-core-fullauthrfid": "9.10.3958",
     "@awesome-cordova-plugins/camera": "6.6.0",
