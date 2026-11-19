@@ -13,8 +13,8 @@
   },
   "private": true,
   "dependencies": {
-    "@regulaforensics/ionic-native-document-reader": "9.11.850-rc",
-    "@regulaforensics/cordova-plugin-document-reader-api": "9.11.938-rc",
+    "@regulaforensics/ionic-native-document-reader": "9.11.851-rc",
+    "@regulaforensics/cordova-plugin-document-reader-api": "9.11.939-rc",
     "@regulaforensics/cordova-plugin-document-reader-core-fullauthrfid": "9.10.3958",
     "cordova-plugin-camera": "7.0.0",
     "@awesome-cordova-plugins/camera": "6.6.0",
