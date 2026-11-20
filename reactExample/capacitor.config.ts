@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.regula.documentreader',
-  appName: 'Document',
+  appName: 'DocumentReader',
   webDir: 'dist',
   server: {
     androidScheme: 'https'

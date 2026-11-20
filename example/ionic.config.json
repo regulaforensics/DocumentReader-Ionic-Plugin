@@ -1,5 +1,5 @@
 {
-  "name": "Document",
+  "name": "DocumentReader",
   "integrations": {
     "cordova": {}
   },
