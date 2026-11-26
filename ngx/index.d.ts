@@ -921,6 +921,7 @@ export declare class Customization {
     status?: string;
     resultStatus?: string;
     multipageButtonText?: string;
+    globalFontFamily?: string;
     cameraFrameDefaultColor?: number;
     cameraFrameActiveColor?: number;
     statusTextColor?: number;
@@ -6715,6 +6716,12 @@ export declare class DocumentReader extends AwesomeCordovaNativePlugin {
      * @return {Promise<any>} Returns a promise
      */
     startNewSession(): Promise<any>;
+    /**
+     *  Removes the last processed page of the current document
+     *
+     * @return {Promise<any>} Returns a promise
+     */
+    clearLastPage(): Promise<any>;
     /**
      *  Connects to ble device
      *
